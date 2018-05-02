@@ -24,8 +24,9 @@ class App extends React.Component {
             <AppContainer>
                 <Switch>
                     <Route exact path="/" component={MainView} />
-                    <Route path="/main" component={MainView} />
+                    <Route exacg path="/main" component={MainView} />
                     <Route exact path="/login" component={SignIn} />
+                    <Route exact path="/register" component={SignIn} />
                 </Switch>
                 <DevTool />
             </AppContainer>

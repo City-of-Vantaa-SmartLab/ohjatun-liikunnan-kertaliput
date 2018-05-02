@@ -52,3 +52,13 @@ export const pipable = (obj) => {
         pipe,
     };
 };
+
+export const validatePhoneNumber = (phoneNumberString) =>
+    /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(
+        phoneNumberString
+    );
+
+export const validateUsername = (username) => {
+    // no contrains now for username
+    return true;
+};

@@ -2,7 +2,28 @@ import React from 'react';
 import styled from 'react-emotion';
 import Logo from '../../common/Logo';
 import LoginForm from './LoginForm';
-import { connect } from 'utils';
+import AppBrand from './AppBrand';
+import RegisterForm from '../register';
+import { withRouter } from 'react-router-dom';
+import posed, { PoseGroup } from 'react-pose';
+
+const AnimatableContainer = posed.div({
+    preEnter: {
+        x: '-200%',
+    },
+    enter: {
+        x: '0',
+    },
+    exit: {
+        x: '200%',
+    },
+});
+const Container = styled(AnimatableContainer)`
+    margin: none;
+    padding: none;
+    display: inherit;
+    width: 100%;
+`;
 
 const StyledWrapper = styled('section')`
     position: relative;
@@ -17,29 +38,6 @@ const StyledWrapper = styled('section')`
     align-items: center;
     height: 100%;
 `;
-const AppBrand = styled('div')`
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-
-    div {
-        flex: inherit;
-        align-items: center;
-        text-align: center;
-    }
-`;
-const AppName = styled('h1')`
-    font-size: 6rem;
-    font-weight: bold;
-    color: ${(props) => props.theme.complementary};
-    margin: 0;
-`;
-
-const AppHeadLine = styled('span')`
-    font-size: 3rem;
-    color: white;
-    font-weight: bold;
-`;
 
 const SizedLogo = styled(Logo)`
     width: 13rem;
@@ -48,23 +46,25 @@ const SizedLogo = styled(Logo)`
 
 class SignIn extends React.Component {
     render() {
+        const location = this.props.location.pathname;
         return (
             <StyledWrapper>
-                <AppBrand>
-                    <div>
-                        <AppName>
-                            {this.props.i18nStore.content.global.appName}
-                        </AppName>
-                        <AppHeadLine>
-                            {this.props.i18nStore.content.global.appHeadLine}
-                        </AppHeadLine>
-                    </div>
-                </AppBrand>
-                <LoginForm />
+                <AppBrand />
+                <PoseGroup preEnterPose="preEnter">
+                    {location == '/login' ? (
+                        <Container key="loginForm">
+                            <LoginForm />
+                        </Container>
+                    ) : (
+                        <Container key="RegisterForm">
+                            <RegisterForm />
+                        </Container>
+                    )}
+                </PoseGroup>
                 <SizedLogo />
             </StyledWrapper>
         );
     }
 }
 
-export default connect('i18nStore')(SignIn);
+export default withRouter(SignIn);
