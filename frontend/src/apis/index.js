@@ -14,8 +14,7 @@ const myFetch = async (url, config = {}) => {
     else throw new Error('Error in making request');
 };
 
-export const checkLoginStatus = () =>
-    myFetch(`/users/me`).then((res) => res.json());
+export const checkLoginStatus = () => myFetch(`/users/me`);
 
 export const login = ({ pin, phoneNumber }) =>
     myFetch(`/users/login`, {

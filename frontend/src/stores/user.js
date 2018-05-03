@@ -91,7 +91,7 @@ class userStore {
                 this.setCredentials(userData);
             } catch (err) {
                 this.authenticationFailed = true;
-                console.log(err);
+                console.error(err);
             }
         }
     });
