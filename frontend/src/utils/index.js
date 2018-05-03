@@ -42,7 +42,7 @@ export const persistToStorage = (name, data) => {
     }
 };
 
-export const pipable = (obj) => {
+export const pipeable = (obj) => {
     const pipe = (...funcList) =>
         funcList.reduce(
             (resultFromLast, currentFunc) => currentFunc(resultFromLast),

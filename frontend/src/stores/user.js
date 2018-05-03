@@ -6,7 +6,7 @@ import {
     persistToStorage,
     validatePhoneNumber,
 } from 'utils';
-import { login } from '../apis';
+import { login, checkLoginStatus } from '../apis';
 
 // constants
 const DEFAULT_PIN = {
@@ -20,20 +20,24 @@ class userStore {
     isAuthenticating = false;
     authenticationFailed = false;
     pinCode = DEFAULT_PIN;
-    username = undefined;
-    phoneNumber = undefined;
-    token = undefined;
+    username = null;
+    phoneNumber = null;
+    token = null;
     balance = 0;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
+        this.checkAuthenticationStatusOnStart();
+    }
+
+    checkAuthenticationStatusOnStart = async () => {
         try {
-            const userData = hydrateFromStorage('user');
+            const userData = await checkLoginStatus();
             this.setCredentials(userData);
         } catch (error) {
             console.error(error);
         }
-    }
+    };
     // computed values
     get isAuthenticated() {
         // user is authenticated if there exists a token, otherwise they are guests
@@ -127,6 +131,7 @@ export default decorate(userStore, {
     phoneNumber: observable,
     balance: observable,
     pinCode: observable,
+    checkAuthenticationStatusOnStart: action,
     setPhoneNumber: action,
     setInputCode: action,
     setCredentials: action,

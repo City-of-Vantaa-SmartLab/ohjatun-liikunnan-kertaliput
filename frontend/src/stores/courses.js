@@ -9,7 +9,7 @@ const isAvailableByTime = (courseItem) =>
     // and must not be 1 hours before starting time
     dateFns.differenceInHours(courseItem.startDate, new Date()) > 1;
 
-const hasSufficientFund = (balance, courseItem) => courseItem.price < balance;
+const hasSufficientFund = (balance, courseItem) => courseItem.price <= balance;
 
 const isAvailable = (balance, courseItem) =>
     hasSufficientFund(balance, courseItem) && isAvailableByTime(courseItem);

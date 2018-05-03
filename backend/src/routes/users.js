@@ -5,6 +5,7 @@ const models = require('../models');
 const db = require('../db');
 const utils = require('../utils');
 const randtoken = require('rand-token');
+const dateFns = require('date-fns');
 
 const getUser = async (req, res) => {
     try {
@@ -19,6 +20,10 @@ const getUser = async (req, res) => {
     } catch (err) {
         res.status(500).send(`Failed to get user. Error: ${err.message}`);
     }
+};
+
+const checkLogin = async (req, res) => {
+    res.status(200).json(req.user);
 };
 
 const updateUser = async (req, res) => {
@@ -91,7 +96,13 @@ const login = async (req, res) => {
         } else {
             const user = await db.users.getUserByPhoneAndPin(phoneNumber, pin);
             if (user) {
-                res.status(200).send(user);
+                res
+                    .cookie('token', user.token, {
+                        signed: true,
+                        httpOnly: true,
+                    })
+                    .status(200)
+                    .send(user);
             } else {
                 res.status(401).send('Phone number or PIN is incorrect!.');
             }
@@ -128,6 +139,7 @@ const resetPin = async (req, res) => {
 
 router.post('/', createUser);
 router.put('/me', auth.requireAuth, updateUser);
+router.get('/me', auth.requireAuth, checkLogin);
 router.get('/:phoneNumber', auth.requireAuth, getUser);
 router.delete('/me', auth.requireAuth, deleteUser);
 router.post('/login', login);
