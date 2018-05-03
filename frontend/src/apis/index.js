@@ -43,3 +43,12 @@ export const fetchCourses = (config) => {
         .join('&');
     return myFetch(`/courses?${encodeURI(queries)}`);
 };
+
+export const reserveTicket = ({ courseId, eventId }) =>
+    myFetch(`/reservations`, {
+        method: 'POST',
+        body: {
+            courseId,
+            eventId,
+        },
+    });
