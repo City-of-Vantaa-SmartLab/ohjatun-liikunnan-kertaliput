@@ -108,11 +108,13 @@ class courseStore {
 
     async reserveCourse(course) {
         try {
-            const data = await reserveTicket({
+            await reserveTicket({
                 courseId: course.id,
                 eventId: course.eventId,
             });
             this.rootStore.userStore.setBalance(course.price);
+            this.selectCourse(null);
+            // @TODO: handle failure states: Error messages, etc
         } catch (error) {
             console.error('Cannot reserve course', error);
             return false;
