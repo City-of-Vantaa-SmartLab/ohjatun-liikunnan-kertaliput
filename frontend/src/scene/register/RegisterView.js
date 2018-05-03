@@ -35,7 +35,7 @@ class RegisterForm extends React.Component {
         return (
             <React.Fragment>
                 <Form>
-                    <Title>Register Form</Title>
+                    <Title>{i18nContent.registrationForm.title}</Title>
                     <InputField>
                         <label htmlFor="username">
                             {i18nContent.signIn.form.name}

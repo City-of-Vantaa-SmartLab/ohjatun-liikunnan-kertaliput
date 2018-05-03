@@ -17,6 +17,7 @@
             }
         },
         "registrationForm": {
+            "title": "Luo uusi käyttäjätili",
             "errorMessage": "Uuden tilin luonti epäonnistui. Yritä uudelleen",
             "hasAccountPrompt": "Onko sinulla jo tili?",
             "welcome": "Tervetuloa",
