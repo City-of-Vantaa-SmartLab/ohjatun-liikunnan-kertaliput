@@ -74,7 +74,7 @@ class RegisterForm extends React.Component {
                                 this.state.submitData();
                             }}
                         >
-                            Submit
+                            {i18nContent.registrationForm.submit}
                         </Button>
                     </FormAction>
                     <FormLink style={{ marginTop: '1rem' }}>

@@ -23,7 +23,8 @@
             "welcome": "Tervetuloa",
             "congratulationMessage":
                 "Onneksi olkoon! Tilin luominen onnistui. PIN-koodisi on lähetetty antamaasi puhelinnumeroon",
-            "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi"
+            "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
+            "submit": "Lähetä tiedot"
         },
         "appHeader": {
             "myAccount": "Oma tilini",
