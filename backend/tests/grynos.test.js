@@ -18,8 +18,7 @@ describe('getCourses API call', () => {
     });
 
     test('should load course by Id', async () => {
-        const courses = await db.courses.getCourseById('1');
-        const course = courses[0];
+        const course = await db.courses.getCourseById('1');
         expect(course).not.toBeNull();
         expect(course.name).toEqual('Englantia perustasolla A1+/A2');
         expect(course.price).toEqual(86);
