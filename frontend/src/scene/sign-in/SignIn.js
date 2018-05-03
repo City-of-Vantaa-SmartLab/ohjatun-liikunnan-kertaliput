@@ -51,7 +51,7 @@ class SignIn extends React.Component {
             <StyledWrapper>
                 <AppBrand />
                 <PoseGroup preEnterPose="preEnter">
-                    {location == '/login' ? (
+                    {location === '/login' ? (
                         <Container key="loginForm">
                             <LoginForm />
                         </Container>

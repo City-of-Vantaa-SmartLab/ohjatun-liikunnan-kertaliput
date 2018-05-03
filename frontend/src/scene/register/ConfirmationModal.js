@@ -12,28 +12,34 @@ const SmallModal = styled(Modal)`
 const ModalAction = styled('div')`
     align-self: flex-end;
 `;
+const CustomTitle = styled(Title)`
+    font-weight: 400;
+
+    strong {
+        color: ${(props) => props.theme.main};
+    }
+`;
 
 export default class ConfirmationModal extends React.Component {
     render() {
+        const { i18nContent, username, show } = this.props;
         return (
-            <SmallModal show={this.props.show} hideCloseButton>
+            <SmallModal show={show} hideCloseButton>
                 <div>
-                    <Title>
-                        Welcome, <strong>{this.props.username}</strong>
-                    </Title>
+                    <CustomTitle>
+                        {i18nContent.registrationForm.welcome},{' '}
+                        <strong>{username}</strong>
+                    </CustomTitle>
                     <Content>
                         <p>
-                            Congratualtions, you have made an account. A PIN
-                            code has been sent to the phone number you gave us
+                            {i18nContent.registrationForm.congratulationMessage}
                         </p>
-                        <p>
-                            Enter the four digit PIN code you received to login!
-                        </p>
+                        <p>{i18nContent.registrationForm.promptPinCode}</p>
                     </Content>
                 </div>
                 <ModalAction>
                     <Link to="/login">
-                        <Button bold>Sign In</Button>
+                        <Button bold>{i18nContent.appHeader.login}</Button>
                     </Link>
                 </ModalAction>
             </SmallModal>

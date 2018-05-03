@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'react-emotion';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import Button from '../../components/button';
-import Modal, { Content } from '../../components/modal';
 import { connect } from 'utils';
 import { Link } from 'react-router-dom';
 import FormState from './state';
@@ -32,13 +31,14 @@ const ErrorMessage = styled('h4')`
 class RegisterForm extends React.Component {
     state = new FormState(this.props.userStore);
     render() {
+        const i18nContent = this.props.i18nStore.content;
         return (
             <React.Fragment>
                 <Form>
                     <Title>Register Form</Title>
                     <InputField>
                         <label htmlFor="username">
-                            {this.props.i18nStore.content.signIn.form.name}
+                            {i18nContent.signIn.form.name}
                         </label>
                         <Input
                             type="text"
@@ -54,7 +54,7 @@ class RegisterForm extends React.Component {
                         }
                     >
                         <label htmlFor="phoneNumber">
-                            {this.props.i18nStore.content.signIn.form.tel}
+                            {i18nContent.signIn.form.tel}
                         </label>
                         <Input
                             type="tel"
@@ -64,7 +64,7 @@ class RegisterForm extends React.Component {
                         />
                     </InputField>
                     <ErrorMessage show={this.state.submitError}>
-                        {'Cannot register new account. Please try again'}
+                        {i18nContent.registrationForm.errorMessage}
                     </ErrorMessage>
                     <FormAction>
                         <Button
@@ -78,12 +78,15 @@ class RegisterForm extends React.Component {
                         </Button>
                     </FormAction>
                     <FormLink style={{ marginTop: '1rem' }}>
-                        <Link to="/login">Already have an account? </Link>
+                        <Link to="/login">
+                            {i18nContent.registrationForm.hasAccountPrompt}{' '}
+                        </Link>
                     </FormLink>
                 </Form>
                 <ConfirmationModal
                     show={this.state.submitSuccess}
                     username={this.props.userStore.username}
+                    i18nContent={i18nContent}
                 />
             </React.Fragment>
         );

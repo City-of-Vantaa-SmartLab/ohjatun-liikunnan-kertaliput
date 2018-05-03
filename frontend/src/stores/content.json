@@ -16,6 +16,14 @@
                 "viewWithoutLogin": "Jatka kirjautumatta"
             }
         },
+        "registrationForm": {
+            "errorMessage": "Uuden tilin luonti epäonnistui. Yritä uudelleen",
+            "hasAccountPrompt": "Onko sinulla jo tili?",
+            "welcome": "Tervetuloa",
+            "congratulationMessage":
+                "Onneksi olkoon! Tilin luominen onnistui. PIN-koodisi on lähetetty antamaasi puhelinnumeroon",
+            "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi"
+        },
         "appHeader": {
             "myAccount": "Oma tilini",
             "balance": "Saldo",

@@ -2,8 +2,6 @@ import { decorate, observable, action, autorun, computed } from 'mobx';
 import {
     toStringFromObject,
     processPhoneNumber,
-    hydrateFromStorage,
-    persistToStorage,
     validatePhoneNumber,
 } from 'utils';
 import { login, checkLoginStatus } from '../apis';
@@ -112,13 +110,6 @@ class userStore {
 
         this.isAuthenticating = false;
         this.authenticationFailed = false;
-
-        persistToStorage('user', {
-            username: this.username,
-            token: this.token,
-            phoneNumber: this.phoneNumber,
-            balance: this.balance,
-        });
     });
 }
 

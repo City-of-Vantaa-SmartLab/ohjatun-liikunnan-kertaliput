@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { connect, getLocale } from 'utils';
 import Modal, { Content, Title } from '../../components/modal';
 import LocationIcon from '../../common/LocationIcon';
