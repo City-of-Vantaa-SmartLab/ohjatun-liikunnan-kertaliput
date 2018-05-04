@@ -9,9 +9,13 @@ const myFetch = async (url, config = {}) => {
         credentials: 'same-origin',
         body: JSON.stringify(config.body),
     });
-    if (response.status >= 200 && response.status < 300)
-        return await response.json();
-    else throw new Error('Error in making request');
+    if (response.status >= 200 && response.status < 300) {
+        try {
+            return await response.json();
+        } catch (error) {
+            console.log('Not a json :)');
+        }
+    } else throw new Error('Error in making request');
 };
 
 export const checkLoginStatus = () => myFetch(`/users/me`);
@@ -43,3 +47,12 @@ export const fetchCourses = (config) => {
         .join('&');
     return myFetch(`/courses?${encodeURI(queries)}`);
 };
+
+export const reserveTicket = ({ courseId, eventId }) =>
+    myFetch(`/reservations`, {
+        method: 'POST',
+        body: {
+            courseId,
+            eventId,
+        },
+    });

@@ -27,30 +27,27 @@ const mapCourseFromGrynos = (course) => ({
 });
 
 const fetchCourses = async () => {
-    try {
-        const response = await axios(url);
-        await db.sync({ force: true });
-        return response.data.course.map((course) =>
-            mapCourseFromGrynos(course)
-        );
-    } catch (error) {
-        console.error(
-            'Fetching the Grynos courses failed. See the attached error for details. ',
-            error
-        );
-    }
+    const [response] = await Promise.all([
+        axios(url),
+        db.sync({ force: true }),
+    ]);
+    return response.data.course.map(mapCourseFromGrynos);
 };
 
-const updateCoursesToDb = async () => {
-    const courses = await fetchCourses();
-    courses.forEach((course) => {
-        models.courses.create(course, {
-            include: [
-                { model: models.locations, as: 'location' },
-                { model: models.events, as: 'teachingSession' },
-            ],
+const updateCoursesToDb = () => {
+    try {
+        const courses = fetchCourses();
+        courses.forEach((course) => {
+            models.courses.create(course, {
+                include: [
+                    { model: models.locations, as: 'location' },
+                    { model: models.events, as: 'teachingSession' },
+                ],
+            });
         });
-    });
+    } catch (error) {
+        console.error('Failed to fetch course from Gryros ', error);
+    }
 };
 
 module.exports = { mapCourseFromGrynos, fetchCourses, updateCoursesToDb };

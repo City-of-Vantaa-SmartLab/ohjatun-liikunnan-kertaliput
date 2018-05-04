@@ -13,7 +13,7 @@ const grynosUpdateInterval =
     process.env.GRYNOS_COURSES_UPDATE_INTERVAL || 3600000;
 const populateSeedData = process.env.POPULATE_SEED_DATA === '1';
 
-updateCoursesToDb();
+loadMockCoursesToDatabase();
 setInterval(updateCoursesToDb, grynosUpdateInterval);
 
 const server = express();
