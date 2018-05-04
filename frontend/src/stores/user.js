@@ -86,7 +86,6 @@ class userStore {
         if (amount > this.balance) throw new Error('Insufficient fund!');
         else this.balance = this.balance - amount;
     }
-
     async logout() {
         try {
             logoutApi();
