@@ -1,7 +1,7 @@
 import { decorate, observable, computed, action } from 'mobx';
 import mockCourse from './course-mock.json';
 import dateFns from 'date-fns';
-import { fetchCourses } from '../apis';
+import { fetchCourses, reserveTicket } from '../apis';
 
 const isAvailableByTime = (courseItem) =>
     // within 3 days from now
@@ -105,6 +105,21 @@ class courseStore {
     selectCourse(course) {
         this.courseInFocus = course;
     }
+
+    async reserveCourse(course) {
+        try {
+            await reserveTicket({
+                courseId: course.id,
+                eventId: course.eventId,
+            });
+            this.rootStore.userStore.setBalance(course.price);
+            this.selectCourse(null);
+            // @TODO: handle failure states: Error messages, etc
+        } catch (error) {
+            console.error('Cannot reserve course', error);
+            return false;
+        }
+    }
 }
 
 export default decorate(courseStore, {
@@ -116,4 +131,5 @@ export default decorate(courseStore, {
     filters: observable,
     useMockCourse: observable,
     checkAvailability: action,
+    reserveCourse: action,
 });

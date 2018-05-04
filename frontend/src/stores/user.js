@@ -70,13 +70,16 @@ class userStore {
         this.pinCode[position] = value;
         return true;
     };
-    setCredentials = (userData) => {
+    setCredentials(userData) {
         this.token = userData.token;
         this.username = userData.username;
         this.balance = userData.balance;
         this.phoneNumber = userData.phoneNumber;
-    };
-
+    }
+    setBalance(amount) {
+        if (amount > this.balance) throw new Error('Insufficient fund!');
+        else this.balance = this.balance - amount;
+    }
     // reactions that do SIDE EFFECTS
     authenticateReaction = autorun(async () => {
         if (this.freezePinCode) {
@@ -126,4 +129,5 @@ export default decorate(userStore, {
     setPhoneNumber: action,
     setInputCode: action,
     setCredentials: action,
+    setBalance: action,
 });

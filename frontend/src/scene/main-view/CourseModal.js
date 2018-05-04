@@ -128,7 +128,13 @@ class CourseModal extends React.Component {
                                 </div>
                                 <span>{course.price}€</span>
                             </div>
-                            <Button>Varaa ja Maksa</Button>
+                            <Button
+                                onClick={() =>
+                                    this.props.courseStore.reserveCourse(course)
+                                }
+                            >
+                                Varaa ja Maksa
+                            </Button>
                         </PaymentSection>
                     </Fragment>
                 )}

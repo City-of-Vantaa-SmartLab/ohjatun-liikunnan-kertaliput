@@ -47,7 +47,7 @@ const getCourses = (startDate, endDate) => {
 };
 
 const getCourseById = (id) => {
-    return models.courses.findAll({
+    return models.courses.find({
         attributes: [
             'id',
             'name',

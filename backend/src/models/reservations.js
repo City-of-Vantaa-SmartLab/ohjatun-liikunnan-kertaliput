@@ -7,7 +7,10 @@ const reservations = db.define('reservations', {
     courseId: Sequelize.INTEGER,
     eventId: Sequelize.INTEGER,
     userId: Sequelize.INTEGER,
-    ticketType: Sequelize.STRING,
+    ticketType: {
+        type: Sequelize.STRING,
+        defaultValue: 'Single_Ticket',
+    },
     ticketPrice: Sequelize.DOUBLE,
     bookingStatus: {
         type: Sequelize.INTEGER,

@@ -20,18 +20,26 @@ const getReservations = async (req, res) => {
 const createReservation = async (req, res) => {
     try {
         const reservationObj = req.body;
+        const user = req.user;
         const validationErrors = utils.reservations.validateReservationRequest(
             reservationObj
         );
         if (validationErrors) {
             res.status(422).send(validationErrors);
         } else {
-            // Check whether the user have enough saldo/balance
-            const user = await db.reservations.getUserBalance(
-                reservationObj.userId
+            // Gets User Id
+            const dbUser = await db.users.getUser(user.phoneNumber);
+            reservationObj.userId = dbUser.id;
+
+            // Gets ticket price for the course
+            const course = await db.courses.getCourseById(
+                reservationObj.courseId
             );
+            reservationObj.ticketPrice = course.price;
+
+            // Check whether the user have enough saldo/balance
             const notEnoughBalance = utils.reservations.checkBalance(
-                user.balance,
+                dbUser.balance,
                 reservationObj.ticketPrice
             );
 
