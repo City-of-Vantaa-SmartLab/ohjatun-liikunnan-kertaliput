@@ -7,7 +7,7 @@
         "signIn": {
             "form": {
                 "tel": "Puhelinnumero",
-                "name": "Nimi",
+                "name": "Etunimi",
                 "telIsWrong": "Puhelinnumero on väärä",
                 "pinCode": "PIN-koodi",
                 "pinCodeIsWrong": "PIN-koodi on väärä",
