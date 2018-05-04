@@ -28,14 +28,14 @@ class userStore {
         this.checkAuthenticationStatusOnStart();
     }
 
-    checkAuthenticationStatusOnStart = async () => {
+    async checkAuthenticationStatusOnStart() {
         try {
             const userData = await checkLoginStatus();
             this.setCredentials(userData);
         } catch (error) {
             console.error(error);
         }
-    };
+    }
     // computed values
     get isAuthenticated() {
         // user is authenticated if there exists a token, otherwise they are guests
@@ -56,7 +56,7 @@ class userStore {
         this.phoneNumber = input;
     }
 
-    setInputCode = (position, value) => {
+    setInputCode(position, value) {
         // sets inputCode
         // pin code array only have 4 digits
         if (
@@ -69,7 +69,7 @@ class userStore {
             return false;
         this.pinCode[position] = value;
         return true;
-    };
+    }
     setCredentials(userData) {
         this.token = userData.token;
         this.username = userData.username;
