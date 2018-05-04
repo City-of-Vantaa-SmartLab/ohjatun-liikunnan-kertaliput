@@ -52,7 +52,7 @@ class AppHeader extends React.Component {
                     from: this.previousBalance,
                     to: this.props.userStore.balance,
                     duration: 3000,
-                    ease: easing.easeInOut,
+                    ease: easing.easeOut,
                 })
             )
                 .pipe(Math.round)

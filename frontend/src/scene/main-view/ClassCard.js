@@ -5,7 +5,9 @@ import { connect } from 'utils';
 import Button from '../../common/Button';
 import NotFoundIcon from '../../common/NotFoundIcon';
 import posed, { PoseGroup } from 'react-pose';
+import { Link } from 'react-router-dom';
 
+// posed components
 const ItemAnimation = posed.div({
     enter: {
         y: '0%',
@@ -20,6 +22,20 @@ const ItemAnimation = posed.div({
         y: '-100%',
     },
 });
+
+const ErrorMessageAnimation = posed.h4({
+    hidden: {
+        scale: 0.3,
+        y: 0,
+        opacity: 0,
+    },
+    shown: {
+        scale: 1,
+        y: -10,
+        opacity: 1,
+    },
+});
+
 const AnimationCoordinator = posed.div({
     enter: {
         delay: 1500,
@@ -30,6 +46,7 @@ const AnimationCoordinator = posed.div({
     },
 });
 
+// styled components
 const ScrollContainer = styled(AnimationCoordinator)`
     overflow: scroll;
     height: 100%;
@@ -39,19 +56,36 @@ const CardWrapper = styled(ItemAnimation)`
     background-color: white;
     margin: 1px 0;
     padding: 2rem 0;
-    display: flex;
     color: rgba(0, 0, 0, 0.86);
-    transition: background-color 0.5s ease, filter 0.5s ease;
+    transition: background-color 0.5s ease;
+    overflow: hidden;
 
-    ${(props) =>
-        !props.isAvailable &&
-        `
-        &:hover {
-            filter: blur(4px);
-            background-color: rgba(0,0,0, .3);
-        }
-    `};
+    & > div {
+        transition: filter 0.5s ease, transform 0.5s ease;
+        display: flex;
+        width: 100%;
+        ${(props) =>
+            props.blur &&
+            `filter: blur(6px); pointer-events: none; transform: scale(1.1);`};
+    }
 `;
+
+const ErrorMessage = styled(ErrorMessageAnimation)`
+    text-align: center;
+    font-size: 2.5rem;
+    color: ${(props) => props.theme.main};
+    opacity: 0;
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+    * {
+        color: inherit !important;
+    }
+`;
+
 const TimeArea = styled('div')`
     padding: 2rem;
     display: flex;
@@ -121,24 +155,57 @@ const EmptyStateContainer = styled(AnimationCoordinator)`
     }
 `;
 
-const Card = ({ course, buttonLabel, onButtonClick, disabled, ...rest }) => (
-    <CardWrapper {...rest} disabled={!course.isAvailable}>
-        <TimeArea>
-            <span>{dateFns.format(course.startDate, 'hh:mm')}</span>
-            <span>{dateFns.format(course.endDate, 'hh:mm')}</span>
-        </TimeArea>
-        <CourseArea>
-            <span>{course.name}</span>
-            <span>{course.location}</span>
-            <div>
-                <span>€ {course.price}</span>
-                <Button onClick={onButtonClick} disabled={disabled}>
-                    {buttonLabel}
-                </Button>
-            </div>
-        </CourseArea>
-    </CardWrapper>
-);
+const Card = class extends React.Component {
+    state = {
+        showMessage: false,
+    };
+    getErrorReason = (types) => {
+        const type = types.filter((bool) => bool)[0];
+        if (type === 'time')
+            return 'Course is not open for registration right now';
+        if (type === 'resource') return 'Not enough fund';
+        if (type === 'auth')
+            return <Link to="/login">Login to reserve class</Link>;
+    };
+    render() {
+        const {
+            course,
+            buttonLabel,
+            onButtonClick,
+            disabled,
+            ...rest
+        } = this.props;
+        const blurAndShowMessage = disabled && this.state.showMessage;
+        return (
+            <CardWrapper
+                {...rest}
+                blur={blurAndShowMessage}
+                onMouseEnter={() => this.setState({ showMessage: true })}
+                onMouseLeave={() => this.setState({ showMessage: false })}
+            >
+                <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>
+                    {this.getErrorReason(course.reasons)}
+                </ErrorMessage>
+                <div>
+                    <TimeArea>
+                        <span>{dateFns.format(course.startDate, 'hh:mm')}</span>
+                        <span>{dateFns.format(course.endDate, 'hh:mm')}</span>
+                    </TimeArea>
+                    <CourseArea>
+                        <span>{course.name}</span>
+                        <span>{course.location}</span>
+                        <div>
+                            <span>€ {course.price}</span>
+                            <Button onClick={onButtonClick} disabled={disabled}>
+                                {buttonLabel}
+                            </Button>
+                        </div>
+                    </CourseArea>
+                </div>
+            </CardWrapper>
+        );
+    }
+};
 
 class ClassCard extends React.Component {
     selectCourse = (course) => (e) => {

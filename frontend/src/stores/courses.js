@@ -10,14 +10,18 @@ const isAvailableByTime = (courseItem) =>
     dateFns.differenceInHours(courseItem.startDate, new Date()) > 1;
 
 const hasSufficientFund = (balance, courseItem) => courseItem.price <= balance;
-const isAvailable = (balance, courseItem) => {
+const isAvailable = (balance, courseItem, authenticationStatus) => {
     const satisfyTimeContrain = isAvailableByTime(courseItem);
     const satisfyResourceConstrain = hasSufficientFund(balance, courseItem);
     return {
-        isAvailable: satisfyTimeContrain && satisfyResourceConstrain,
-        reason: [
-            satisfyTimeContrain && 'time',
-            satisfyResourceConstrain && 'resource',
+        isAvailable:
+            satisfyTimeContrain &&
+            satisfyResourceConstrain &&
+            authenticationStatus,
+        reasons: [
+            !authenticationStatus && 'auth',
+            !satisfyTimeContrain && 'time',
+            !satisfyResourceConstrain && 'resource',
         ],
     };
 };
@@ -65,7 +69,8 @@ class courseStore {
                         ...courseItem,
                         ...isAvailable(
                             this.rootStore.userStore.balance,
-                            courseItem
+                            courseItem,
+                            this.rootStore.userStore.isAuthenticated
                         ),
                     })
                 ))
