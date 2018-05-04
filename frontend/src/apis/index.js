@@ -32,6 +32,11 @@ export const login = ({ pin, phoneNumber }) =>
         },
     });
 
+export const logout = () =>
+    myFetch(`/users/logout`, {
+        method: 'POST',
+    });
+
 export const register = ({ username, phoneNumber }) =>
     myFetch(`/users`, {
         method: 'POST',

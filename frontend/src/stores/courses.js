@@ -21,7 +21,7 @@ class courseStore {
     filters = {
         date: new Date(), // today
     };
-    courseInFocus;
+    courseInFocus = null;
 
     constructor(rootStore) {
         this.rootStore = rootStore;

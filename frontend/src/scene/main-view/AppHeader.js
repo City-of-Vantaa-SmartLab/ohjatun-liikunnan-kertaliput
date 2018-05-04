@@ -3,6 +3,7 @@ import Button from '../../common/Button';
 import styled from 'react-emotion';
 import { connect } from 'utils';
 import { Link } from 'react-router-dom';
+import { tween, easing, chain, delay } from 'popmotion';
 
 const AppHeaderWrapper = styled('div')`
     width: 100%;
@@ -39,23 +40,52 @@ const LogoBar = styled('div')`
 `;
 
 class AppHeader extends React.Component {
+    previousBalance = 0;
+    componentDidMount = () => this.animateBalance();
+    componentDidUpdate = () => this.animateBalance();
+
+    animateBalance = () => {
+        console.log('Update bitch');
+        if (this.balanceButton) {
+            chain(
+                delay(500),
+                tween({
+                    from: this.previousBalance,
+                    to: this.props.userStore.balance,
+                    duration: 3000,
+                    ease: easing.easeInOut,
+                })
+            )
+                .pipe(Math.round)
+                .start((v) => (this.balanceButton.textContent = '€ ' + v));
+        }
+        this.previousBalance = this.props.userStore.balance;
+    };
     render() {
         const content = this.props.i18nStore.content.appHeader;
         const appName = this.props.i18nStore.content.global.appName;
-        const { isAuthenticated, balance } = this.props.userStore;
+        const { isAuthenticated, logout, balance } = this.props.userStore;
 
         return (
             <AppHeaderWrapper>
                 <LogoBar>
                     {isAuthenticated ? (
-                        <Button>{content.myAccount}</Button>
+                        <Button onClick={logout}>{content.logout}</Button>
                     ) : (
                         <Link to="/login">
                             <Button>{content.login}</Button>
                         </Link>
                     )}
                     <span>{appName}</span>
-                    {isAuthenticated && <Button>€ {balance}</Button>}
+                    {isAuthenticated && (
+                        <Button
+                            innerRef={(instance) =>
+                                (this.balanceButton = instance)
+                            }
+                        >
+                            0 €
+                        </Button>
+                    )}
                 </LogoBar>
             </AppHeaderWrapper>
         );

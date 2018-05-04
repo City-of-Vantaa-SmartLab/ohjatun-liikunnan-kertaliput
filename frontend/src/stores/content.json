@@ -27,7 +27,7 @@
             "submit": "Lähetä tiedot"
         },
         "appHeader": {
-            "myAccount": "Oma tilini",
+            "logout": "Kirjaudu ulos",
             "balance": "Saldo",
             "checkBalance": "Hallinnoi saldoasi",
             "login": "Kirjaudu sisään"

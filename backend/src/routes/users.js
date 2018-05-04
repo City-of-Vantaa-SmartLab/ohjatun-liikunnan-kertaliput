@@ -112,6 +112,13 @@ const login = async (req, res) => {
     }
 };
 
+const logout = async (req, res) => {
+    res
+        .clearCookie('token')
+        .status(200)
+        .send('Ok');
+};
+
 const resetPin = async (req, res) => {
     try {
         const phoneNumber = req.body.phoneNumber;
@@ -143,6 +150,7 @@ router.get('/me', auth.requireAuth, checkLogin);
 router.get('/:phoneNumber', auth.requireAuth, getUser);
 router.delete('/me', auth.requireAuth, deleteUser);
 router.post('/login', login);
+router.post('/logout', auth.requireAuth, logout);
 router.post('/reset-pin', resetPin);
 
 module.exports = router;

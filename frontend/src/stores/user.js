@@ -4,7 +4,7 @@ import {
     processPhoneNumber,
     validatePhoneNumber,
 } from 'utils';
-import { login, checkLoginStatus } from '../apis';
+import { login, checkLoginStatus, logout as logoutApi } from '../apis';
 
 // constants
 const DEFAULT_PIN = {
@@ -76,9 +76,24 @@ class userStore {
         this.balance = userData.balance;
         this.phoneNumber = userData.phoneNumber;
     }
+    resetCredentials() {
+        this.token = null;
+        this.username = null;
+        this.balance = null;
+        this.phoneNumber = null;
+    }
     setBalance(amount) {
         if (amount > this.balance) throw new Error('Insufficient fund!');
         else this.balance = this.balance - amount;
+    }
+
+    async logout() {
+        try {
+            logoutApi();
+            this.resetCredentials();
+        } catch (error) {
+            console.error('Cannot logout', error);
+        }
     }
     // reactions that do SIDE EFFECTS
     authenticateReaction = autorun(async () => {
@@ -90,6 +105,7 @@ class userStore {
                     phoneNumber: processPhoneNumber(this.phoneNumber),
                 });
                 this.setCredentials(userData);
+                console.log(this.balance);
             } catch (err) {
                 this.authenticationFailed = true;
                 console.error(err);
@@ -109,7 +125,7 @@ class userStore {
     });
     authenticationSuccessfulReaction = autorun(() => {
         if (!this.isAuthenticated) return;
-        console.log('Logged in successful, persisting to local storage');
+        console.log('Logged in successful');
 
         this.isAuthenticating = false;
         this.authenticationFailed = false;
@@ -130,4 +146,6 @@ export default decorate(userStore, {
     setInputCode: action,
     setCredentials: action,
     setBalance: action,
+    resetCredentials: action,
+    logout: action.bound,
 });
