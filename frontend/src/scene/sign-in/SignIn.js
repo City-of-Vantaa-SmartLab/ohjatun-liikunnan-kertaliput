@@ -6,6 +6,8 @@ import AppBrand from './AppBrand';
 import RegisterForm from '../register';
 import { withRouter } from 'react-router-dom';
 import posed, { PoseGroup } from 'react-pose';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'utils';
 
 const AnimatableContainer = posed.div({
     preEnter: {
@@ -47,17 +49,22 @@ const SizedLogo = styled(Logo)`
 class SignIn extends React.Component {
     render() {
         const location = this.props.location.pathname;
+        // this view is forbidden for authenticated user
+        if (this.props.userStore.isAuthenticated) {
+            console.log('Hello');
+            return <Redirect to="/main" />;
+        }
         return (
             <StyledWrapper>
                 <AppBrand />
                 <PoseGroup preEnterPose="preEnter">
-                    {location === '/login' ? (
-                        <Container key="loginForm">
-                            <LoginForm />
-                        </Container>
-                    ) : (
+                    {location === '/register' ? (
                         <Container key="RegisterForm">
                             <RegisterForm />
+                        </Container>
+                    ) : (
+                        <Container key="loginForm">
+                            <LoginForm />
                         </Container>
                     )}
                 </PoseGroup>
@@ -67,4 +74,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default withRouter(SignIn);
+export default withRouter(connect('userStore')(SignIn));

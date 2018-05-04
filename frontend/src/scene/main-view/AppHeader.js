@@ -45,7 +45,6 @@ class AppHeader extends React.Component {
     componentDidUpdate = () => this.animateBalance();
 
     animateBalance = () => {
-        console.log('Update bitch');
         if (this.balanceButton) {
             chain(
                 delay(500),
@@ -57,7 +56,10 @@ class AppHeader extends React.Component {
                 })
             )
                 .pipe(Math.round)
-                .start((v) => (this.balanceButton.textContent = '€ ' + v));
+                .start((v) => {
+                    if (this.balanceButton)
+                        this.balanceButton.textContent = '€ ' + v;
+                });
         }
         this.previousBalance = this.props.userStore.balance;
     };

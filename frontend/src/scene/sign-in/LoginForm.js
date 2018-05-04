@@ -3,7 +3,7 @@ import styled from 'react-emotion';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import { connect } from 'utils';
 import { autorun } from 'mobx';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const PinCodeInput = styled(Input)`
     width: 7rem;
@@ -40,10 +40,6 @@ class LoginForm extends React.Component {
         const content = this.props.i18nStore.content;
         const authenticationFailed = this.props.userStore.authenticationFailed;
 
-        // this view is forbidden for authenticated user
-        if (this.props.userStore.isAuthenticated) {
-            return <Redirect to="/main" />;
-        }
         return (
             <Form>
                 <InputField error={authenticationFailed}>

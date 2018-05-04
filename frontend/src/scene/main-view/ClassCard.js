@@ -41,6 +41,16 @@ const CardWrapper = styled(ItemAnimation)`
     padding: 2rem 0;
     display: flex;
     color: rgba(0, 0, 0, 0.86);
+    transition: background-color 0.5s ease, filter 0.5s ease;
+
+    ${(props) =>
+        !props.isAvailable &&
+        `
+        &:hover {
+            filter: blur(4px);
+            background-color: rgba(0,0,0, .3);
+        }
+    `};
 `;
 const TimeArea = styled('div')`
     padding: 2rem;

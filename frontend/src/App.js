@@ -23,8 +23,8 @@ class App extends React.Component {
         return (
             <AppContainer>
                 <Switch>
-                    <Route exact path="/" component={MainView} />
                     <Route exact path="/main" component={MainView} />
+                    <Route path="/" component={SignIn} />
                     <Route exact path="/login" component={SignIn} />
                     <Route exact path="/register" component={SignIn} />
                 </Switch>
