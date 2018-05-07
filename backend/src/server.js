@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const bodyParser = require('body-parser');
 const db = require('./sequalize_pg');
+require('dotenv').config();
 const loadMockCoursesToDatabase = require('./seed/db-seed')
     .loadMockCoursesToDatabase;
 const updateCoursesToDb = require('./grynos').updateCoursesToDb;
@@ -13,7 +14,7 @@ const grynosUpdateInterval =
     process.env.GRYNOS_COURSES_UPDATE_INTERVAL || 3600000;
 const populateSeedData = process.env.POPULATE_SEED_DATA === '1';
 
-loadMockCoursesToDatabase();
+updateCoursesToDb();
 setInterval(updateCoursesToDb, grynosUpdateInterval);
 
 const server = express();
@@ -33,7 +34,6 @@ server.use(
 server.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
-
 const dbPopulation = populateSeedData
     ? loadMockCoursesToDatabase()
     : db.sync({ force: false });

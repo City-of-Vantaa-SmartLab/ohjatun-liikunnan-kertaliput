@@ -24,9 +24,9 @@ const getCourses = async (req, res) => {
 
         const courses = await db.courses.getCourses(startDate, endDate);
         const response = db.courses.reduceCoursesByDate(courses);
-        res.status(200).send(response);
+        res.status(200).json(response);
     } catch (err) {
-        res.status(500).send(`Failed to get courses. Error: ${err.message}`);
+        res.status(500).json(`Failed to get courses. Error: ${err.message}`);
     }
 };
 
@@ -35,17 +35,17 @@ const getCourseById = async (req, res) => {
         const courseId = Number(req.params.id);
         const validationErrors = utils.courses.validateCourseId(courseId);
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             const course = await db.courses.getCourseById(courseId);
             if (course.length !== 0) {
-                res.status(200).send(course);
+                res.status(200).json(course);
             } else {
                 res.sendStatus(404);
             }
         }
     } catch (err) {
-        res.status(500).send(`Failed to get course. Error: ${err.message}`);
+        res.status(500).json(`Failed to get course. Error: ${err.message}`);
     }
 };
 
