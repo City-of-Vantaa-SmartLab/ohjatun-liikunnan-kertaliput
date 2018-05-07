@@ -18,6 +18,7 @@ const AppName = styled('h1')`
     font-weight: bold;
     color: ${(props) => props.theme.complementary};
     margin: 0;
+    font-family: 'GT-Walsheim', serif;
 `;
 
 const AppHeadLine = styled('span')`
