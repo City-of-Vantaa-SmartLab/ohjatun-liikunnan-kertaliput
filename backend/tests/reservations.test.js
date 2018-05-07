@@ -57,6 +57,16 @@ describe('Reservation Testing', () => {
         expect(dbUser.balance).toEqual(defaultBalance);
     });
 
+    test('Should be able to get all the reservations for a user', async () => {
+        const cancelledStatus = 0;
+        const reservations = await db.reservations.getReservations(
+            reservation.userId
+        );
+        expect(reservations[0].userId).toEqual(reservation.userId);
+        expect(reservations[0].ticketPrice).toEqual(reservation.ticketPrice);
+        expect(reservations[0].bookingStatus).toEqual(cancelledStatus);
+    });
+
     test('Should validate Booking Status', () => {
         const error = 'booking status is not valid';
         expect(utils.reservations.validateBookingStatus(1)).toEqual(error);

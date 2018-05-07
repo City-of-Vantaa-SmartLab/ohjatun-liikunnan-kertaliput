@@ -4,12 +4,9 @@ const models = require('../models');
 const db = require('../sequalize_pg');
 
 const getReservations = async (userId) => {
-    const data = await models.reservations.findAll({
+    return await models.reservations.findAll({
         where: { userId },
     });
-    return await Promise.all(
-        data.map((reservation) => getReservationById(reservation.id))
-    );
 };
 
 const getReservationById = async (id) => {
