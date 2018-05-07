@@ -93,9 +93,9 @@ class userStore {
         else this.balance = this.balance - amount;
     }
 
-    logout() {
+    async logout() {
         try {
-            logoutApi();
+            await logoutApi();
             this.resetCredentials();
         } catch (error) {
             console.error('Cannot logout', error);
