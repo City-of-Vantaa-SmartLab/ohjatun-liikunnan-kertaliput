@@ -3,26 +3,30 @@ import mockCourse from './course-mock.json';
 import dateFns from 'date-fns';
 import { fetchCourses, reserveTicket } from '../apis';
 
-const isAvailableByTime = (courseItem) =>
+const isOpenYet = (courseItem) =>
     // within 3 days from now
-    dateFns.differenceInDays(courseItem.startDate, new Date()) < 3 &&
+    dateFns.differenceInDays(courseItem.startDate, new Date()) < 3;
+const isClosedYet = (courseItem) =>
     // and must not be 1 hours before starting time
     dateFns.differenceInHours(courseItem.startDate, new Date()) > 1;
 
 const hasSufficientFund = (balance, courseItem) => courseItem.price <= balance;
 const isAvailable = (balance, courseItem, authenticationStatus) => {
-    const satisfyTimeConstraint = isAvailableByTime(courseItem);
+    const openedYet = isOpenYet(courseItem);
+    const closedYet = isClosedYet(courseItem);
     const satisfyResourceConstraint = hasSufficientFund(balance, courseItem);
     return {
         isAvailable:
-            satisfyTimeConstraint &&
+            openedYet &&
+            closedYet &&
             satisfyResourceConstraint &&
             authenticationStatus,
         reasons: [
             !authenticationStatus && 'auth',
-            !satisfyTimeConstraint && 'time',
+            !openedYet && 'openTime',
+            !closedYet && 'closingTime',
             !satisfyResourceConstraint && 'resource',
-        ].filter((reason) => typeof reason === 'string'),
+        ].filter((reason) => typeof reason !== 'boolean'),
     };
 };
 

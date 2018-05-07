@@ -6,6 +6,7 @@ import Button from '../../common/Button';
 import NotFoundIcon from '../../common/NotFoundIcon';
 import posed, { PoseGroup } from 'react-pose';
 import { Link } from 'react-router-dom';
+import stringInterpolator from 'interpolate';
 
 // posed components
 const ItemAnimation = posed.div({
@@ -159,14 +160,25 @@ const Card = class extends React.Component {
     state = {
         showMessage: false,
     };
-    getErrorReason = (types) => {
+    getErrorReason = (course) => {
+        const types = course.reasons;
         if (!types) return;
+
+        const {
+            openTime,
+            closeTime,
+            resource,
+            auth,
+        } = this.props.errorMessages;
         const type = types[0];
-        if (type === 'time')
-            return 'Course is not open for registration right now';
-        if (type === 'resource') return 'Not enough fund';
-        if (type === 'auth')
-            return <Link to="/login">Login to reserve class</Link>;
+
+        if (type === 'openTime')
+            return stringInterpolator(openTime, {
+                date: dateFns.format(course.startDate, 'DD/MM'),
+                time: dateFns.format(course.startDate, 'HH:MM'),
+            });
+        if (type === 'resource') return resource;
+        if (type === 'auth') return <Link to="/login">{auth}</Link>;
     };
     render() {
         const {
@@ -185,7 +197,7 @@ const Card = class extends React.Component {
                 onMouseLeave={() => this.setState({ showMessage: false })}
             >
                 <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>
-                    {this.getErrorReason(course.reasons)}
+                    {blurAndShowMessage && this.getErrorReason(course)}
                 </ErrorMessage>
                 <div>
                     <TimeArea>
@@ -207,7 +219,6 @@ const Card = class extends React.Component {
         );
     }
 };
-
 class ClassCard extends React.Component {
     selectCourse = (course) => (e) => {
         this.props.courseStore.selectCourse(course);
@@ -215,6 +226,8 @@ class ClassCard extends React.Component {
     render() {
         const courses = this.props.courseStore.getCourses(Date.now());
         const buttonLabel = this.props.i18nStore.content.courseCard.select;
+        const errorMessages = this.props.i18nStore.content.courseCard
+            .errorMessages;
         const noCourseContent = this.props.i18nStore.content.courseCard
             .noCourse;
 
@@ -228,6 +241,7 @@ class ClassCard extends React.Component {
                                 course={el}
                                 buttonLabel={buttonLabel}
                                 onButtonClick={this.selectCourse(el)}
+                                errorMessages={errorMessages}
                                 disabled={
                                     !el.isAvailable ||
                                     !this.props.userStore.isAuthenticated

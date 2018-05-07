@@ -57,8 +57,7 @@ class AppHeader extends React.Component {
             )
                 .pipe(Math.round)
                 .start((v) => {
-                    if (this.balanceButton)
-                        this.balanceButton.textContent = '€ ' + v;
+                    this.balanceButton.textContent = '€ ' + v;
                 });
         }
         this.previousBalance = this.props.userStore.balance;

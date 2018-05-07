@@ -37,7 +37,14 @@
         },
         "courseCard": {
             "select": "Valitse",
-            "noCourse": "Ei löytynyt tunteja tälle päivälle"
+            "noCourse": "Ei löytynyt tunteja tälle päivälle",
+            "errorMessages": {
+                "openTime": "Ilmoittautuminen aukeaa {date} kello {time}",
+                "closeTime": "Ilmoittautuminen on päättynyt",
+                "resource": "Ei tarpeeksi saldoa",
+                "reserved": "Olet jo ilmoittautunut tunnille",
+                "auth": "Kirjaudu varaosaluokkaan"
+            }
         }
     }
 }
