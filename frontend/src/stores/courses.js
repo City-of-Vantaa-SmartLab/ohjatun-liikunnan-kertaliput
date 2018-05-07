@@ -22,7 +22,7 @@ const isAvailable = (balance, courseItem, authenticationStatus) => {
             !authenticationStatus && 'auth',
             !satisfyTimeConstraint && 'time',
             !satisfyResourceConstraint && 'resource',
-        ].filter((bool) => typeof bool === 'string'),
+        ].filter((reason) => typeof reason === 'string'),
     };
 };
 
@@ -133,6 +133,12 @@ class courseStore {
             return false;
         }
     }
+
+    checkAfterAuthentication = action(() => {
+        if (this.rootStore.userStore.isAuthenticated) {
+            window.requestIdleCallback(this.checkAvailability);
+        }
+    });
 }
 
 export default decorate(courseStore, {

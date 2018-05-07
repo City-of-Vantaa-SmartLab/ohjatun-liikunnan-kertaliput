@@ -20,7 +20,8 @@ const pinArr = [0, 1, 2, 3];
 class LoginForm extends React.Component {
     componentDidMount() {
         autorun(() => {
-            if (this.props.userStore.authenticationFailed) this.input0.focus();
+            if (this.props.userStore.authenticationFailed && this.input0)
+                this.input0.focus();
         });
     }
     onTelephoneInputChange = (e) => {

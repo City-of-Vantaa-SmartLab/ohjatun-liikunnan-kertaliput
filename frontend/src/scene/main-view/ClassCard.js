@@ -160,7 +160,8 @@ const Card = class extends React.Component {
         showMessage: false,
     };
     getErrorReason = (types) => {
-        const type = types.filter((bool) => bool)[0];
+        if (!types) return;
+        const type = types[0];
         if (type === 'time')
             return 'Course is not open for registration right now';
         if (type === 'resource') return 'Not enough fund';
