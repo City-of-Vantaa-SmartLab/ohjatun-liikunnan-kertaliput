@@ -4,7 +4,12 @@ import {
     processPhoneNumber,
     validatePhoneNumber,
 } from 'utils';
-import { login, checkLoginStatus, logout as logoutApi } from '../apis';
+import {
+    login,
+    checkLoginStatus,
+    logout as logoutApi,
+    fetchReservedCourses,
+} from '../apis';
 
 // constants
 const DEFAULT_PIN = {
@@ -22,6 +27,7 @@ class userStore {
     phoneNumber = null;
     token = null;
     balance = 0;
+    reservedCourses = [];
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -111,6 +117,19 @@ class userStore {
             }
         }
     });
+    fetchUserReservedCoursesOnAuth = autorun(async () => {
+        if (this.isAuthenticated) {
+            try {
+                const reservedCourses = await fetchReservedCourses();
+                this.reservedCourses = reservedCourses;
+            } catch (error) {
+                console.err(
+                    'Cannot fetch reserved courses for this user',
+                    error
+                );
+            }
+        }
+    });
     authenticationFailedReaction = autorun(() => {
         if (this.authenticationFailed) {
             this.pinCodeIsSet = false;
@@ -140,6 +159,7 @@ export default decorate(userStore, {
     phoneNumber: observable,
     balance: observable,
     pinCode: observable,
+    reservedCourses: observable,
     checkAuthenticationStatusOnStart: action,
     setPhoneNumber: action,
     setInputCode: action,

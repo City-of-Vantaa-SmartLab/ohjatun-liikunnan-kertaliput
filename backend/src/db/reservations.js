@@ -11,7 +11,7 @@ const getReservations = async (userId) => {
         data.map((reservation) => getReservationById(reservation.id))
     );
 };
-
+// TODO: Can't we join tables and find from that table here?
 const getReservationById = async (id) => {
     const reservation = await models.reservations.find({
         where: { id },
@@ -23,6 +23,7 @@ const getReservationById = async (id) => {
     const event = await events.getEventById(reservation.eventId);
     const response = {
         id: reservation.id,
+        courseId: course.id,
         userId: reservation.userId,
         ticketType: reservation.ticketType,
         ticketPrice: reservation.ticketPrice,

@@ -162,13 +162,14 @@ const Card = class extends React.Component {
     };
     getErrorReason = (course) => {
         const types = course.reasons;
-        if (!types) return;
+        if (!course) return '';
 
         const {
             openTime,
             closeTime,
             resource,
             auth,
+            reserved,
         } = this.props.errorMessages;
         const type = types[0];
 
@@ -178,6 +179,7 @@ const Card = class extends React.Component {
                 time: dateFns.format(course.startDate, 'HH:MM'),
             });
         if (type === 'resource') return resource;
+        if (type === 'reserved') return reserved;
         if (type === 'auth') return <Link to="/login">{auth}</Link>;
     };
     render() {
@@ -197,7 +199,7 @@ const Card = class extends React.Component {
                 onMouseLeave={() => this.setState({ showMessage: false })}
             >
                 <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>
-                    {blurAndShowMessage && this.getErrorReason(course)}
+                    {this.getErrorReason(blurAndShowMessage && course)}
                 </ErrorMessage>
                 <div>
                     <TimeArea>

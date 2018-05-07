@@ -43,7 +43,7 @@
                 "closeTime": "Ilmoittautuminen on päättynyt",
                 "resource": "Ei tarpeeksi saldoa",
                 "reserved": "Olet jo ilmoittautunut tunnille",
-                "auth": "Kirjaudu varaosaluokkaan"
+                "auth": "Kirjaudu sisään tunnin varaamista varten"
             }
         }
     }

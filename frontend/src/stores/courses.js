@@ -6,26 +6,41 @@ import { fetchCourses, reserveTicket } from '../apis';
 const isOpenYet = (courseItem) =>
     // within 3 days from now
     dateFns.differenceInDays(courseItem.startDate, new Date()) < 3;
+
 const isClosedYet = (courseItem) =>
     // and must not be 1 hours before starting time
     dateFns.differenceInHours(courseItem.startDate, new Date()) > 1;
 
 const hasSufficientFund = (balance, courseItem) => courseItem.price <= balance;
-const isAvailable = (balance, courseItem, authenticationStatus) => {
+
+const hasBeenReserved = (reservedCourseList = [], courseItem) => {
+    const list = reservedCourseList.map((item) => item.courseId);
+    return list.includes(courseItem.id);
+};
+
+const isAvailable = (
+    balance,
+    courseItem,
+    authenticationStatus,
+    reservedCourseList
+) => {
     const openedYet = isOpenYet(courseItem);
     const closedYet = isClosedYet(courseItem);
-    const satisfyResourceConstraint = hasSufficientFund(balance, courseItem);
+    const enoughFund = hasSufficientFund(balance, courseItem);
+    const notReserved = !hasBeenReserved(reservedCourseList, courseItem);
     return {
         isAvailable:
             openedYet &&
             closedYet &&
-            satisfyResourceConstraint &&
-            authenticationStatus,
+            enoughFund &&
+            authenticationStatus &&
+            notReserved,
         reasons: [
             !authenticationStatus && 'auth',
             !openedYet && 'openTime',
             !closedYet && 'closingTime',
-            !satisfyResourceConstraint && 'resource',
+            !enoughFund && 'resource',
+            !notReserved && 'reserved',
         ].filter((reason) => typeof reason !== 'boolean'),
     };
 };
@@ -74,7 +89,8 @@ class courseStore {
                         ...isAvailable(
                             this.rootStore.userStore.balance,
                             courseItem,
-                            this.rootStore.userStore.isAuthenticated
+                            this.rootStore.userStore.isAuthenticated,
+                            this.rootStore.userStore.reservedCourses
                         ),
                     })
                 ))
@@ -125,11 +141,12 @@ class courseStore {
 
     async reserveCourse(course) {
         try {
-            await reserveTicket({
+            const reservation = await reserveTicket({
                 courseId: course.id,
                 eventId: course.eventId,
             });
             this.rootStore.userStore.setBalance(course.price);
+            this.rootStore.userStore.reservedCourses.push(reservation);
             this.selectCourse(null);
             // @TODO: handle failure states: Error messages, etc
         } catch (error) {
@@ -138,7 +155,7 @@ class courseStore {
         }
     }
 
-    checkAfterAuthentication = action(() => {
+    checkAvailabilityOnAction = action(() => {
         if (this.rootStore.userStore.isAuthenticated) {
             window.requestIdleCallback(this.checkAvailability);
         }

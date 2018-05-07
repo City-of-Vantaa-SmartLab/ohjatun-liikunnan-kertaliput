@@ -61,3 +61,5 @@ export const reserveTicket = ({ courseId, eventId }) =>
             eventId,
         },
     });
+
+export const fetchReservedCourses = () => myFetch(`/reservations`);
