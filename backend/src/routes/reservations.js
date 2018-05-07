@@ -9,11 +9,9 @@ const getReservations = async (req, res) => {
         const user = req.user;
         const dbuser = await db.users.getUser(user.phoneNumber);
         const reservations = await db.reservations.getReservations(dbuser.id);
-        res.status(200).send(reservations);
+        res.status(200).json(reservations);
     } catch (err) {
-        res
-            .status(500)
-            .send(`Failed to create reservation. Error: ${err.message}`);
+        res.status(500).json(`Failed to get reservation.`);
     }
 };
 
@@ -25,7 +23,7 @@ const createReservation = async (req, res) => {
             reservationObj
         );
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             // Gets User Id
             const dbUser = await db.users.getUser(user.phoneNumber);
@@ -59,13 +57,13 @@ const createReservation = async (req, res) => {
             );
 
             if (bookingLimitReached) {
-                res.status(400).send(bookingLimitReached);
+                res.status(400).json(bookingLimitReached);
             } else if (notEnoughBalance) {
-                res.status(422).send(notEnoughBalance);
+                res.status(422).json(notEnoughBalance);
             } else if (event) {
                 res
                     .status(422)
-                    .send(
+                    .json(
                         'You have already made a reservation for the same event!. Try for another event.'
                     );
             } else {
@@ -76,9 +74,7 @@ const createReservation = async (req, res) => {
             }
         }
     } catch (err) {
-        res
-            .status(500)
-            .send(`Failed to create reservation. Error: ${err.message}`);
+        res.status(500).json(`Failed to create reservation`);
     }
 };
 
@@ -89,15 +85,15 @@ const cancelReservation = async (req, res) => {
             reservationId
         );
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             await db.reservations.cancelReservation(reservationId);
-            res.status(200).send('Reservation cancelled successfully');
+            res.status(200).json('Reservation cancelled successfully');
         }
     } catch (err) {
         res
             .status(500)
-            .send(`Failed to cancel reservation. Error: ${err.message}`);
+            .json(`Failed to cancel reservation. Error: ${err.message}`);
     }
 };
 

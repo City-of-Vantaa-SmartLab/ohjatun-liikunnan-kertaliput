@@ -18,6 +18,11 @@ services:
       GRYNOS_COURSES_UPDATE_INTERVAL: 3600000
       GRYNOS_COURSE_API_URL: https://colosseum.grynos.com/ilmoapix/v1/course/search?com=3,6&cgt=176
       POPULATE_SEED_DATA: 1
+      PAYMENT_RETURN_URL: https://vantaa-silverfox.herokuapp.com/api/payments/paymentReturn
+      PAYMENT_NOTIFY_URL: https://vantaa-silverfox.herokuapp.com/api/payments/paymentNotify
+      SECRET_KEY: secret_key
+      API_KEY: api_key
+
 
   postgres-dev-db:
     image: postgres:10.3

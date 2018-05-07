@@ -12,13 +12,13 @@ const getUser = async (req, res) => {
         const phoneNumber = req.query.phoneNumber;
         const validationErrors = utils.users.validateUserPhone(phoneNumber);
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             const user = await db.users.getUser(phoneNumber);
-            res.status(200).send(user);
+            res.status(200).json(user);
         }
     } catch (err) {
-        res.status(500).send(`Failed to get user. Error: ${err.message}`);
+        res.status(500).json(`Failed to get user. Error: ${err.message}`);
     }
 };
 
@@ -31,16 +31,16 @@ const updateUser = async (req, res) => {
         const user = req.body;
         const validationErrors = utils.users.validateUserObj(user);
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             const authUser = req.user;
             await db.users.updateUser(user, authUser.phoneNumber);
-            res.status(200).send('Updated user details');
+            res.status(200).json('Updated user details');
         }
     } catch (err) {
         res
             .status(500)
-            .send(`Failed to update user details. Error: ${err.message}`);
+            .json(`Failed to update user details. Error: ${err.message}`);
     }
 };
 
@@ -51,13 +51,13 @@ const deleteUser = async (req, res) => {
             user.phoneNumber
         );
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             await db.users.deleteUser(user.phoneNumber);
-            res.status(200).send('Deleted user');
+            res.status(200).json('Deleted user');
         }
     } catch (err) {
-        res.status(500).send(`Failed to delete user. Error: ${err.message}`);
+        res.status(500).json(`Failed to delete user. Error: ${err.message}`);
     }
 };
 
@@ -66,7 +66,7 @@ const createUser = async (req, res) => {
         const user = req.body;
         const validationErrors = utils.users.validateUserObj(user);
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             const token = randtoken.generate(16);
             user.token = token;
@@ -74,12 +74,12 @@ const createUser = async (req, res) => {
             user.pin = pin;
             const createdUser = await db.users.createUser(user);
             console.log(`User PIN Generated: ${pin}`);
-            res.status(201).send(createdUser);
+            res.status(201).json(createdUser);
         }
     } catch (err) {
         res
             .status(500)
-            .send(`Failed to create new user. Error: ${err.message}`);
+            .json(`Failed to create new user. Error: ${err.message}`);
     }
 };
 
@@ -92,7 +92,7 @@ const login = async (req, res) => {
             pin
         );
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             const user = await db.users.getUserByPhoneAndPin(phoneNumber, pin);
             if (user) {
@@ -102,13 +102,13 @@ const login = async (req, res) => {
                         httpOnly: true,
                     })
                     .status(200)
-                    .send(user);
+                    .json(user);
             } else {
-                res.status(401).send('Phone number or PIN is incorrect!.');
+                res.status(401).json('Phone number or PIN is incorrect!.');
             }
         }
     } catch (err) {
-        res.status(500).send(`Failed to login. Error: ${err.message}`);
+        res.status(500).json(`Failed to login. Error: ${err.message}`);
     }
 };
 
@@ -124,7 +124,7 @@ const resetPin = async (req, res) => {
         const phoneNumber = req.body.phoneNumber;
         const validationErrors = utils.users.validateUserPhone(phoneNumber);
         if (validationErrors) {
-            res.status(422).send(validationErrors);
+            res.status(422).json(validationErrors);
         } else {
             const user = await db.users.getUser(phoneNumber);
             if (user) {
@@ -132,15 +132,15 @@ const resetPin = async (req, res) => {
                 user.pin = pin;
                 await db.users.updateUser(user);
                 console.log(`New PIN Generated: ${pin}`);
-                res.status(200).send('New PIN generated!');
+                res.status(200).json('New PIN generated!');
             } else {
-                res.status(401).send('Phone number is not valid!.');
+                res.status(401).json('Phone number is not valid!.');
             }
         }
     } catch (err) {
         res
             .status(500)
-            .send(`Failed to generate new PIN. Error: ${err.message}`);
+            .json(`Failed to generate new PIN. Error: ${err.message}`);
     }
 };
 

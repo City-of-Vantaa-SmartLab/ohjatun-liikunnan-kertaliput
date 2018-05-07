@@ -16,7 +16,7 @@ if (process.env.DATABASE_URL) {
 const Op = Sequelize.Op;
 const sequelize = new Sequelize(connectionString, {
     operatorsAliases: Op,
-    logging: true,
+    logging: false,
 });
 
 module.exports = sequelize;

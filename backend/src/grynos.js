@@ -27,26 +27,31 @@ const mapCourseFromGrynos = (course) => ({
 });
 
 const fetchCourses = async () => {
-    const [response] = await Promise.all([
-        axios(url),
-        db.sync({ force: true }),
-    ]);
-    return response.data.course.map(mapCourseFromGrynos);
+    const response = await axios(url);
+    if (response.data.course) {
+        return response.data.course.map(mapCourseFromGrynos);
+    }
 };
 
-const updateCoursesToDb = () => {
+const updateCoursesToDb = async () => {
     try {
-        const courses = fetchCourses();
-        courses.forEach((course) => {
-            models.courses.create(course, {
-                include: [
-                    { model: models.locations, as: 'location' },
-                    { model: models.events, as: 'teachingSession' },
-                ],
-            });
-        });
+        const courses = await fetchCourses();
+        if (courses) {
+            return await Promise.all(
+                courses.map((course) => {
+                    return models.courses.create(course, {
+                        include: [
+                            { model: models.locations, as: 'location' },
+                            { model: models.events, as: 'teachingSession' },
+                        ],
+                    });
+                })
+            );
+        } else {
+            console.error(`No courses available from Grynos.`);
+        }
     } catch (error) {
-        console.error('Failed to fetch course from Gryros ', error);
+        console.error(`Failed to fetch course from Gryros: ${error.message}`);
     }
 };
 
