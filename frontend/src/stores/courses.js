@@ -11,18 +11,18 @@ const isAvailableByTime = (courseItem) =>
 
 const hasSufficientFund = (balance, courseItem) => courseItem.price <= balance;
 const isAvailable = (balance, courseItem, authenticationStatus) => {
-    const satisfyTimeContrain = isAvailableByTime(courseItem);
-    const satisfyResourceConstrain = hasSufficientFund(balance, courseItem);
+    const satisfyTimeConstraint = isAvailableByTime(courseItem);
+    const satisfyResourceConstraint = hasSufficientFund(balance, courseItem);
     return {
         isAvailable:
-            satisfyTimeContrain &&
-            satisfyResourceConstrain &&
+            satisfyTimeConstraint &&
+            satisfyResourceConstraint &&
             authenticationStatus,
         reasons: [
             !authenticationStatus && 'auth',
-            !satisfyTimeContrain && 'time',
-            !satisfyResourceConstrain && 'resource',
-        ],
+            !satisfyTimeConstraint && 'time',
+            !satisfyResourceConstraint && 'resource',
+        ].filter((bool) => typeof bool === 'string'),
     };
 };
 

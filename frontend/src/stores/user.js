@@ -87,7 +87,7 @@ class userStore {
         else this.balance = this.balance - amount;
     }
 
-    async logout() {
+    logout() {
         try {
             logoutApi();
             this.resetCredentials();
@@ -105,7 +105,6 @@ class userStore {
                     phoneNumber: processPhoneNumber(this.phoneNumber),
                 });
                 this.setCredentials(userData);
-                console.log(this.balance);
             } catch (err) {
                 this.authenticationFailed = true;
                 console.error(err);

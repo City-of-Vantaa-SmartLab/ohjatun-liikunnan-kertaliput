@@ -51,7 +51,6 @@ class SignIn extends React.Component {
         const location = this.props.location.pathname;
         // this view is forbidden for authenticated user
         if (this.props.userStore.isAuthenticated) {
-            console.log('Hello');
             return <Redirect to="/main" />;
         }
         return (
