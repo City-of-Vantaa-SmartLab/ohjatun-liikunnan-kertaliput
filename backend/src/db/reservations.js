@@ -18,6 +18,7 @@ const getReservationById = async (id) => {
     }
     const course = await courses.getCourseById(reservation.courseId);
     const event = await events.getEventById(reservation.eventId);
+
     const response = {
         id: reservation.id,
         courseId: course.id,
@@ -27,9 +28,9 @@ const getReservationById = async (id) => {
         bookingStatus: reservation.bookingStatus,
         courseName: course.name,
         location: course.location[0].dataValues.location,
-        startDate: event[0].dataValues.startDate,
-        endDate: event[0].dataValues.endDate,
-        teachingPlace: event[0].dataValues.teachingplace,
+        startDate: event.dataValues.startDate,
+        endDate: event.dataValues.endDate,
+        teachingPlace: event.teachingplace,
     };
     return response;
 };
