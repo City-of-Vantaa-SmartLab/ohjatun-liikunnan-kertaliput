@@ -14,10 +14,11 @@ const Wrapper = styled('div')`
     }
 `;
 const AppName = styled('h1')`
-    font-size: 6rem;
+    font-size: 6.5rem;
     font-weight: bold;
     color: ${(props) => props.theme.complementary};
     margin: 0;
+    font-family: 'GT-Walsheim', sans-serif;
 `;
 
 const AppHeadLine = styled('span')`

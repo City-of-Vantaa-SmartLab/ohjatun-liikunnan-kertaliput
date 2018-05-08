@@ -28,7 +28,12 @@ html {
     font-weight: bold;
     font-style: normal;
 }
-
+@font-face {
+    font-family: GT-Walsheim;
+    src: url('./assets/GT-Walsheim-Ultra-Bold.otf');
+    font-weight: bold;
+    font-style: normal;
+}
 html {
     display: flex;
     background-color: #d8d8d8;
