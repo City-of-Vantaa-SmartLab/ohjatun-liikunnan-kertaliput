@@ -44,10 +44,9 @@ describe('getCourses API call', () => {
     });
 
     test('should load event by Id', async () => {
-        const events = await db.events.getEventById('1');
-        const event = events[0];
+        const event = await db.events.getEventById('1');
         expect(event).not.toBeNull();
-        expect(event.dataValues.teachingplace).toEqual(
+        expect(event.teachingplace).toEqual(
             'Tikkurila, Vantaan opistotalo, 170 Luokka'
         );
     });

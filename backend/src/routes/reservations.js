@@ -3,6 +3,8 @@ const router = express.Router();
 const auth = require('../auth');
 const db = require('../db');
 const utils = require('../utils');
+const services = require('../services');
+const datefns = require('date-fns');
 const eventReservationLimit = process.env.EVENT_RESERVATION_LIMIT || 5;
 const getReservations = async (req, res) => {
     try {
@@ -14,7 +16,7 @@ const getReservations = async (req, res) => {
         res.status(500).json(`Failed to get reservation.`);
     }
 };
-
+const formatDate = (date) => datefns.format(date, 'DD-MM-YYYY HH:mm');
 const createReservation = async (req, res) => {
     try {
         const reservationObj = req.body;
@@ -51,29 +53,40 @@ const createReservation = async (req, res) => {
             );
 
             // Check whether the same event has been already reserverd by the user.
-            const event = await db.reservations.getReservationForEvent(
+            const eventExists = await db.reservations.getReservationForEvent(
                 reservationObj.eventId,
                 reservationObj.userId
             );
+
+            // Get the event details to be sent to user in the reservation SMS.
+            const event = await db.events.getEventById(reservationObj.eventId);
+            const startDate = formatDate(event.dataValues.startDate);
 
             if (bookingLimitReached) {
                 res.status(400).json(bookingLimitReached);
             } else if (notEnoughBalance) {
                 res.status(422).json(notEnoughBalance);
-            } else if (event) {
+            } else if (eventExists) {
                 res
                     .status(422)
                     .json(
                         'You have already made a reservation for the same event!. Try for another event.'
                     );
             } else {
-                const reservation = await db.reservations.createReservation(
-                    reservationObj
+                await db.reservations.createReservation(reservationObj);
+                const message = `Olet varannut onnistuneesti paikan tunnille ${
+                    course.name
+                }.\n${startDate}\n${event.dataValues.teachingplace}`;
+
+                const response = await services.telia.sendMessageToUser(
+                    user.phoneNumber,
+                    message
                 );
-                res.status(201).json(reservation);
+                res.status(201).json('Created reservation successfully');
             }
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json(`Failed to create reservation`);
     }
 };

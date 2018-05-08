@@ -6,6 +6,7 @@ const db = require('../db');
 const utils = require('../utils');
 const randtoken = require('rand-token');
 const dateFns = require('date-fns');
+const services = require('../services');
 
 const getUser = async (req, res) => {
     try {
@@ -73,7 +74,26 @@ const createUser = async (req, res) => {
             const pin = randtoken.generate(4, '0123456789');
             user.pin = pin;
             const createdUser = await db.users.createUser(user);
-            console.log(`User PIN Generated: ${pin}`);
+            const message = `Onneksi olkoon onnistuneesta rekisteröitymisestä Vantaan jumppaliput -palveluun. PIN-koodisi on: ${pin}`;
+            const response = await services.telia.sendMessageToUser(
+                createdUser.phoneNumber,
+                message
+            );
+            if (response) {
+                return res
+                    .status(201)
+                    .json(
+                        `Successfully created the account. Your login PIN will arrive shortly in your phone number ${
+                            createdUser.phoneNumber
+                        }.`
+                    );
+            } else {
+                return res
+                    .status(500)
+                    .json(
+                        `Failed to generate new PIN for you. Please try again.`
+                    );
+            }
             res.status(201).json(createdUser);
         }
     } catch (err) {
@@ -130,9 +150,25 @@ const resetPin = async (req, res) => {
             if (user) {
                 const pin = randtoken.generate(4, '0123456789');
                 user.pin = pin;
-                await db.users.updateUser(user);
-                console.log(`New PIN Generated: ${pin}`);
-                res.status(200).json('New PIN generated!');
+                await db.users.updateUser(user, phoneNumber);
+                const message = `Your new PIN is: ${pin}. Please login using the new PIN.`;
+                const response = await services.telia.sendMessageToUser(
+                    phoneNumber,
+                    message
+                );
+                if (response) {
+                    res
+                        .status(201)
+                        .json(
+                            `Successfully Reset the PIN. New PIN will arrive shortly in your phone number ${phoneNumber}.`
+                        );
+                } else {
+                    res
+                        .status(500)
+                        .json(
+                            `Failed to generate new PIN for you. Please try again.`
+                        );
+                }
             } else {
                 res.status(401).json('Phone number is not valid!.');
             }
