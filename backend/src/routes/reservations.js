@@ -53,37 +53,44 @@ const createReservation = async (req, res) => {
             );
 
             // Check whether the same event has been already reserverd by the user.
-            const eventExists = await db.reservations.getReservationForEvent(
+            const existingEvent = await db.reservations.getReservationForEvent(
                 reservationObj.eventId,
                 reservationObj.userId
             );
+
+            if (existingEvent) {
+                res
+                    .send(422)
+                    .json(
+                        'You have already made a reservation for the same event!. Try for another event.'
+                    );
+                return;
+            }
+
+            if (bookingLimitReached) {
+                res.status(400).json(bookingLimitReached);
+                return;
+            }
+            if (notEnoughBalance) {
+                res.status(422).json(notEnoughBalance);
+                return;
+            }
+
+            await db.reservations.createReservation(reservationObj);
 
             // Get the event details to be sent to user in the reservation SMS.
             const event = await db.events.getEventById(reservationObj.eventId);
             const startDate = formatDate(event.dataValues.startDate);
 
-            if (bookingLimitReached) {
-                res.status(400).json(bookingLimitReached);
-            } else if (notEnoughBalance) {
-                res.status(422).json(notEnoughBalance);
-            } else if (eventExists) {
-                res
-                    .status(422)
-                    .json(
-                        'You have already made a reservation for the same event!. Try for another event.'
-                    );
-            } else {
-                await db.reservations.createReservation(reservationObj);
-                const message = `Olet varannut onnistuneesti paikan tunnille ${
-                    course.name
-                }.\n${startDate}\n${event.dataValues.teachingplace}`;
+            const message = `Olet varannut onnistuneesti paikan tunnille ${
+                course.name
+            }.\n${startDate}\n${event.dataValues.teachingplace}`;
 
-                const response = await services.telia.sendMessageToUser(
-                    user.phoneNumber,
-                    message
-                );
-                res.status(201).json('Created reservation successfully');
-            }
+            const response = await services.sms.sendMessageToUser(
+                dbUser,
+                message
+            );
+            res.status(201).json('Created reservation successfully');
         }
     } catch (err) {
         console.log(err);

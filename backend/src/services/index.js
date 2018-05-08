@@ -1,4 +1,4 @@
 const payments = require('./payments');
-const telia = require('./telia');
+const sms = require('./sms');
 
-module.exports = { payments, telia };
+module.exports = { payments, sms };

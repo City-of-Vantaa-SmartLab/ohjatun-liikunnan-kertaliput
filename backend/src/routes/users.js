@@ -75,8 +75,8 @@ const createUser = async (req, res) => {
             user.pin = pin;
             const createdUser = await db.users.createUser(user);
             const message = `Onneksi olkoon onnistuneesta rekisteröitymisestä Vantaan jumppaliput -palveluun. PIN-koodisi on: ${pin}`;
-            const response = await services.telia.sendMessageToUser(
-                createdUser.phoneNumber,
+            const response = await services.sms.sendMessageToUser(
+                createdUser,
                 message
             );
             if (response) {
@@ -94,7 +94,6 @@ const createUser = async (req, res) => {
                         `Failed to generate new PIN for you. Please try again.`
                     );
             }
-            res.status(201).json(createdUser);
         }
     } catch (err) {
         res
@@ -151,9 +150,9 @@ const resetPin = async (req, res) => {
                 const pin = randtoken.generate(4, '0123456789');
                 user.pin = pin;
                 await db.users.updateUser(user, phoneNumber);
-                const message = `Your new PIN is: ${pin}. Please login using the new PIN.`;
-                const response = await services.telia.sendMessageToUser(
-                    phoneNumber,
+                const message = `Uusi PIN-koodi on ${pin}. Kirjaudu sisään käyttämällä uutta PIN-koodia.`;
+                const response = await services.sms.sendMessageToUser(
+                    user,
                     message
                 );
                 if (response) {

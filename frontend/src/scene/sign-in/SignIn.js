@@ -4,6 +4,7 @@ import Logo from '../../common/Logo';
 import LoginForm from './LoginForm';
 import AppBrand from './AppBrand';
 import RegisterForm from '../register';
+import ResetPinForm from '../reset-pin';
 import { withRouter } from 'react-router-dom';
 import posed, { PoseGroup } from 'react-pose';
 import { Redirect } from 'react-router-dom';
@@ -61,8 +62,12 @@ class SignIn extends React.Component {
                         <Container key="RegisterForm">
                             <RegisterForm />
                         </Container>
+                    ) : location === '/reset-pin' ? (
+                        <Container key="ResetPinForm">
+                            <ResetPinForm />
+                        </Container>
                     ) : (
-                        <Container key="loginForm">
+                        <Container key="LoginForm">
                             <LoginForm />
                         </Container>
                     )}

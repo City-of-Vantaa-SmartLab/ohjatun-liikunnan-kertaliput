@@ -5,15 +5,15 @@ const teliaUsername = process.env.TELIA_USERNAME;
 const teliaPassword = process.env.TELIA_PASSWORD;
 const teliaUser = process.env.TELIA_USER;
 
-const sendMessageToUser = async (phoneNumber, message) => {
+const sendMessageToUser = async (user, message) => {
     try {
+        const phoneNumber = user.phoneNumber;
+        console.log(
+            `Sending SMS for user ${user.username} to number ${phoneNumber}`
+        );
         const request = generateTeliaMessageRequest(phoneNumber, message);
         const response = await axios.post(teliaEndPoint, request);
-        if (
-            response &&
-            response.data.accepted[0].to ===
-                phoneNumber.substring(1, phoneNumber.length)
-        ) {
+        if (response && response.data.accepted[0].to === phoneNumber.slice(1)) {
             return response;
         }
     } catch (error) {
