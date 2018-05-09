@@ -15,7 +15,7 @@ services:
     build: ./backend
     ports:
       - 5000:80
-    command: nodemon
+    command: npm run dev
     volumes:
       - ./backend:/app
     depends_on:

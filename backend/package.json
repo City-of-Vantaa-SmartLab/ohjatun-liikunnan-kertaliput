@@ -8,6 +8,7 @@
     },
     "scripts": {
         "start": "node src/server.js",
+        "dev": "./node_modules/.bin/nodemon src/server.js",
         "feeddb": "node src/seed/db-seed.js",
         "fetch-courses": "node src/seed/courses.js",
         "test": "jest --forceExit"
@@ -29,7 +30,8 @@
         "sequelize-cli": "^4.0.0"
     },
     "devDependencies": {
-        "jest": "^22.4.3"
+        "jest": "^22.4.3",
+        "nodemon": "^1.17.4"
     },
     "jest": {
         "testEnvironment": "node",
