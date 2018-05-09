@@ -1,16 +1,27 @@
 version: '3.3'
 
 services:
+  front-end:
+    build: ./frontend
+    volumes:
+      - ./frontend:/app
+    command: npm run start
+    ports:
+      - 3000:3000
+    depends_on:
+      - vantaa-pwa
 
   vantaa-pwa:
-    image: vantaa-exercise-reservations:latest
+    build: ./backend
     ports:
-      - 5000:5000
-    command: bash -c 'npm install && npm start && npm run fetch-courses'
+      - 5000:80
+    command: nodemon
+    volumes:
+      - ./backend:/app
     depends_on:
       - postgres-dev-db
     environment:
-      PORT: 5000
+      PORT: 80
       USERNAME: postgres
       PASSWORD: password
       DATABASE: vantaa_pwa
@@ -22,7 +33,6 @@ services:
       PAYMENT_NOTIFY_URL: https://vantaa-silverfox.herokuapp.com/api/payments/paymentNotify
       SECRET_KEY: secret_key
       API_KEY: api_key
-
 
   postgres-dev-db:
     image: postgres:10.3

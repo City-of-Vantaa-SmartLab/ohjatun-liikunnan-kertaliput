@@ -2,7 +2,7 @@
     "name": "vantaa-pwa-dev",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://localhost:5000",
+    "proxy": "http://vantaa-pwa",
     "dependencies": {
         "date-fns": "^1.29.0",
         "emotion": "^9.1.1",

@@ -19,7 +19,6 @@ const theme = {
     complementary: '#F9E51E',
     green: '#66BB6A',
 };
-
 const { i18nStore, userStore, courseStore } = stores;
 
 const Root = () => (

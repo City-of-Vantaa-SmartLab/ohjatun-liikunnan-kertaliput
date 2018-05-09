@@ -1,5 +1,5 @@
 FROM node:8.10
-RUN mkdir /backend
-ADD . /backend
-WORKDIR /backend
+WORKDIR /app
+ADD . /app
 RUN npm install
+RUN npm install -g nodemon
