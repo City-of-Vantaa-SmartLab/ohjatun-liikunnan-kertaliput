@@ -7,7 +7,8 @@ const utils = require('../utils');
 const randtoken = require('rand-token');
 const dateFns = require('date-fns');
 const services = require('../services');
-
+const i18n = require('../i18n').i18n();
+const stringInterpolator = require('interpolate');
 const getUser = async (req, res) => {
     try {
         const phoneNumber = req.query.phoneNumber;
@@ -74,7 +75,12 @@ const createUser = async (req, res) => {
             const pin = randtoken.generate(4, '0123456789');
             user.pin = pin;
             const createdUser = await db.users.createUser(user);
-            const message = `Onneksi olkoon onnistuneesta rekisteröitymisestä Vantaan jumppaliput -palveluun. PIN-koodisi on: ${pin}`;
+            const message = stringInterpolator(
+                i18n.users.register.confirmationSms,
+                {
+                    pin,
+                }
+            );
             const response = await services.sms.sendMessageToUser(
                 createdUser,
                 message
@@ -150,7 +156,12 @@ const resetPin = async (req, res) => {
                 const pin = randtoken.generate(4, '0123456789');
                 user.pin = pin;
                 await db.users.updateUser(user, phoneNumber);
-                const message = `Uusi PIN-koodi on ${pin}. Kirjaudu sisään käyttämällä uutta PIN-koodia.`;
+                const message = stringInterpolator(
+                    i18n.users.resetPin.confirmationSms,
+                    {
+                        pin,
+                    }
+                );
                 const response = await services.sms.sendMessageToUser(
                     user,
                     message
