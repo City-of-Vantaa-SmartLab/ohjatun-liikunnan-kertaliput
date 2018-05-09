@@ -7,6 +7,7 @@ import { tween, easing, chain, delay } from 'popmotion';
 
 const AppHeaderWrapper = styled('div')`
     width: 100%;
+    min-height: 100%;
     background-color: white;
     padding: 2rem;
 `;

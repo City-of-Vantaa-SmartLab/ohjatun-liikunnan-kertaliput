@@ -69,11 +69,11 @@ class LoginForm extends React.Component {
                                     (this['input' + key] = instance)
                                 }
                                 key={key}
-                                type="password"
+                                type="number"
                                 onChange={this.onPinCodeInputsChange(key)}
                                 value={this.props.userStore.pinCode[key]}
                                 name="pinCode"
-                                inputmode="numeric"
+                                inputmode="tel"
                             />
                         ))}
                     </div>
