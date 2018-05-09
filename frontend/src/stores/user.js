@@ -51,10 +51,7 @@ class userStore {
         return validatePhoneNumber(this.phoneNumber);
     }
     get freezePinCode() {
-        return (
-            Object.values(this.pinCode).every((code) => code !== '') &&
-            !this.phoneNumberIncorrect
-        );
+        return Object.values(this.pinCode).every((code) => code !== '');
     }
 
     // actions, that alters state

@@ -26,7 +26,7 @@ const ItemAnimation = posed.div({
 
 const ErrorMessageAnimation = posed.h4({
     hidden: {
-        scale: 0.3,
+        scale: 0,
         y: 0,
         opacity: 0,
     },
@@ -50,7 +50,7 @@ const AnimationCoordinator = posed.div({
 // styled components
 const ScrollContainer = styled(AnimationCoordinator)`
     overflow: scroll;
-    height: 100%;
+    flex-basis: 100%;
 `;
 const CardWrapper = styled(ItemAnimation)`
     width: 100%;
@@ -148,6 +148,7 @@ const EmptyStateContainer = styled(AnimationCoordinator)`
     justify-content: center;
     color: rgba(0, 0, 0, 0.3);
     font-size: 2.5rem;
+    background-color: #c9c9c9;
 
     svg {
         margin-bottom: 2rem;
@@ -188,6 +189,7 @@ const Card = class extends React.Component {
             buttonLabel,
             onButtonClick,
             disabled,
+            errorMessages,
             ...rest
         } = this.props;
         const blurAndShowMessage = disabled && this.state.showMessage;

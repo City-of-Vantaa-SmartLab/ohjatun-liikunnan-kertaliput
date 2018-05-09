@@ -27,14 +27,19 @@ class LoginForm extends React.Component {
     onTelephoneInputChange = (e) => {
         this.props.userStore.setPhoneNumber(e.target.value);
     };
-    onPinCodeInputsChange = (key) => (e) => {
-        const setResult = this.props.userStore.setInputCode(
-            key,
-            e.target.value
-        );
-        if (setResult && key !== 3) {
-            if (key === 3) this[`input0`].focus();
-            else this[`input${key + 1}`].focus();
+    onPinCodeInputsKeyUp = (key) => (e) => {
+        if (/\d/.test(e.key)) {
+            const setResult = this.props.userStore.setInputCode(key, e.key);
+            if (setResult && key !== 3) {
+                if (key === 3) this[`input0`].focus();
+                else this[`input${key + 1}`].focus();
+            }
+        } else if (e.key === 'Backspace') {
+            const setResult = this.props.userStore.setInputCode(key - 1, '');
+            if (setResult && key !== 0) {
+                if (key === 1) this[`input0`].focus();
+                else this[`input${key - 1}`].focus();
+            }
         }
     };
     render() {
@@ -70,7 +75,7 @@ class LoginForm extends React.Component {
                                 }
                                 key={key}
                                 type="number"
-                                onChange={this.onPinCodeInputsChange(key)}
+                                onKeyUp={this.onPinCodeInputsKeyUp(key)}
                                 value={this.props.userStore.pinCode[key]}
                                 name="pinCode"
                                 inputmode="tel"
