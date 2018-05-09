@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  front-end:
+  frontend:
     build: ./frontend
     volumes:
       - ./frontend:/app
@@ -36,6 +36,8 @@ services:
 
   postgres-dev-db:
     image: postgres:10.3
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
