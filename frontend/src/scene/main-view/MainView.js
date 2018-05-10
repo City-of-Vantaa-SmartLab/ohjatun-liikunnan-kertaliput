@@ -4,6 +4,7 @@ import FilterGroup from './FilterGroup';
 import ClassCard from './ClassCard';
 import AppHeader from './AppHeader';
 import CourseModal from './CourseModal';
+import BalanceView from '../balance';
 import { connect } from 'utils';
 
 const Wrapper = styled('div')`
@@ -13,13 +14,24 @@ const Wrapper = styled('div')`
     height: 100%;
 `;
 class MainView extends React.Component {
+    state = {
+        showCourseBalance: false,
+    };
     render() {
         return (
             <Wrapper>
-                <AppHeader />
+                <AppHeader
+                    requestShowBalance={() =>
+                        this.setState({ showCourseBalance: true })
+                    }
+                />
                 <FilterGroup />
                 <ClassCard />
                 <CourseModal />
+                <BalanceView
+                    show={this.state.showCourseBalance}
+                    onClear={() => this.setState({ showCourseBalance: false })}
+                />
             </Wrapper>
         );
     }

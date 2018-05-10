@@ -83,6 +83,7 @@ class AppHeader extends React.Component {
                             innerRef={(instance) =>
                                 (this.balanceButton = instance)
                             }
+                            onClick={this.props.requestShowBalance}
                         >
                             0 €
                         </Button>
