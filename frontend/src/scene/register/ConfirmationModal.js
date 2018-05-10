@@ -3,6 +3,7 @@ import styled from 'react-emotion';
 import Modal, { Content, Title } from '../../components/modal';
 import Button from '../../components/button';
 import { Link } from 'react-router-dom';
+import stringInterpolator from 'interpolate';
 
 const SmallModal = styled(Modal)`
     height: 40%;
@@ -22,7 +23,7 @@ const CustomTitle = styled(Title)`
 
 export default class ConfirmationModal extends React.Component {
     render() {
-        const { i18nContent, username, show } = this.props;
+        const { i18nContent, username, phoneNumber, show } = this.props;
         return (
             <SmallModal show={show} hideCloseButton>
                 <div>
@@ -32,7 +33,13 @@ export default class ConfirmationModal extends React.Component {
                     </CustomTitle>
                     <Content>
                         <p>
-                            {i18nContent.registrationForm.congratulationMessage}
+                            {stringInterpolator(
+                                i18nContent.registrationForm
+                                    .congratulationMessage,
+                                {
+                                    phoneNumber,
+                                }
+                            )}
                         </p>
                         <p>{i18nContent.registrationForm.promptPinCode}</p>
                     </Content>

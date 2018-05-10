@@ -2,35 +2,63 @@ const courses = require('./courses');
 const events = require('./events');
 const models = require('../models');
 const db = require('../sequalize_pg');
+const Sequelize = require('sequelize');
 
 const getReservations = async (userId) => {
     return await models.reservations.findAll({
+        include: [
+            {
+                model: models.courses,
+                attributes: ['name', 'price', 'id', 'description'],
+            },
+            {
+                model: models.events,
+                attributes: [
+                    'id',
+                    ['start', 'startDate'],
+                    ['end', 'endDate'],
+                    'teachingplace',
+                ],
+            },
+        ],
         where: { userId },
     });
 };
 // TODO: Can't we join tables and find from that table here?
 const getReservationById = async (id) => {
     const reservation = await models.reservations.find({
+        include: [
+            {
+                model: models.courses,
+                attributes: ['name', 'price', 'id', 'description'],
+            },
+            {
+                model: models.events,
+                attributes: [
+                    'id',
+                    ['start', 'startDate'],
+                    ['end', 'endDate'],
+                    'teachingplace',
+                ],
+            },
+        ],
         where: { id },
     });
     if (reservation === null) {
         throw new Error('Reservation could not be found!');
     }
-    const course = await courses.getCourseById(reservation.courseId);
-    const event = await events.getEventById(reservation.eventId);
-
     const response = {
         id: reservation.id,
-        courseId: course.id,
+        courseId: reservation.course.id,
         userId: reservation.userId,
         ticketType: reservation.ticketType,
         ticketPrice: reservation.ticketPrice,
         bookingStatus: reservation.bookingStatus,
-        courseName: course.name,
-        location: course.location[0].dataValues.location,
-        startDate: event.dataValues.startDate,
-        endDate: event.dataValues.endDate,
-        teachingPlace: event.teachingplace,
+        courseName: reservation.course.name,
+        location: reservation.event.teachingplace,
+        startDate: reservation.event.dataValues.startDate,
+        endDate: reservation.event.dataValues.endDate,
+        teachingPlace: reservation.event.teachingplace,
     };
     return response;
 };

@@ -85,8 +85,9 @@ class RegisterForm extends React.Component {
                 </Form>
                 <ConfirmationModal
                     show={this.state.submitSuccess}
-                    username={this.props.userStore.username}
+                    username={this.state.username}
                     i18nContent={i18nContent}
+                    phoneNumber={this.state.phoneNumber}
                 />
             </React.Fragment>
         );
