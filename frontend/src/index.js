@@ -10,13 +10,9 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 const theme = {
-    signInBackGround: {
-        color1: '#3F8EDB',
-        color2: '#3F8EDB',
-    },
-    main: '#3F8EDB',
-    mainDark: '#183552',
-    complementary: '#F9E51E',
+    signInBackground: '#FFC107',
+    main: '#2979FF',
+    complementary: '#FFEB3B',
     green: '#66BB6A',
 };
 const { i18nStore, userStore, courseStore } = stores;

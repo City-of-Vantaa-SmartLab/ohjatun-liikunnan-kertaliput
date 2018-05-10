@@ -29,10 +29,7 @@ const Container = styled(AnimatableContainer)`
 
 const StyledWrapper = styled('section')`
     position: relative;
-    background: ${(props) => {
-        const { color1, color2 } = props.theme.signInBackGround;
-        return `linear-gradient(to bottom, ${color1}, ${color2})`;
-    }};
+    background-color: ${(props) => props.theme.signInBackground};
     padding: 4rem;
     display: flex;
     flex-direction: column;
