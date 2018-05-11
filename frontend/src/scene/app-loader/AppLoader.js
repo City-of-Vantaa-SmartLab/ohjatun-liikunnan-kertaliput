@@ -74,7 +74,7 @@ class AppLoader extends Component {
         return createPortal(
             <PoseGroup>
                 {this.state.show && (
-                    <Wrapper {...this.props}>
+                    <Wrapper key="main" {...this.props}>
                         <svg viewBox="0 0 740.09 285.98">
                             <PoseGroup animateOnMount preEnterPose="preEnter">
                                 <AnimatablePath

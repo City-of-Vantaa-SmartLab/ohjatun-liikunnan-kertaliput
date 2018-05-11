@@ -46,10 +46,10 @@ export const InputField = styled('div')`
         `
         input {
             animation: ${shake} 1s ease 1;
-            background-color: rgba(255, 82, 82, .9) !important;
+            background-color: ${props.theme.complementary} !important;
         }
         label {
-            color: rgba(255, 82, 82, .9);
+            color: ${props.theme.complementary};
         }
     `};
 `;

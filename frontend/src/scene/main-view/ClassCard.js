@@ -61,7 +61,7 @@ const CardWrapper = styled(ItemAnimation)`
     color: rgba(0, 0, 0, 0.86);
     transition: background-color 0.5s ease;
     overflow: hidden;
-    ${(props) => props.blur && `background-color: rgba(200,200,200, .8)`};
+    ${(props) => props.blur && `background-color: rgba(200,200,200, .1)`};
     }
 
     & > div {
@@ -84,7 +84,6 @@ const ErrorMessage = styled(ErrorMessageAnimation)`
     left: 0;
     width: 100%;
     z-index: 10;
-    text-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
     * {
         color: inherit !important;
     }
@@ -151,7 +150,6 @@ const EmptyStateContainer = styled(AnimationCoordinator)`
     justify-content: center;
     color: rgba(0, 0, 0, 0.3);
     font-size: 2.5rem;
-    background-color: #c9c9c9;
 
     svg {
         margin-bottom: 2rem;

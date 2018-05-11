@@ -1,1 +1,91 @@
-/* HAHA */
+@font-face {
+    font-family: Calibri;
+    src: url('./assets/Calibri.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: Calibri;
+    src: url('./assets/Calibri Bold Italic.ttf');
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: Calibri;
+    src: url('./assets/Calibri Bold.ttf');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: GT-Walsheim;
+    src: url('./assets/GT-Walsheim-Ultra-Bold.otf');
+    font-weight: bold;
+    font-style: normal;
+}
+
+html {
+    display: flex;
+    background-color: #d8d8d8;
+}
+
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Extra small devices (phones, 600px and down) */
+
+@media only screen and (max-width: 600px) {
+    body {
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+    /* for small devices */
+    @media (max-width: 320px) and (max-height: 480px) {
+        html {
+            font-size: 6px;
+        }
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+
+@media only screen and (min-width: 600px) {
+    body {
+        padding: 4rem;
+    }
+    html {
+        font-size: 8px;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+
+@media only screen and (min-width: 768px) {
+    html {
+        font-size: 10px;
+    }
+}
+
+/* large devices (landscape tablets, 768px and up) */
+
+@media only screen and (min-width: 992px) {
+    body {
+        max-height: 812px;
+        max-width: 480px;
+        padding: 0;
+        box-shadow: 0px 12px 42px rgba(0, 0, 0, 0.5);
+    }
+    html {
+        font-size: 7.5px;
+    }
+}

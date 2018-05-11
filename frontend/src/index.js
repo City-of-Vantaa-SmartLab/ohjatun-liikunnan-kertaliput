@@ -10,7 +10,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 const theme = {
-    signInBackground: '#FFC107',
+    signInBackground: '#2979FF',
     main: '#2979FF',
     complementary: '#FFEB3B',
     green: '#66BB6A',
