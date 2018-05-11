@@ -11,9 +11,11 @@ const BamboraReturnCodes = {
 
 const addBalance = async (req, res) => {
     try {
-        const paymentObj = req.query;
+        const amount = +req.query.amount;
+        let paymentObj = {};
+        paymentObj.amount = amount;
         const validationErrors = utils.payments.validateAmount(
-            +paymentObj.amount
+            paymentObj.amount
         );
         if (validationErrors) {
             return res.status(422).json(validationErrors);
