@@ -3,7 +3,10 @@ const router = express.Router();
 const auth = require('../auth');
 const db = require('../db');
 const utils = require('../utils');
+const services = require('../services');
+const datefns = require('date-fns');
 const eventReservationLimit = process.env.EVENT_RESERVATION_LIMIT || 5;
+const i18n = require('../i18n').i18n();
 const getReservations = async (req, res) => {
     try {
         const user = req.user;
@@ -14,7 +17,7 @@ const getReservations = async (req, res) => {
         res.status(500).json(`Failed to get reservation.`);
     }
 };
-
+const formatDate = (date) => datefns.format(date, i18n.reservations.dateFormat);
 const createReservation = async (req, res) => {
     try {
         const reservationObj = req.body;
@@ -51,29 +54,43 @@ const createReservation = async (req, res) => {
             );
 
             // Check whether the same event has been already reserverd by the user.
-            const event = await db.reservations.getReservationForEvent(
+            const existingEvent = await db.reservations.getReservationForEvent(
                 reservationObj.eventId,
                 reservationObj.userId
             );
 
+            if (existingEvent) {
+                res.send(422).json(i18n.reservations.errorMessages.eventExists);
+                return;
+            }
+
             if (bookingLimitReached) {
                 res.status(400).json(bookingLimitReached);
-            } else if (notEnoughBalance) {
-                res.status(422).json(notEnoughBalance);
-            } else if (event) {
-                res
-                    .status(422)
-                    .json(
-                        'You have already made a reservation for the same event!. Try for another event.'
-                    );
-            } else {
-                const reservation = await db.reservations.createReservation(
-                    reservationObj
-                );
-                res.status(201).json(reservation);
+                return;
             }
+            if (notEnoughBalance) {
+                res.status(422).json(notEnoughBalance);
+                return;
+            }
+
+            await db.reservations.createReservation(reservationObj);
+
+            // Get the event details to be sent to user in the reservation SMS.
+            const event = await db.events.getEventById(reservationObj.eventId);
+            const startDate = formatDate(event.dataValues.startDate);
+
+            const message = `${i18n.reservations.confirmationMessage} ${
+                course.name
+            }.\n${startDate}\n${event.dataValues.teachingplace}`;
+
+            const response = await services.sms.sendMessageToUser(
+                dbUser,
+                message
+            );
+            res.status(201).json('Created reservation successfully');
         }
     } catch (err) {
+        console.log(err);
         res.status(500).json(`Failed to create reservation`);
     }
 };

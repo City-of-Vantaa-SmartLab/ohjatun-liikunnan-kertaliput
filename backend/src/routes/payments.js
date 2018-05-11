@@ -6,10 +6,10 @@ const auth = require('../auth');
 const utils = require('../utils');
 
 const BamboraReturnCodes = {
-    SUCCESS: 0,
+    SUCCESS: '0',
 };
 
-const generatePaymentRedirectUrl = async (req, res) => {
+const addBalance = async (req, res) => {
     try {
         const paymentObj = req.body;
         const validationErrors = utils.payments.validateAmount(
@@ -22,7 +22,7 @@ const generatePaymentRedirectUrl = async (req, res) => {
         paymentObj.userId = dbUser.id;
         paymentObj.username = dbUser.username;
         const url = await services.payments.getPaymentRedirectUrl(paymentObj);
-        res.status(200).json(url);
+        res.redirect(url);
     } catch (err) {
         res
             .status(500)
@@ -38,29 +38,24 @@ const paymentReturn = async (req, res) => {
     const response = req.query.RETURN_CODE;
     if (response === BamboraReturnCodes.SUCCESS) {
         const ordernumber = req.query.ORDER_NUMBER;
-        const payment = await db.payments.getPayment(ordernumber);
+        const payment = await db.payments.getPaymentByOrderNumber(ordernumber);
         if (!payment) {
             return res
                 .status(422)
                 .json('Payment details not available in the system.');
         }
+        await db.payments.updatePaymentStatus(ordernumber, req.query.SETTLED);
         const dbUser = await db.users.getUserById(payment.userId);
         const newBalance = payment.amount + dbUser.balance;
         await db.reservations.updateUserBalance(dbUser.id, newBalance);
         const balance = await db.reservations.getUserBalance(dbUser.id);
-        res
-            .status(200)
-            .json(`Payment successful. Updated user balance to: ${balance}`);
+        res.redirect(`/payment-complete?ordernumber=${ordernumber}`);
     } else {
         res.status(422).json(`Payment failed. Please try again later`);
     }
 };
 
-router.post(
-    '/generate-payment-redirect-url',
-    auth.requireAuth,
-    generatePaymentRedirectUrl
-);
+router.get('/add-balance', auth.requireAuth, addBalance);
 router.get('/payment-notify', paymentNotify);
 router.get('/payment-return', paymentReturn);
 

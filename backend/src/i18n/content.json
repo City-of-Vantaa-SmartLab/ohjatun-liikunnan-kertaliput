@@ -1,0 +1,23 @@
+{
+    "finnish": {
+        "reservations": {
+            "confirmationMessage":
+                "Olet varannut onnistuneesti paikan tunnille",
+            "dateFormat": "DD-MM-YYYY HH:mm",
+            "errorMessages": {
+                "eventExists":
+                    "You have already made a reservation for the same event!. Try for another event."
+            }
+        },
+        "users": {
+            "resetPin": {
+                "confirmationSms":
+                    "Uusi PIN-koodi on {pin}. Kirjaudu sisään käyttämällä uutta PIN-koodia."
+            },
+            "register": {
+                "confirmationSms":
+                    "Onneksi olkoon onnistuneesta rekisteröitymisestä Vantaan jumppaliput -palveluun. PIN-koodisi on: {pin}"
+            }
+        }
+    }
+}

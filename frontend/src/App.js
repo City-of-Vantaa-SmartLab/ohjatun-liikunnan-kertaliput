@@ -32,6 +32,7 @@ class App extends React.Component {
                     <Route path="/" component={SignIn} />
                     <Route exact path="/login" component={SignIn} />
                     <Route exact path="/register" component={SignIn} />
+                    <Route exact path="/reset-pin" component={SignIn} />
                 </Switch>
                 <DevTool />
             </AppContainer>

@@ -46,6 +46,13 @@ export const register = ({ username, phoneNumber }) =>
         },
     });
 
+export const resetPin = ({ phoneNumber }) =>
+    myFetch(`/users/reset-pin`, {
+        method: 'POST',
+        body: {
+            phoneNumber,
+        },
+    });
 export const fetchCourses = (config) => {
     const queries = Object.keys(config)
         .map((key) => `${key}=${config[key]}`)

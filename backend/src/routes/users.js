@@ -6,7 +6,9 @@ const db = require('../db');
 const utils = require('../utils');
 const randtoken = require('rand-token');
 const dateFns = require('date-fns');
-
+const services = require('../services');
+const i18n = require('../i18n').i18n();
+const stringInterpolator = require('interpolate');
 const getUser = async (req, res) => {
     try {
         const phoneNumber = req.query.phoneNumber;
@@ -73,8 +75,31 @@ const createUser = async (req, res) => {
             const pin = randtoken.generate(4, '0123456789');
             user.pin = pin;
             const createdUser = await db.users.createUser(user);
-            console.log(`User PIN Generated: ${pin}`);
-            res.status(201).json(createdUser);
+            const message = stringInterpolator(
+                i18n.users.register.confirmationSms,
+                {
+                    pin,
+                }
+            );
+            const response = await services.sms.sendMessageToUser(
+                createdUser,
+                message
+            );
+            if (response) {
+                return res
+                    .status(201)
+                    .json(
+                        `Successfully created the account. Your login PIN will arrive shortly in your phone number ${
+                            createdUser.phoneNumber
+                        }.`
+                    );
+            } else {
+                return res
+                    .status(500)
+                    .json(
+                        `Failed to generate new PIN for you. Please try again.`
+                    );
+            }
         }
     } catch (err) {
         res
@@ -130,9 +155,30 @@ const resetPin = async (req, res) => {
             if (user) {
                 const pin = randtoken.generate(4, '0123456789');
                 user.pin = pin;
-                await db.users.updateUser(user);
-                console.log(`New PIN Generated: ${pin}`);
-                res.status(200).json('New PIN generated!');
+                await db.users.updateUser(user, phoneNumber);
+                const message = stringInterpolator(
+                    i18n.users.resetPin.confirmationSms,
+                    {
+                        pin,
+                    }
+                );
+                const response = await services.sms.sendMessageToUser(
+                    user,
+                    message
+                );
+                if (response) {
+                    res
+                        .status(201)
+                        .json(
+                            `Successfully Reset the PIN. New PIN will arrive shortly in your phone number ${phoneNumber}.`
+                        );
+                } else {
+                    res
+                        .status(500)
+                        .json(
+                            `Failed to generate new PIN for you. Please try again.`
+                        );
+                }
             } else {
                 res.status(401).json('Phone number is not valid!.');
             }

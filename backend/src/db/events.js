@@ -5,7 +5,7 @@ module.exports = {
     },
 
     getEventById: (id) => {
-        return models.events.findAll({
+        return models.events.find({
             attributes: [
                 ['id', 'eventId'],
                 ['start', 'startDate'],
