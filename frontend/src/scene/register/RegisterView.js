@@ -8,11 +8,10 @@ import FormState from './state';
 import ConfirmationModal from './ConfirmationModal';
 
 const FormAction = styled('div')`
-    padding-top: 2rem;
-    width: 100%;
+    align-self: stretch;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    justify-content: flex-end;
+    margin: 0 2rem;
 `;
 const Title = styled('h1')`
     font-size: 4rem;

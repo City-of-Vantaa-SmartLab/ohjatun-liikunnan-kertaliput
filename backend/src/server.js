@@ -34,6 +34,7 @@ server.use(
 server.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
+
 const dbPopulation = populateSeedData
     ? loadMockCoursesToDatabase()
     : db.sync({ force: false });

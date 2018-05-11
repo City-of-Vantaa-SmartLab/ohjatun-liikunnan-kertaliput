@@ -34,8 +34,8 @@ class RegisterFormState {
                 phoneNumber: processPhoneNumber(this.phoneNumber),
             });
             this.userStore.setCredentials({
-                phoneNumber: responseFromServer.phoneNumber,
-                username: responseFromServer.username,
+                phoneNumber: this.phoneNumber,
+                username: this.username,
             });
             this.submitSuccess = true;
             this.submitError = false;

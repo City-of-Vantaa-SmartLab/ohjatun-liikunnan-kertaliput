@@ -75,6 +75,7 @@ class userStore {
         return true;
     };
     setCredentials(userData) {
+        console.log('Setting creds, ', userData);
         this.token = userData.token;
         this.username = userData.username;
         this.balance = userData.balance;
