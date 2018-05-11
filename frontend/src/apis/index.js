@@ -10,6 +10,7 @@ const myFetch = async (url, config = {}) => {
         body: JSON.stringify(config.body),
     });
     if (response.status >= 200 && response.status < 300) {
+        if (response.redirected) window.location.href = response.url;
         try {
             return await response.json();
         } catch (error) {
@@ -70,3 +71,6 @@ export const reserveTicket = ({ courseId, eventId }) =>
     });
 
 export const fetchReservedCourses = () => myFetch(`/reservations`);
+
+export const requestAddBalance = (amount) =>
+    myFetch(`/payments/add-balance?amount=${amount}`);

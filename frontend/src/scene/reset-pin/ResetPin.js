@@ -8,10 +8,11 @@ import FormState from './state';
 import ConfirmationModal from './ConfirmationModal';
 
 const FormAction = styled('div')`
-    padding-top: 2rem;
     width: 100%;
     display: flex;
-    justify-content: space-between flex-end;
+    border: 1px black solid;
+    justify-content: flex-end;
+    margin: 2rem;
 `;
 const Title = styled('h1')`
     font-size: 4rem;
@@ -67,7 +68,7 @@ class ResetPin extends React.Component {
                     </FormAction>
                     <FormLink style={{ marginTop: '1rem' }}>
                         <Link to="/login">
-                            {i18nContent.registrationForm.hasAccountPrompt}{' '}
+                            {i18nContent.registrationForm.hasAccountPrompt}
                         </Link>
                     </FormLink>
                 </Form>

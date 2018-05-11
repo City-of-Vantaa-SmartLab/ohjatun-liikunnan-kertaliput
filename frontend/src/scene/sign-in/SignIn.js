@@ -9,16 +9,23 @@ import { withRouter } from 'react-router-dom';
 import posed, { PoseGroup } from 'react-pose';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'utils';
+import { spring } from 'popmotion';
 
 const AnimatableContainer = posed.div({
     preEnter: {
-        x: '-200%',
+        x: '-150%',
+        transition: (props) =>
+            spring({ ...props, stiffness: 200, damping: 50 }),
     },
     enter: {
         x: '0',
+        transition: (props) =>
+            spring({ ...props, stiffness: 200, damping: 50 }),
     },
     exit: {
-        x: '200%',
+        x: '150%',
+        transition: (props) =>
+            spring({ ...props, stiffness: 200, damping: 50 }),
     },
 });
 const Container = styled(AnimatableContainer)`
@@ -56,11 +63,11 @@ class SignIn extends React.Component {
                 <AppBrand />
                 <PoseGroup preEnterPose="preEnter">
                     {location === '/register' ? (
-                        <Container key="RegisterForm">
+                        <Container key="register">
                             <RegisterForm />
                         </Container>
                     ) : location === '/reset-pin' ? (
-                        <Container key="ResetPinForm">
+                        <Container key="resetpin">
                             <ResetPinForm />
                         </Container>
                     ) : (

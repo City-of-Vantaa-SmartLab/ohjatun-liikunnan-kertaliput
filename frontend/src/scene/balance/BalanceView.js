@@ -17,6 +17,7 @@ const Content = styled(ModalContent)`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-top: 10rem;
 
     div {
         display: inherit;
@@ -62,7 +63,10 @@ const Form = styled(DefaultForm)`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border-top: 1px ${(props) => props.theme.main} solid;
+    border-top: 5px ${(props) => props.theme.main} solid;
+    width: auto;
+    margin: 0 !important;
+
     button {
         padding: 2rem !important;
         width: auto;
@@ -70,7 +74,7 @@ const Form = styled(DefaultForm)`
     }
 `;
 const InputField = styled(DefaultInputField)`
-    margin: 2rem !important;
+    margin: 2rem 0 !important;
     align-self: stretch;
     label {
         color: rgba(0, 0, 0, 0.7);
@@ -78,6 +82,7 @@ const InputField = styled(DefaultInputField)`
     }
     input {
         border: 1px ${(props) => props.theme.main} solid;
+        width: auto;
     }
 `;
 
@@ -117,9 +122,28 @@ class BalanceView extends Component {
                                 <Form key="1">
                                     <InputField>
                                         <label htmlFor="amount">Amount</label>
-                                        <Input type="number" defaultValue="0" />
+                                        <Input
+                                            type="number"
+                                            defaultValue="0"
+                                            value={this.state.amount}
+                                            onChange={(e) =>
+                                                this.setState({
+                                                    amount: e.target.value,
+                                                })
+                                            }
+                                        />
                                     </InputField>
-                                    <Button bold> Submit </Button>
+                                    <Button
+                                        bold
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            this.props.userStore.requestAddBalance(
+                                                this.state.amount
+                                            );
+                                        }}
+                                    >
+                                        Go!
+                                    </Button>
                                 </Form>
                             </FormWarpper>
                         )}

@@ -11,7 +11,8 @@ const FormAction = styled('div')`
     padding-top: 2rem;
     width: 100%;
     display: flex;
-    justify-content: space-between flex-end;
+    justify-content: space-between;
+    align-items: flex-end;
 `;
 const Title = styled('h1')`
     font-size: 4rem;
