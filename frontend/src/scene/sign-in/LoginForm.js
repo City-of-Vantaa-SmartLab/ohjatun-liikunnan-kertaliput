@@ -83,7 +83,9 @@ class LoginForm extends React.Component {
                         {content.signIn.form.viewWithoutLogin}
                     </Link>
                     <Link to="/register">{content.signIn.form.register}</Link>
-                    <Link to="#">{content.signIn.form.forgotPassword}</Link>
+                    <Link to="/reset-pin">
+                        {content.signIn.form.forgotPassword}
+                    </Link>
                 </FormLink>
             </Form>
         );

@@ -12,19 +12,20 @@
                 "pinCode": "PIN-koodi",
                 "pinCodeIsWrong": "PIN-koodi on väärä",
                 "register": "Luo uusi tili",
-                "forgotPassword": "Unohtuiko salasana?",
+                "forgotPassword": "Unohtuiko PIN-koodi?",
                 "viewWithoutLogin": "Jatka kirjautumatta"
             }
         },
         "registrationForm": {
             "title": "Luo uusi käyttäjätili",
-            "errorMessage": "Uuden tilin luonti epäonnistui. Yritä uudelleen",
+            "errorMessage":
+                "Uuden tilin luontiepäonnistui. Tarkista puhelinnumero ja yritä uudelleen",
             "hasAccountPrompt": "Onko sinulla jo tili?",
             "welcome": "Tervetuloa",
             "congratulationMessage":
-                "Onneksi olkoon! Tilin luominen onnistui. PIN-koodisi on lähetetty antamaasi puhelinnumeroon",
+                "Onneksi olkoon! Tilin luominen onnistui. PIN-koodisi on lähetetty tekstiviestillä numeroon {phoneNumber}.",
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
-            "submit": "Lähetä tiedot"
+            "submit": "Luo uusi käyttäjätili"
         },
         "appHeader": {
             "logout": "Kirjaudu ulos",
@@ -45,6 +46,15 @@
                 "reserved": "Olet jo ilmoittautunut tunnille",
                 "auth": "Kirjaudu sisään tunnin varaamista varten"
             }
+        },
+        "resetPinForm": {
+            "title": "Lähetä uusi PIN-koodi",
+            "errorMessage": "Salasanan nollaus epäonnistui. Yritä uudelleen",
+            "welcome": "Palauta valmis",
+            "congratulationMessage":
+                "PIN-koodi on pudonnut. Uusi PIN-koodi on lähetetty puhelinnumerosi Syötä nelinumeroinen PIN-koodi",
+            "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
+            "submit": "Lähetä"
         }
     }
 }
