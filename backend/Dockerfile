@@ -1,4 +1,4 @@
 FROM node:8.10
-WORKDIR /app
-ADD . /app
+WORKDIR /backend
+ADD . /backend
 RUN npm install
