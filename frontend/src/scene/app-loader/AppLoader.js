@@ -24,8 +24,8 @@ const AnimatablePath = posed.path({
         fillOpacity: 1,
         transition: (props) => {
             if (props.key === 'strokeDashoffset')
-                return tween({ ...props, duration: 3000 });
-            else return chain(delay(1200), tween({ ...props, duration: 1000 }));
+                return tween({ ...props, duration: 1500 });
+            else return chain(delay(500), tween({ ...props, duration: 800 }));
         },
     },
     preEnter: {
@@ -60,7 +60,7 @@ class AppLoader extends Component {
         show: true,
     };
     componentDidMount() {
-        window.setTimeout(() => this.setState({ show: false }), 2500);
+        window.setTimeout(() => this.setState({ show: false }), 1500);
     }
     componentDidUpdate() {
         if (!this.state.show)
