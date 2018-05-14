@@ -55,6 +55,12 @@
                 "PIN-koodi on pudonnut. Uusi PIN-koodi on lähetetty puhelinnumerosi Syötä nelinumeroinen PIN-koodi",
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
             "submit": "Lähetä"
+        },
+        "balanceView": {
+            "sectionTitle": "Saldosi",
+            "topUp": "Lataa saldoa",
+            "amount": "Syötä määrä (enintään 50 euroa)",
+            "confirm": "Lataa Saldoa"
         }
     }
 }

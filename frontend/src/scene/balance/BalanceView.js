@@ -14,7 +14,7 @@ const Content = styled(ModalContent)`
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: baseline;
     align-items: center;
     flex-direction: column;
     margin-top: 10rem;
@@ -89,10 +89,20 @@ const InputField = styled(DefaultInputField)`
 class BalanceView extends Component {
     state = {
         showForm: false,
+        amount: 0,
     };
+
+    showForm = () => this.setState({ showForm: true });
+    setAmount = (e) => this.setState({ amount: e.target.value });
+    onConfirm = (e) => {
+        e.preventDefault();
+        this.props.userStore.requestAddBalance(this.state.amount);
+    };
+
     render() {
         const showForm = this.state.showForm;
         const balance = this.props.userStore.balance;
+        const i18nContent = this.props.i18nStore.content.balanceView;
         return (
             <Modal
                 show={this.props.show}
@@ -103,16 +113,11 @@ class BalanceView extends Component {
             >
                 <Content>
                     <BalanceInfoArea pose={showForm ? 'show' : 'normal'}>
-                        <Title>Your balance</Title>
+                        <Title>{i18nContent.sectionTitle}</Title>
                         <span>{balance} €</span>
                         {!showForm && (
-                            <Button
-                                bold
-                                onClick={() =>
-                                    this.setState({ showForm: true })
-                                }
-                            >
-                                Top up
+                            <Button bold onClick={this.showForm}>
+                                {i18nContent.topUp}
                             </Button>
                         )}
                     </BalanceInfoArea>
@@ -121,28 +126,18 @@ class BalanceView extends Component {
                             <FormWarpper style={{ margin: 0, width: '90%' }}>
                                 <Form key="1">
                                     <InputField>
-                                        <label htmlFor="amount">Amount</label>
+                                        <label htmlFor="amount">
+                                            {i18nContent.amount}
+                                        </label>
                                         <Input
                                             type="number"
                                             defaultValue="0"
                                             value={this.state.amount}
-                                            onChange={(e) =>
-                                                this.setState({
-                                                    amount: e.target.value,
-                                                })
-                                            }
+                                            onChange={this.setAmount}
                                         />
                                     </InputField>
-                                    <Button
-                                        bold
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            this.props.userStore.requestAddBalance(
-                                                this.state.amount
-                                            );
-                                        }}
-                                    >
-                                        Go!
+                                    <Button bold onClick={this.onConfirm}>
+                                        {i18nContent.confirm}!
                                     </Button>
                                 </Form>
                             </FormWarpper>
@@ -154,4 +149,4 @@ class BalanceView extends Component {
     }
 }
 
-export default connect('userStore')(BalanceView);
+export default connect('userStore', 'i18nStore')(BalanceView);
