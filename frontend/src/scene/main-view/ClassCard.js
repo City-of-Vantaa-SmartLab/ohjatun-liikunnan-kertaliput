@@ -77,7 +77,7 @@ const CardWrapper = styled(ItemAnimation)`
 const ErrorMessage = styled(ErrorMessageAnimation)`
     text-align: center;
     font-size: 2.5rem;
-    color: ${(props) => props.theme.main};
+    color: white;
     opacity: 0;
     position: absolute;
     top: 30%;
@@ -200,6 +200,7 @@ const Card = class extends React.Component {
                 {...rest}
                 blur={blurAndShowMessage}
                 onMouseEnter={() => this.setState({ showMessage: true })}
+                onTouchStart={() => this.setState({ showMessage: true })}
                 onMouseLeave={() => this.setState({ showMessage: false })}
             >
                 <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>

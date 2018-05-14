@@ -20,6 +20,7 @@ class BalanceViewState {
         this.formShown = false;
     }
     setAmount(amount) {
+        if (this.formIncorrect) return;
         this.amount = amount;
     }
     startValidate() {
