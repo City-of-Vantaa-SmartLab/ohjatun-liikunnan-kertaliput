@@ -14,6 +14,7 @@ const theme = {
     main: '#2979FF',
     complementary: '#FFEB3B',
     green: '#66BB6A',
+    error: '#F44336',
 };
 const { i18nStore, userStore, courseStore } = stores;
 

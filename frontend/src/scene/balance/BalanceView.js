@@ -9,6 +9,7 @@ import {
 } from '../../components/form';
 import posed, { PoseGroup } from 'react-pose';
 import { connect } from 'utils';
+import BalanceViewState from './state';
 
 const Content = styled(ModalContent)`
     width: 100%;
@@ -87,20 +88,17 @@ const InputField = styled(DefaultInputField)`
 `;
 
 class BalanceView extends Component {
-    state = {
-        showForm: false,
-        amount: 0,
-    };
+    state = new BalanceViewState();
 
-    showForm = () => this.setState({ showForm: true });
-    setAmount = (e) => this.setState({ amount: e.target.value });
+    setAmount = (e) => this.state.setAmount(e.target.value);
     onConfirm = (e) => {
         e.preventDefault();
+        if (this.state.formIncorrect) return;
         this.props.userStore.requestAddBalance(this.state.amount);
     };
 
     render() {
-        const showForm = this.state.showForm;
+        const formShown = this.state.formShown;
         const balance = this.props.userStore.balance;
         const i18nContent = this.props.i18nStore.content.balanceView;
         return (
@@ -108,35 +106,45 @@ class BalanceView extends Component {
                 show={this.props.show}
                 onClear={() => {
                     this.props.onClear();
-                    this.setState({ showForm: false });
+                    this.state.hideForm();
                 }}
             >
                 <Content>
-                    <BalanceInfoArea pose={showForm ? 'show' : 'normal'}>
+                    <BalanceInfoArea pose={formShown ? 'show' : 'normal'}>
                         <Title>{i18nContent.sectionTitle}</Title>
                         <span>{balance} €</span>
-                        {!showForm && (
-                            <Button bold onClick={this.showForm}>
+                        {!formShown && (
+                            <Button bold onClick={this.state.showForm}>
                                 {i18nContent.topUp}
                             </Button>
                         )}
                     </BalanceInfoArea>
                     <PoseGroup animateOnMount>
-                        {showForm && (
-                            <FormWarpper style={{ margin: 0, width: '90%' }}>
-                                <Form key="1">
-                                    <InputField>
+                        {formShown && (
+                            <FormWarpper
+                                key="1"
+                                style={{ margin: 0, width: '90%' }}
+                            >
+                                <Form>
+                                    <InputField
+                                        error={this.state.formIncorrect}
+                                    >
                                         <label htmlFor="amount">
                                             {i18nContent.amount}
                                         </label>
                                         <Input
+                                            name="amount"
+                                            onFocus={this.state.startValidate}
                                             type="number"
-                                            defaultValue="0"
                                             value={this.state.amount}
                                             onChange={this.setAmount}
                                         />
                                     </InputField>
-                                    <Button bold onClick={this.onConfirm}>
+                                    <Button
+                                        bold
+                                        onClick={this.onConfirm}
+                                        disabled={this.state.formIncorrect}
+                                    >
                                         {i18nContent.confirm}!
                                     </Button>
                                 </Form>

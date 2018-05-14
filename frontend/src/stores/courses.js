@@ -60,15 +60,20 @@ class courseStore {
             // schedule this checking every 5 seconds
             // when browser is idle, to avoid hagging resources for UI
             window.setTimeout(() => {
-                window.requestIdleCallback(
-                    () => {
-                        this.checkAvailability();
-                        checkEvery5Sec();
-                    },
-                    {
-                        timeout: Infinity,
-                    }
-                );
+                if (window.requestIdleCallback)
+                    window.requestIdleCallback(
+                        () => {
+                            this.checkAvailability();
+                            checkEvery5Sec();
+                        },
+                        {
+                            timeout: Infinity,
+                        }
+                    );
+                else {
+                    this.checkAvailability();
+                    checkEvery5Sec();
+                }
             }, 5000);
         };
 
