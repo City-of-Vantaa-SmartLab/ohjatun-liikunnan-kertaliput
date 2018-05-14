@@ -60,7 +60,7 @@ class AppLoader extends Component {
         show: true,
     };
     componentDidMount() {
-        window.setTimeout(() => this.setState({ show: false }), 2000);
+        window.setTimeout(() => this.setState({ show: false }), 2500);
     }
     componentDidUpdate() {
         if (!this.state.show)
