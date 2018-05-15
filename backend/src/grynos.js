@@ -1,14 +1,15 @@
-const db = require('./sequalize_pg');
+const sequelize = require('./sequalize_pg');
 const axios = require('axios');
 const models = require('./models');
+const db = require('./db');
 
 const url = process.env.GRYNOS_COURSE_API_URL;
+const courseDetailUrl = process.env.GRYNOS_COURSE_DETAILS_API_URL;
 
 const mapCourseFromGrynos = (course) => ({
     id: course.id,
     code: course.code,
     name: course.name,
-    description: course.description,
     descriptionInternet: course.descriptionInternet,
     price: course.price,
     priceMaterial: course.priceMaterial,
@@ -26,16 +27,40 @@ const mapCourseFromGrynos = (course) => ({
     location: course.location,
 });
 
-const fetchCourses = async () => {
+const mapCourseDetailsFromGrynos = async (course) => {
+    const courseDetails = await axios(courseDetailUrl + course.code);
+    return {
+        ...course,
+        description: courseDetails.data.description,
+        single_payment_count: courseDetails.data.singlePaymentCount,
+        company_name: courseDetails.data.companyName,
+        course_type_id: courseDetails.data.courseTypeID,
+        course_type_name: courseDetails.data.courseTypeName,
+        teacher: courseDetails.data.teacher,
+    };
+};
+
+const fetchCoursesFromGrynos = async () => {
     const response = await axios(url);
     if (response.data.course) {
-        return response.data.course.map(mapCourseFromGrynos);
+        return await Promise.all(
+            response.data.course
+                .map(mapCourseFromGrynos)
+                .map(mapCourseDetailsFromGrynos)
+        );
     }
 };
 
 const updateCoursesToDb = async () => {
     try {
-        const courses = await fetchCourses();
+        await sequelize.sync();
+        let courses = await fetchCoursesFromGrynos();
+        const dbCourses = await db.courses.getAllCourses();
+
+        courses = courses.filter(
+            (course) => !dbCourses.find((dbCourse) => course.id === dbCourse.id)
+        );
+
         if (courses) {
             return await Promise.all(
                 courses.map((course) => {
@@ -55,4 +80,8 @@ const updateCoursesToDb = async () => {
     }
 };
 
-module.exports = { mapCourseFromGrynos, fetchCourses, updateCoursesToDb };
+module.exports = {
+    mapCourseFromGrynos,
+    fetchCoursesFromGrynos,
+    updateCoursesToDb,
+};

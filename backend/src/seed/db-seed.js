@@ -1,4 +1,4 @@
-const data = require('./mockdata.json');
+const data = require('./mockdata.js').courses;
 const db = require('../sequalize_pg');
 const models = require('../models');
 const mapCourseFromGrynos = require('../grynos').mapCourseFromGrynos;

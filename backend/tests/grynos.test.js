@@ -1,27 +1,31 @@
 const seed = require('../src/seed/db-seed');
 const db = require('../src/db');
 const mockData = require('./testdata');
+const datefns = require('date-fns');
 describe('getCourses API call', () => {
     beforeAll(() => {
         return seed.loadMockCoursesToDatabase();
     });
 
     test('should load course data', async () => {
-        const courses = await db.courses.getCourses('2018-05-02', '2018-05-19');
+        const startRange = new Date();
+        const endRange = datefns.addDays(new Date(), 8);
+        let courses = await db.courses.getCourses(startRange, endRange);
+        courses = courses.sort((a, b) => a.id - b.id);
         expect(courses).not.toBeNull();
-        expect(courses).toHaveLength(20);
+        expect(courses).toHaveLength(24);
         const courseObj = courses[0];
-        expect(courseObj.name).toEqual('Englantia perustasolla A1+/A2');
-        expect(courseObj.price).toEqual(6);
+        expect(courseObj.name).toEqual('English Course');
+        expect(courseObj.price).toEqual(86);
         expect(courseObj.location).toHaveLength(1);
         expect(courseObj.teachingSession).toHaveLength(1);
     });
 
     test('should load course by Id', async () => {
-        const course = await db.courses.getCourseById('1');
+        const course = await db.courses.getCourseById('2');
         expect(course).not.toBeNull();
-        expect(course.name).toEqual('Englantia perustasolla A1+/A2');
-        expect(course.price).toEqual(86);
+        expect(course.name).toEqual('Zumba Class');
+        expect(course.price).toEqual(76);
         expect(course.location).toHaveLength(1);
         expect(course.teachingSession).toHaveLength(1);
     });

@@ -76,43 +76,54 @@ const getReservationForEvent = (eventId, userId) => {
 };
 
 const cancelReservation = async (reservationId) => {
-    return await models.reservations
-        .update(
-            {
-                bookingStatus: 0,
-            },
-            {
-                where: { id: reservationId },
-            }
-        )
-        .then(async () => {
-            const reservation = await getReservationById(reservationId);
-            const userId = reservation.userId;
-            const balance =
-                (await getUserBalance(userId)) + reservation.ticketPrice;
-            updateUserBalance(userId, balance);
-        });
+    return db.transaction(async (transaction) => {
+        return await models.reservations
+            .update(
+                {
+                    bookingStatus: 0,
+                },
+                {
+                    where: { id: reservationId },
+                },
+                {
+                    transaction,
+                }
+            )
+            .then(async () => {
+                const reservation = await getReservationById(reservationId);
+                const userId = reservation.userId;
+                const balance =
+                    (await getUserBalance(userId)) + reservation.ticketPrice;
+                updateUserBalance(userId, balance, transaction);
+            });
+    });
 };
 
 const createReservation = async (reservation) => {
-    return await models.reservations
-        .create(reservation)
-        .then(async (createReservation) => {
-            const userId = createReservation.userId;
-            const balance =
-                (await getUserBalance(userId)) - createReservation.ticketPrice;
-            await updateUserBalance(userId, balance);
-            return createReservation;
-        });
+    return db.transaction(async (transaction) => {
+        return await models.reservations
+            .create(reservation, transaction)
+            .then(async (createReservation) => {
+                const userId = createReservation.userId;
+                const balance =
+                    (await getUserBalance(userId)) -
+                    createReservation.ticketPrice;
+                await updateUserBalance(userId, balance, transaction);
+                return createReservation;
+            });
+    });
 };
 
-const updateUserBalance = (userId, balance) => {
+const updateUserBalance = (userId, balance, transaction) => {
     return models.users.update(
         {
             balance,
         },
         {
             where: { id: userId },
+        },
+        {
+            transaction,
         }
     );
 };

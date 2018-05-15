@@ -4,6 +4,7 @@ const router = express.Router();
 const db = require('../db');
 const auth = require('../auth');
 const utils = require('../utils');
+const sequalize = require('../sequalize_pg');
 
 const BamboraReturnCodes = {
     SUCCESS: '0',
@@ -12,17 +13,19 @@ const BamboraReturnCodes = {
 const addBalance = async (req, res) => {
     try {
         const amount = +req.query.amount;
-        let paymentObj = {};
-        paymentObj.amount = amount;
-        const validationErrors = utils.payments.validateAmount(
-            +paymentObj.amount
-        );
+
+        const validationErrors = utils.payments.validateAmount(amount);
         if (validationErrors) {
             return res.status(422).json(validationErrors);
         }
         const dbUser = await db.users.getUser(req.user.phoneNumber);
-        paymentObj.userId = dbUser.id;
-        paymentObj.username = dbUser.username;
+
+        const paymentObj = {
+            amount,
+            userId: dbUser.id,
+            username: dbUser.username,
+        };
+
         const url = await services.payments.getPaymentRedirectUrl(paymentObj);
         res.redirect(url);
     } catch (err) {
@@ -49,9 +52,17 @@ const paymentReturn = async (req, res) => {
         await db.payments.updatePaymentStatus(ordernumber, req.query.SETTLED);
         const dbUser = await db.users.getUserById(payment.userId);
         const newBalance = payment.amount + dbUser.balance;
-        await db.reservations.updateUserBalance(dbUser.id, newBalance);
+        sequalize.transaction(async (transaction) => {
+            await db.reservations.updateUserBalance(
+                dbUser.id,
+                newBalance,
+                transaction
+            );
+        });
         const balance = await db.reservations.getUserBalance(dbUser.id);
-        res.redirect(`/payment-complete?ordernumber=${ordernumber}`);
+        res.redirect(
+            `/payment-complete?ordernumber=${ordernumber}&balance=${balance}`
+        );
     } else {
         res.status(422).json(`Payment failed. Please try again later`);
     }

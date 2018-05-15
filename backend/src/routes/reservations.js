@@ -60,17 +60,16 @@ const createReservation = async (req, res) => {
             );
 
             if (existingEvent) {
-                res.send(422).json(i18n.reservations.errorMessages.eventExists);
-                return;
+                return res
+                    .send(422)
+                    .json(i18n.reservations.errorMessages.eventExists);
             }
 
             if (bookingLimitReached) {
-                res.status(400).json(bookingLimitReached);
-                return;
+                return res.status(400).json(bookingLimitReached);
             }
             if (notEnoughBalance) {
-                res.status(422).json(notEnoughBalance);
-                return;
+                return res.status(422).json(notEnoughBalance);
             }
 
             await db.reservations.createReservation(reservationObj);

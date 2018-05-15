@@ -14,7 +14,6 @@ const grynosUpdateInterval =
     process.env.GRYNOS_COURSES_UPDATE_INTERVAL || 3600000;
 const populateSeedData = process.env.POPULATE_SEED_DATA === '1';
 
-updateCoursesToDb();
 setInterval(updateCoursesToDb, grynosUpdateInterval);
 
 const server = express();
@@ -37,7 +36,7 @@ server.get('*', (req, res) => {
 
 const dbPopulation = populateSeedData
     ? loadMockCoursesToDatabase()
-    : db.sync({ force: false });
+    : updateCoursesToDb();
 dbPopulation.then(() => {
     server.listen(port, () => console.log(`Server running on ${port}`));
 });
