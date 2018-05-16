@@ -72,7 +72,6 @@ class AppHeader extends React.Component {
             )
                 .pipe(Math.round)
                 .start((v) => {
-                    console.log('HIx');
                     try {
                         this.balanceButton.textContent = '€ ' + v;
                     } catch (error) {
