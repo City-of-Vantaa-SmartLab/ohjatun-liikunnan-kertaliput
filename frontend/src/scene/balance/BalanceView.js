@@ -105,8 +105,8 @@ class BalanceView extends Component {
             <Modal
                 show={this.props.show}
                 onClear={() => {
-                    this.props.onClear();
                     this.state.hideForm();
+                    this.props.onClear();
                 }}
             >
                 <Content>
