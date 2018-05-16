@@ -10,7 +10,9 @@ const myFetch = async (url, config = {}) => {
         body: JSON.stringify(config.body),
     });
     if (response.status >= 200 && response.status < 300) {
-        if (response.redirected) window.location.href = response.url;
+        if (response.type === 'cors') {
+            window.location.href = response.url;
+        }
         try {
             return await response.json();
         } catch (error) {
