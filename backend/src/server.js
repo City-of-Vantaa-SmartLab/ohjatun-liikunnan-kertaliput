@@ -24,13 +24,16 @@ server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieParser(auth.secret));
 server.use(auth.resolveUser);
 
+server.use(/^\/$/, (req, res) => {
+    res.redirect('/app/');
+});
 server.use('/api/', require('./routes/index'));
 
 server.use(
+    '/app/',
     express.static(path.join(__dirname, '..', 'public'), { maxAge: 600000 })
 );
-
-server.get('*', (req, res) => {
+server.get('/app/**', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 

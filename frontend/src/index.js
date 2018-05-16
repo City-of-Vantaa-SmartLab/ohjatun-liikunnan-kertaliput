@@ -17,9 +17,8 @@ const theme = {
     error: '#F44336',
 };
 const { i18nStore, userStore, courseStore } = stores;
-
 const Root = () => (
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
         <Provider
             i18nStore={i18nStore}
             userStore={userStore}
