@@ -8,9 +8,9 @@
             "form": {
                 "tel": "Puhelinnumero",
                 "name": "Etunimi",
-                "telIsWrong": "Puhelinnumero on väärä",
+                "telIsWrong": "Tarkista puhelinnumero",
                 "pinCode": "PIN-koodi",
-                "pinCodeIsWrong": "PIN-koodi on väärä",
+                "pinCodeIsWrong": "Tarkista PIN-koodi",
                 "register": "Luo uusi tili",
                 "forgotPassword": "Unohtuiko PIN-koodi?",
                 "viewWithoutLogin": "Jatka kirjautumatta"

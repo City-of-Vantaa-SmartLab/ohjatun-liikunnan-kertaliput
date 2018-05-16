@@ -143,11 +143,7 @@ class userStore {
         if (this.authenticationFailed) {
             this.pinCodeIsSet = false;
             this.isAuthenticating = false;
-
-            window.setTimeout(() => {
-                this.authenticationFailed = false;
-                this.pinCode = DEFAULT_PIN;
-            }, 1500);
+            this.pinCode = DEFAULT_PIN;
         }
     });
     authenticationSuccessfulReaction = autorun(() => {
