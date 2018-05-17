@@ -142,9 +142,13 @@ class userStore {
     });
     authenticationFailedReaction = autorun(() => {
         if (this.authenticationFailed) {
-            this.pinCodeIsSet = false;
             this.isAuthenticating = false;
-            this.pinCode = DEFAULT_PIN;
+            // this effect is delay after 1 seconds
+            window.setTimeout(() => {
+                this.authenticationFailed = false;
+                this.pinCodeIsSet = false;
+                this.pinCode = DEFAULT_PIN;
+            }, 1000);
         }
     });
     authenticationSuccessfulReaction = autorun(() => {
