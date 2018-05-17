@@ -47,7 +47,7 @@ export const InputField = styled('div')`
         input {
             animation: ${shake} 1s ease 1;
             background-color: ${props.theme.error} !important;
-            color: white;
+            text-shadow: 0 0 1px white;
         }
         label {
             color: ${props.theme.error} !important;

@@ -14,7 +14,7 @@ export const getLocale = () => {
 export const toStringFromObject = (obj) => Object.values(obj).join('');
 
 export const processPhoneNumber = (phoneNumber) =>
-    phoneNumber.replace(/^0/, '+358').replace(/\s/g, '');
+    phoneNumber ? phoneNumber.replace(/^0/, '+358').replace(/\s/g, '') : '';
 
 export const serialize = (
     serializableTarget = {},
