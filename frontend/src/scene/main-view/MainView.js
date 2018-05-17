@@ -4,7 +4,6 @@ import FilterGroup from './FilterGroup';
 import ClassCard from './ClassCard';
 import AppHeader from './AppHeader';
 import CourseModal from './CourseModal';
-import ConfirmationModal from './ConfirmationModal';
 import PaymentView from '../payment';
 import { connect } from 'utils';
 
@@ -22,7 +21,6 @@ class MainView extends React.Component {
                 <FilterGroup />
                 <ClassCard />
                 <CourseModal />
-                <ConfirmationModal />
                 <PaymentView />
             </Wrapper>
         );

@@ -3,7 +3,9 @@ import styled from 'react-emotion';
 import { connect, getLocale } from 'utils';
 import Modal, { Content, Title } from '../../components/modal';
 import LocationIcon from '../../common/LocationIcon';
+import DateLogo from '../../common/DateLogo';
 import ClockLogo from '../../common/ClockLogo';
+import EuroLogo from '../../common/EuroLogo';
 import Button from '../../common/Button';
 import dateFns from 'date-fns';
 
@@ -36,11 +38,10 @@ const CourseContent = styled(Content)`
         }
     }
 `;
-const PaymentSection = styled(Content)`
+const BottomSection = styled(Content)`
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(to top, transparent, white 40%);
+    flex-wrap: wrap;
+    justify-content: center;
 
     & > div {
         width: 100%;
@@ -71,84 +72,222 @@ const PaymentSection = styled(Content)`
     }
     & > button {
         background-color: ${(props) => props.theme.complementary};
-        margin: 2rem;
+        color: rgba(0, 0, 0, 0.7);
+        margin-top: 2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
         border: none !important;
         box-shadow: none !important;
         padding: 2rem;
 
         &: hover {
             background-color: ${(props) => props.theme.complementary};
-            color: white;
+            color: rgba(0, 0, 0, 0.7);
         }
     }
 `;
 
+const ReservationContent = styled(Content)`
+    height: 100%;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10rem;
+
+    strong {
+        position: relative;
+        padding-top: 4rem;
+    }
+
+    span {
+        padding-top: 2rem;
+        font-size: 6rem;
+        font-family: GT-Walsheim, sans-serif;
+        color: ${(props) => props.theme.main};
+    }
+
+    div {
+        padding-top: 4rem;
+        font-size: 2rem;
+        text-align: center;
+    }
+`;
+
+const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
+    <Modal show={course} onClear={clear}>
+        {course && (
+            <Fragment>
+                <CourseContent>
+                    <Title>{course.name}</Title>
+                    <ul>
+                        <li>
+                            <LocationIcon />
+                            {course.location}
+                        </li>
+                        <li>
+                            <DateLogo />
+                            <strong>
+                                {dateFns.format(seletectedDate, 'DD.MM.YYYY')}
+                            </strong>
+                        </li>
+                        <li>
+                            <ClockLogo />
+                            <strong>
+                                {dateFns.format(course.startDate, 'HH:MM')} -
+                                {dateFns.format(course.endDate, 'HH:MM')}
+                            </strong>
+                        </li>
+                    </ul>
+                    <p>{course.description}</p>
+                </CourseContent>
+                <BottomSection>
+                    <div>
+                        <div>
+                            <span>
+                                Kesto{' '}
+                                {dateFns.distanceInWords(
+                                    course.endDate,
+                                    course.startDate,
+                                    { locale: getLocale() }
+                                )}
+                            </span>
+                            <span>3 vapaana</span>
+                        </div>
+                        <span>{course.price} €</span>
+                    </div>
+                    <Button onClick={onConfirm}>Varaa</Button>
+                </BottomSection>
+            </Fragment>
+        )}
+    </Modal>
+);
+
+const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
+    <Modal show={course} onClear={clear}>
+        {course && (
+            <Fragment>
+                <CourseContent>
+                    <Title>Vahvista Varaus</Title>
+                    <ul>
+                        <li>Olet varaamassa kurssia:</li>
+                        <li>
+                            <strong>{course.name}</strong>
+                        </li>
+                        <li>
+                            <LocationIcon />
+                            {course.location}
+                        </li>
+                        <li>
+                            <DateLogo />
+                            {dateFns.format(seletectedDate, 'DD.MM.YYYY')}
+                        </li>
+                        <li>
+                            <ClockLogo />
+                            {dateFns.format(course.startDate, 'HH:MM')} -
+                            {dateFns.format(course.endDate, 'HH:MM')}
+                        </li>
+                        <li>
+                            <EuroLogo />
+                            <strong>{course.price}</strong>
+                        </li>
+                    </ul>
+                    <p>{course.description}</p>
+                </CourseContent>
+                <BottomSection>
+                    <Button onClick={clear}>Keskeytä</Button>
+                    <Button onClick={() => reserve(course)}>Vahvista</Button>
+                </BottomSection>
+            </Fragment>
+        )}
+    </Modal>
+);
+
+const ReservationModal = ({ course, seletectedDate, clear }) => (
+    <Modal show={course} onClear={clear}>
+        {course && (
+            <Fragment>
+                <ReservationContent>
+                    <Title>Varaus Onnistui</Title>
+                    <strong>Varasit tunnin hintaan</strong>
+                    <span>{course.price} €</span>
+                    <div>
+                        Saat varauksesta tekstiviestivahvistuksen puhelimeesi
+                    </div>
+                </ReservationContent>
+                <BottomSection>
+                    <Button onClick={clear}>Sulje</Button>
+                </BottomSection>
+            </Fragment>
+        )}
+    </Modal>
+);
+
 class CourseModal extends React.Component {
-    clear = (e) => {
-        this.props.courseStore.selectCourse(null);
+    state = {
+        showDetails: true,
+        showConfirm: false,
+        showReserve: false,
+        reservedCourse: null,
     };
+
+    clear = () => {
+        this.props.courseStore.selectCourse(null);
+        this.setState({
+            showDetails: true,
+            showConfirm: false,
+            showReserve: false,
+        });
+    };
+
+    onConfirm = () => {
+        this.setState({
+            showDetails: false,
+            showConfirm: true,
+            showReserve: false,
+        });
+    };
+
+    reserve = (course) => {
+        this.props.courseStore.reserveCourse(course);
+        this.setState({
+            showDetails: true,
+            showConfirm: false,
+            showReserve: true,
+            reservedCourse: course,
+        });
+    };
+
     render() {
+        const seletectedDate = this.props.courseStore.filters.date;
         const course = this.props.courseStore.courseInFocus;
         const i18nContent = this.props.i18nStore.content;
         return (
-            <Modal show={course || false} onClear={this.clear}>
-                {course && (
-                    <Fragment>
-                        <CourseContent>
-                            <Title>{course.name}</Title>
-                            <ul>
-                                <li>
-                                    <LocationIcon />
-                                    {course.location}
-                                </li>
-                                <li>
-                                    <strong>
-                                        {dateFns.format(
-                                            course.startDate,
-                                            i18nContent.courseDescriptionForm
-                                                .dateFormat
-                                        )}
-                                    </strong>
-                                </li>
-                                <li>
-                                    <ClockLogo />
-                                    <strong>
-                                        {dateFns.format(
-                                            course.startDate,
-                                            'HH:MM'
-                                        )}
-                                    </strong>
-                                    - {dateFns.format(course.endDate, 'HH:MM')}
-                                </li>
-                            </ul>
-                            <p>{course.description}</p>
-                        </CourseContent>
-                        <PaymentSection>
-                            <div>
-                                <div>
-                                    <span>
-                                        Kesto{' '}
-                                        {dateFns.distanceInWords(
-                                            course.endDate,
-                                            course.startDate,
-                                            { locale: getLocale() }
-                                        )}
-                                    </span>
-                                    <span>3 vapaana</span>
-                                </div>
-                                <span>{course.price}€</span>
-                            </div>
-                            <Button
-                                onClick={() =>
-                                    this.props.courseStore.reserveCourse(course)
-                                }
-                            >
-                                {i18nContent.courseDescriptionForm.dismiss}
-                            </Button>
-                        </PaymentSection>
-                    </Fragment>
+            <div>
+                {this.state.showDetails && (
+                    <MainModal
+                        course={course}
+                        seletectedDate={seletectedDate}
+                        onConfirm={this.onConfirm}
+                        clear={this.clear}
+                    />
+                )},
+                {this.state.showConfirm && (
+                    <ConfirmationModal
+                        course={course}
+                        seletectedDate={seletectedDate}
+                        reserve={this.reserve}
+                        clear={this.clear}
+                    />
+                )},
+                {this.state.showReserve && (
+                    <ReservationModal
+                        course={this.state.reservedCourse}
+                        seletectedDate={seletectedDate}
+                        clear={this.clear}
+                    />
                 )}
-            </Modal>
+            </div>
         );
     }
 }

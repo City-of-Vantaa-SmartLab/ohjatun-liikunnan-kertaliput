@@ -53,7 +53,6 @@ class courseStore {
         date: new Date(), // today
     };
     courseInFocus = null;
-    reservedCourse = null;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -145,10 +144,6 @@ class courseStore {
         this.courseInFocus = course;
     }
 
-    clearReservedCourseList() {
-        this.reservedCourse = null;
-    }
-
     async reserveCourse(course) {
         try {
             const reservation = await reserveTicket({
@@ -158,7 +153,6 @@ class courseStore {
             this.rootStore.userStore.setBalance(course.price);
             this.rootStore.userStore.reservedCourses.push(reservation);
             this.selectCourse(null);
-            this.reservedCourse = course;
             this.checkAvailability();
             // @TODO: handle failure states: Error messages, etc
         } catch (error) {
@@ -180,10 +174,8 @@ export default decorate(courseStore, {
     isFetchingCourses: observable,
     fetchCourse: action.bound,
     courseInFocus: observable,
-    reservedCourse: observable,
     filters: observable,
     useMockCourse: observable,
     checkAvailability: action,
     reserveCourse: action,
-    clearReservedCourseList: action,
 });
