@@ -45,7 +45,7 @@
                 "openTime": {
                     "longMessage":
                         "Ilmoittautuminen aukeaa {date} kello {time}",
-                    "shortMessage": "Ei auki vielä"
+                    "shortMessage": "Avautuu myöhemmin"
                 },
                 "closeTime": {
                     "longMessage": "Ilmoittautuminen on päättynyt",
@@ -53,11 +53,11 @@
                 },
                 "resource": {
                     "longMessage": "Ei tarpeeksi saldoa",
-                    "shortMessage": "Riittämätön raha"
+                    "shortMessage": "Saldo ei riitä"
                 },
                 "reserved": {
                     "longMessage": "Olet jo ilmoittautunut tunnille",
-                    "shortMessage": "Varattu"
+                    "shortMessage": "Olet jo ilmoittautunut"
                 },
                 "auth": {
                     "longMessage": "Kirjaudu sisään tunnin varaamista varten",
