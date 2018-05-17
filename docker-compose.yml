@@ -26,6 +26,7 @@ services:
       PASSWORD: password
       DATABASE: vantaa_pwa
       HOST: postgres-dev-db
+      POPULATE_SEED_DATA: 1
 
   postgres-dev-db:
     image: postgres:10.3

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import dateFns from 'date-fns';
 import { connect } from 'utils';
-import Button from '../../common/Button';
+import Button from '../../components/button';
 import NotFoundIcon from '../../common/NotFoundIcon';
 import posed, { PoseGroup } from 'react-pose';
 import { Link } from 'react-router-dom';
@@ -55,16 +55,19 @@ const ScrollContainer = styled(AnimationCoordinator)`
 `;
 const CardWrapper = styled(ItemAnimation)`
     width: 100%;
-    background-color: white;
-    margin: 1px 0;
+    background-color: ${(props) =>
+        props.blur ? props.theme[props.errorColorCode] : 'white'};;
+    border-bottom: 1px #EBEBEB solid;
     padding: 2rem 0;
     color: rgba(0, 0, 0, 0.86);
-    transition: background-color 0.5s ease;
+    transition: background-color 0.5s ease, border 0.5s ease;
     overflow: hidden;
-    ${(props) => props.blur && `background-color: rgba(200,200,200, .1)`};
+    ${(props) =>
+        props.errorColorCode &&
+        `border-left 5px ${props.theme[props.errorColorCode]} solid`}
     }
-
     & > div {
+        will-change: filter;
         transition: filter 0.5s ease, transform 0.5s ease;
         display: flex;
         width: 100%;
@@ -105,41 +108,44 @@ const TimeArea = styled('div')`
         font-weight: bold;
     }
 `;
-
+// @TODO: Styling is quite bad with specificity issue
 const CourseArea = styled('div')`
     padding-left: 2rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 2rem;
 
-    span:first-child {
+    strong {
         font-size: 2.5rem;
         font-weight: bold;
         color: rgba(0, 0, 0, 0.86);
+        margin-bottom: 1.5rem;
     }
 
-    span {
+    > span {
         font-size: 2rem;
-        display: block;
         margin-bottom: 1.5rem;
     }
     div {
-        span {
-            display: inline-block;
-            width: 10rem;
-            color: ${(props) => props.theme.main};
-            text-transform: uppercase;
-            font-size: 2.5rem;
-        }
-        button {
-            background-color: ${(props) => props.theme.complementary};
-            color: rgba(0, 0, 0, 0.7);
-            border: none;
-            padding: 2rem;
-            font-size: 2rem;
-        }
+        display: flex;
+        height: 3rem;
+        align-items: center;
     }
+`;
+const BookingButton = styled(Button)`
+    background-color: ${(props) => props.theme.complementary};
+    color: rgba(0, 0, 0, 0.7);
+    border: none;
+    padding: 2rem;
+    font-size: 2rem;
+`;
+const PriceTag = styled('span')`
+    display: inline-block;
+    width: 10rem;
+    color: ${(props) => props.theme.main};
+    text-transform: uppercase;
+    font-size: 2.7rem;
+    font-weight: bold;
 `;
 
 const EmptyStateContainer = styled(AnimationCoordinator)`
@@ -159,13 +165,19 @@ const EmptyStateContainer = styled(AnimationCoordinator)`
     }
 `;
 
+const ErrorMessageTag = styled(ItemAnimation)`
+    color: ${(props) => props.theme[props.color]};
+    font-size: 2.5rem;
+    font-weight: bold;
+`;
+
 const Card = class extends React.Component {
     state = {
         showMessage: false,
     };
-    getErrorReason = (course) => {
+    getErrorDetail = (course) => {
+        if (!course || !course.reasons) return;
         const types = course.reasons;
-        if (!course) return '';
 
         const {
             openTime,
@@ -176,15 +188,44 @@ const Card = class extends React.Component {
         } = this.props.errorMessages;
         const type = types[0];
 
+        if (type === 'reserved')
+            return {
+                longMessage: reserved.longMessage,
+                shortMessage: reserved.shortMessage,
+                colorCode: 'green',
+                type,
+            };
         if (type === 'openTime')
-            return stringInterpolator(openTime, {
-                date: dateFns.format(course.startDate, 'DD/MM'),
-                time: dateFns.format(course.startDate, 'HH:MM'),
-            });
-        if (type === 'closingTime') return closeTime;
-        if (type === 'resource') return resource;
-        if (type === 'reserved') return reserved;
-        if (type === 'auth') return <Link to="/login">{auth}</Link>;
+            return {
+                longMessage: stringInterpolator(openTime.longMessage, {
+                    date: dateFns.format(course.startDate, 'DD/MM'),
+                    time: dateFns.format(course.startDate, 'HH:MM'),
+                }),
+                shortMessage: openTime.shortMessage,
+                colorCode: 'errorReservationTime',
+                type,
+            };
+        if (type === 'closingTime')
+            return {
+                longMessage: closeTime.longMessage,
+                shortMessage: closeTime.shortMessage,
+                colorCode: 'errorReservationTime',
+                type,
+            };
+        if (type === 'resource')
+            return {
+                longMessage: resource.longMessage,
+                shortMessage: resource.shortMessage,
+                colorCode: 'errorReservationResource',
+                type,
+            };
+        if (type === 'auth')
+            return {
+                longMessage: <Link to="/login">{auth.longMessage}</Link>,
+                shortMessage: auth.shortMessage,
+                colorCode: 'errorReservationAuth',
+                type,
+            };
     };
     render() {
         const {
@@ -196,16 +237,24 @@ const Card = class extends React.Component {
             ...rest
         } = this.props;
         const blurAndShowMessage = disabled && this.state.showMessage;
+        const errorDetail = (disabled && this.getErrorDetail(course)) || {};
         return (
             <CardWrapper
                 {...rest}
                 blur={blurAndShowMessage}
+                errorColorCode={errorDetail.colorCode || ''}
                 onMouseEnter={() => this.setState({ showMessage: true })}
                 onTouchStart={() => this.setState({ showMessage: true })}
                 onMouseLeave={() => this.setState({ showMessage: false })}
+                onTouchEnd={() =>
+                    window.setTimeout(
+                        () => this.setState({ showMessage: false }),
+                        1000
+                    )
+                }
             >
                 <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>
-                    {this.getErrorReason(blurAndShowMessage && course)}
+                    {errorDetail.longMessage || ''}
                 </ErrorMessage>
                 <div>
                     <TimeArea>
@@ -213,13 +262,32 @@ const Card = class extends React.Component {
                         <span>{dateFns.format(course.endDate, 'hh:mm')}</span>
                     </TimeArea>
                     <CourseArea>
-                        <span>{course.name}</span>
+                        <strong>{course.name}</strong>
                         <span>{course.location}</span>
                         <div>
-                            <span>€ {course.price}</span>
-                            <Button onClick={onButtonClick} disabled={disabled}>
-                                {buttonLabel}
-                            </Button>
+                            {errorDetail.type !== 'reserved' && (
+                                <PriceTag>€ {course.price}</PriceTag>
+                            )}
+                            <PoseGroup
+                                animateOnMount
+                                preEnterPose="preEnterPose"
+                            >
+                                {!disabled ? (
+                                    <BookingButton
+                                        key="2"
+                                        onClick={onButtonClick}
+                                    >
+                                        {buttonLabel}
+                                    </BookingButton>
+                                ) : (
+                                    <ErrorMessageTag
+                                        key="3"
+                                        color={errorDetail.colorCode}
+                                    >
+                                        {errorDetail.shortMessage}
+                                    </ErrorMessageTag>
+                                )}
+                            </PoseGroup>
                         </div>
                     </CourseArea>
                 </div>
@@ -238,7 +306,6 @@ class ClassCard extends React.Component {
             .errorMessages;
         const noCourseContent = this.props.i18nStore.content.courseCard
             .noCourse;
-
         return (
             <ScrollContainer pose="enter">
                 <PoseGroup preEnterPose="preEnter">

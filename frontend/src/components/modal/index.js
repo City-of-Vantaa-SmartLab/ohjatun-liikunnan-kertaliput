@@ -4,8 +4,6 @@ import posed, { PoseGroup } from 'react-pose';
 import { createPortal } from 'react-dom';
 import CloseIcon from '../../common/CloseIcon';
 
-// @TODO: clean the css mess of this file
-
 // this class will be added to "root" element
 // when the modal is open
 // to simulate blur effect

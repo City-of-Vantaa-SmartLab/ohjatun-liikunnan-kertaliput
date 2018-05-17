@@ -13,7 +13,7 @@ const isClosedYet = (courseItem) =>
 
 const hasSufficientFund = (balance, courseItem) => courseItem.price <= balance;
 
-const hasBeenReserved = (reservedCourseList = [], courseItem) => {
+const hasBeenReserved = (reservedCourseList, courseItem) => {
     const list = reservedCourseList.map((item) => item.courseId);
     return list.includes(courseItem.id);
 };
@@ -25,22 +25,23 @@ const isAvailable = (
     reservedCourseList
 ) => {
     const openedYet = isOpenYet(courseItem);
-    const closedYet = isClosedYet(courseItem);
+    const closedYet = !isClosedYet(courseItem);
     const enoughFund = hasSufficientFund(balance, courseItem);
-    const notReserved = !hasBeenReserved(reservedCourseList, courseItem);
+    const notReserved = !hasBeenReserved(reservedCourseList || [], courseItem);
     return {
         isAvailable:
+            reservedCourseList !== null &&
             openedYet &&
-            closedYet &&
+            !closedYet &&
             enoughFund &&
             authenticationStatus &&
             notReserved,
         reasons: [
+            !notReserved && 'reserved',
             !authenticationStatus && 'auth',
             !openedYet && 'openTime',
-            !closedYet && 'closingTime',
+            closedYet && 'closingTime',
             !enoughFund && 'resource',
-            !notReserved && 'reserved',
         ].filter((reason) => typeof reason !== 'boolean'),
     };
 };
