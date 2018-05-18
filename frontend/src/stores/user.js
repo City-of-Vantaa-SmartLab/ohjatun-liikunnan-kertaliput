@@ -28,7 +28,7 @@ class userStore {
     phoneNumber = null;
     token = null;
     balance = 0;
-    reservedCourses = [];
+    reservedCourses = null;
 
     constructor(rootStore) {
         this.rootStore = rootStore;

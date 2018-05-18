@@ -1,7 +1,23 @@
 import React from 'react';
 import styled from 'react-emotion';
+import posed from 'react-pose';
 
-const ButtonStyled = styled('button')`
+const BaseAnimationButton = posed.button({
+    preEnter: {
+        opacity: 0,
+        scale: 0,
+    },
+    enter: {
+        opacity: 1,
+        scale: 1,
+    },
+    exit: {
+        opacity: 0,
+        scale: 0,
+    },
+});
+
+const ButtonStyled = styled(BaseAnimationButton)`
     background-color: rgba(255, 255, 255, 0.13);
     border-radius: 8px;
     border: 1px solid;
@@ -45,9 +61,10 @@ class Button extends React.Component {
         const { onClick, disabled, ...rest } = this.props;
         return (
             <ButtonStyled
-                {...rest}
                 disabled={disabled}
                 onClick={disabled ? () => {} : onClick}
+                onTapStart={disabled ? () => {} : onClick}
+                {...rest}
             />
         );
     }

@@ -15,6 +15,9 @@ const theme = {
     complementary: '#FFEB3B',
     green: '#66BB6A',
     error: '#F44336',
+    errorReservationTime: '#512DA8',
+    errorReservationResource: '#FFA000',
+    errorReservationAuth: '#616161',
 };
 const { i18nStore, userStore, courseStore } = stores;
 const Root = () => (

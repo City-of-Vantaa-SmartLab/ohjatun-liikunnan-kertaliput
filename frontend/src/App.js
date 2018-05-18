@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import SignIn from './scene/sign-in';
 import MainView from './scene/main-view';
 import DevTool from './scene/dev-tool';
+import CookieBanner from './scene/cookie-banner';
 import AppLoader from './scene/app-loader';
 import styled from 'react-emotion';
 
@@ -36,6 +37,7 @@ class App extends React.Component {
                     <Route exact path="/reset-pin" component={SignIn} />
                 </Switch>
                 <DevTool />
+                <CookieBanner />
             </AppContainer>
         );
     }

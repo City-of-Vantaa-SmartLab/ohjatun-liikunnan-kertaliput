@@ -271,7 +271,7 @@ class CourseModal extends React.Component {
                         onConfirm={this.onConfirm}
                         clear={this.clear}
                     />
-                )},
+                )}
                 {this.state.showConfirm && (
                     <ConfirmationModal
                         course={course}
@@ -279,7 +279,7 @@ class CourseModal extends React.Component {
                         reserve={this.reserve}
                         clear={this.clear}
                     />
-                )},
+                )}
                 {this.state.showReserve && (
                     <ReservationModal
                         course={this.state.reservedCourse}

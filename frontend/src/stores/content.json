@@ -42,11 +42,27 @@
             "select": "Valitse",
             "noCourse": "Ei löytynyt tunteja tälle päivälle",
             "errorMessages": {
-                "openTime": "Ilmoittautuminen aukeaa {date} kello {time}",
-                "closeTime": "Ilmoittautuminen on päättynyt",
-                "resource": "Ei tarpeeksi saldoa",
-                "reserved": "Olet jo ilmoittautunut tunnille",
-                "auth": "Kirjaudu sisään tunnin varaamista varten"
+                "openTime": {
+                    "longMessage":
+                        "Ilmoittautuminen aukeaa {date} kello {time}",
+                    "shortMessage": "Avautuu myöhemmin"
+                },
+                "closeTime": {
+                    "longMessage": "Ilmoittautuminen on päättynyt",
+                    "shortMessage": "Suljettu"
+                },
+                "resource": {
+                    "longMessage": "Ei tarpeeksi saldoa",
+                    "shortMessage": "Saldo ei riitä"
+                },
+                "reserved": {
+                    "longMessage": "Olet jo ilmoittautunut tunnille",
+                    "shortMessage": "Olet jo ilmoittautunut"
+                },
+                "auth": {
+                    "longMessage": "Kirjaudu sisään tunnin varaamista varten",
+                    "shortMessage": "Ei kirjautuneena"
+                }
             }
         },
         "resetPinForm": {
@@ -91,6 +107,10 @@
         "courseDescriptionForm": {
             "dismiss": "Varaa ja Maksa",
             "dateFormat": "MM.DD.YYYY"
+        },
+        "cookieBanner": {
+            "message": "Käytämme evästeitä parantaaksemme käyttäjäkokemusta",
+            "buttonLabel": "Hyvää"
         }
     }
 }
