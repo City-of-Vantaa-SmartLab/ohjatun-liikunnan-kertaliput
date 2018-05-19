@@ -58,7 +58,12 @@ const createReservation = async (req, res) => {
             const course = await db.courses.getCourseById(
                 reservationObj.courseId
             );
-            reservationObj.ticketPrice = course.price;
+
+            //Calculate ticket price
+            reservationObj.ticketPrice = utils.courses.getCoursePrice(
+                course.course_type_id,
+                course.teachingSession[0].dataValues.startDate
+            );
 
             // Check whether the user have enough saldo/balance
             const notEnoughBalance = utils.reservations.checkBalance(
