@@ -23,7 +23,7 @@ const getCourses = async (req, res) => {
         );
 
         const courses = await db.courses.getCourses(startDate, endDate);
-        const response = db.courses.reduceCoursesByDate(courses);
+        const response = await db.courses.reduceCoursesByDate(courses);
         res.status(200).json(response);
     } catch (err) {
         res.status(500).json(`Failed to get courses. Error: ${err.message}`);

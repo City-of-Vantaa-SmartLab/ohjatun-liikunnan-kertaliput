@@ -152,7 +152,11 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                                     { locale: getLocale() }
                                 )}
                             </span>
-                            <span>3 vapaana</span>
+                            <span>
+                                {course.single_payment_count -
+                                    course.reservedCount}{' '}
+                                vapaana
+                            </span>
                         </div>
                         <span>{course.price} €</span>
                     </div>

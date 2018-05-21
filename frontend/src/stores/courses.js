@@ -17,7 +17,9 @@ const hasBeenReserved = (reservedCourseList, courseItem) => {
     const list = reservedCourseList.map((item) => item.courseId);
     return list.includes(courseItem.id);
 };
-
+const hasEnoughTickets = (courseItem) => {
+    return courseItem.reservedCount < courseItem.single_payment_count;
+};
 const isAvailable = (
     balance,
     courseItem,
@@ -28,6 +30,7 @@ const isAvailable = (
     const closedYet = !isClosedYet(courseItem);
     const enoughFund = hasSufficientFund(balance, courseItem);
     const notReserved = !hasBeenReserved(reservedCourseList || [], courseItem);
+    const hasTickets = hasEnoughTickets(courseItem);
     return {
         isAvailable:
             reservedCourseList !== null &&
@@ -35,12 +38,14 @@ const isAvailable = (
             !closedYet &&
             enoughFund &&
             authenticationStatus &&
-            notReserved,
+            notReserved &&
+            hasTickets,
         reasons: [
             !notReserved && 'reserved',
             !authenticationStatus && 'auth',
             !openedYet && 'openTime',
             closedYet && 'closingTime',
+            !hasTickets && 'noTickets',
             !enoughFund && 'resource',
         ].filter((reason) => typeof reason !== 'boolean'),
     };

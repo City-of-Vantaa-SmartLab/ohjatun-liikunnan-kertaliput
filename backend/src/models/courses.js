@@ -36,7 +36,10 @@ const courses = db.define('courses', {
     },
     acceptedCount: Sequelize.INTEGER,
     ilmokink: Sequelize.STRING,
-    single_payment_count: Sequelize.INTEGER,
+    single_payment_count: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+    },
     company_name: Sequelize.STRING,
     course_type_id: Sequelize.INTEGER,
     course_type_name: Sequelize.STRING,

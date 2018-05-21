@@ -185,6 +185,7 @@ const Card = class extends React.Component {
             resource,
             auth,
             reserved,
+            noTickets,
         } = this.props.errorMessages;
         const type = types[0];
 
@@ -210,6 +211,13 @@ const Card = class extends React.Component {
                 longMessage: closeTime.longMessage,
                 shortMessage: closeTime.shortMessage,
                 colorCode: 'errorReservationTime',
+                type,
+            };
+        if (type === 'noTickets')
+            return {
+                longMessage: noTickets.longMessage,
+                shortMessage: noTickets.shortMessage,
+                colorCode: 'errorReservationNoTicket',
                 type,
             };
         if (type === 'resource')

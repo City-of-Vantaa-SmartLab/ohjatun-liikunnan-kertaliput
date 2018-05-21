@@ -51,6 +51,10 @@
                     "longMessage": "Ilmoittautuminen on päättynyt",
                     "shortMessage": "Suljettu"
                 },
+                "noTickets": {
+                    "longMessage": "There are no tickets left",
+                    "shortMessage": "No Tickets"
+                },
                 "resource": {
                     "longMessage": "Ei tarpeeksi saldoa",
                     "shortMessage": "Riittämätön raha"
