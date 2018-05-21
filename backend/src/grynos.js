@@ -25,6 +25,7 @@ const mapCourseFromGrynos = (course) => ({
     ilmokink: course.ilmokink,
     teachingSession: course.teachingSession,
     location: course.location,
+    single_payment_count: course.single_payment_count,
 });
 
 const mapCourseDetailsFromGrynos = async (course) => {
