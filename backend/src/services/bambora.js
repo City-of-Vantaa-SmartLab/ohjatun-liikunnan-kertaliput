@@ -27,9 +27,7 @@ module.exports = {
     createBamboraPaymentRequest: (paymentModel) => {
         const amount = paymentModel.amount * 100;
         const preTaxAmount = Math.round(Number((amount * 10 / 11).toFixed(2)));
-        const taxAmount = Math.round(
-            Number((amount - preTaxAmount).toFixed(2))
-        );
+        const taxAmount = 10
         return {
             version: 'w3.1',
             api_key: apiKey,
