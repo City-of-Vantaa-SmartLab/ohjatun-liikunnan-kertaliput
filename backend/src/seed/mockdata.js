@@ -34,6 +34,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 1,
@@ -71,6 +72,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554746,
@@ -108,6 +110,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554749,
@@ -145,6 +148,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554752,
@@ -182,6 +186,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554755,
@@ -219,6 +224,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554758,
@@ -256,6 +262,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554764,
@@ -293,6 +300,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554767,
@@ -330,6 +338,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554770,
@@ -367,6 +376,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554773,
@@ -404,6 +414,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554776,
@@ -441,6 +452,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554761,
@@ -478,6 +490,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554779,
@@ -515,6 +528,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554782,
@@ -552,6 +566,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554785,
@@ -589,6 +604,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554788,
@@ -626,6 +642,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554791,
@@ -663,6 +680,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554794,
@@ -700,6 +718,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554797,
@@ -737,6 +756,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554800,
@@ -774,6 +794,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554803,
@@ -811,6 +832,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554806,
@@ -848,6 +870,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554809,
@@ -885,6 +908,7 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
+            course_type_id: 1,
             teachingSession: [
                 {
                     id: 2554812,
