@@ -199,8 +199,8 @@ const Card = class extends React.Component {
         if (type === 'openTime')
             return {
                 longMessage: stringInterpolator(openTime.longMessage, {
-                    date: dateFns.format(course.startDate, 'DD/MM'),
-                    time: dateFns.format(course.startDate, 'HH:MM'),
+                    date: dateFns.format(course.startDate, 'DD.MM'),
+                    time: dateFns.format(course.startDate, 'HH:mm'),
                 }),
                 shortMessage: openTime.shortMessage,
                 colorCode: 'errorReservationTime',
@@ -266,8 +266,8 @@ const Card = class extends React.Component {
                 </ErrorMessage>
                 <div>
                     <TimeArea>
-                        <span>{dateFns.format(course.startDate, 'hh:mm')}</span>
-                        <span>{dateFns.format(course.endDate, 'hh:mm')}</span>
+                        <span>{dateFns.format(course.startDate, 'HH:mm')}</span>
+                        <span>{dateFns.format(course.endDate, 'HH:mm')}</span>
                     </TimeArea>
                     <CourseArea>
                         <strong>{course.name}</strong>

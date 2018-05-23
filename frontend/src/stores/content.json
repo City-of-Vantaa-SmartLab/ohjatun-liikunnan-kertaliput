@@ -23,7 +23,7 @@
             "hasAccountPrompt": "Onko sinulla jo tili?",
             "welcome": "Tervetuloa",
             "congratulationMessage":
-                "Onneksi olkoon! Tilin luominen onnistui. PIN-koodisi on lähetetty tekstiviestillä numeroon {phoneNumber}.",
+                "Onneksi olkoon, tilin luominen onnistui. PIN-koodisi on lähetetty tekstiviestillä numeroon {phoneNumber}.",
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
             "submit": "Luo uusi käyttäjätili",
             "phoneNumberAlreadyExists":
@@ -45,7 +45,7 @@
                 "openTime": {
                     "longMessage":
                         "Ilmoittautuminen aukeaa {date} kello {time}",
-                    "shortMessage": "Ei auki vielä"
+                    "shortMessage": "Avautuu myöhemmin"
                 },
                 "closeTime": {
                     "longMessage": "Ilmoittautuminen on päättynyt",
@@ -57,11 +57,11 @@
                 },
                 "resource": {
                     "longMessage": "Ei tarpeeksi saldoa",
-                    "shortMessage": "Riittämätön raha"
+                    "shortMessage": "Saldo ei riitä"
                 },
                 "reserved": {
                     "longMessage": "Olet jo ilmoittautunut tunnille",
-                    "shortMessage": "Varattu"
+                    "shortMessage": "Olet jo ilmoittautunut"
                 },
                 "auth": {
                     "longMessage": "Kirjaudu sisään tunnin varaamista varten",
@@ -114,7 +114,7 @@
         },
         "cookieBanner": {
             "message": "Käytämme evästeitä parantaaksemme käyttäjäkokemusta",
-            "buttonLabel": "Hyvää"
+            "buttonLabel": "Hyväksy"
         }
     }
 }

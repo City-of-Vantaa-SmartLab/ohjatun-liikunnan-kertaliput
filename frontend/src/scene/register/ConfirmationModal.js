@@ -11,7 +11,8 @@ const SmallModal = styled(Modal)`
 `;
 
 const ModalAction = styled('div')`
-    align-self: flex-end;
+    align-self: center;
+    margin-bottom: 5rem;
 `;
 const CustomTitle = styled(Title)`
     font-weight: 400;
@@ -28,7 +29,7 @@ export default class ConfirmationModal extends React.Component {
             <SmallModal show={show} hideCloseButton>
                 <div>
                     <CustomTitle>
-                        {i18nContent.registrationForm.welcome},{' '}
+                        {i18nContent.registrationForm.welcome}{' '}
                         <strong>{username}</strong>
                     </CustomTitle>
                     <Content>

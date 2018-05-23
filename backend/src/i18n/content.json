@@ -3,7 +3,7 @@
         "reservations": {
             "confirmationMessage":
                 "Olet varannut onnistuneesti paikan tunnille",
-            "dateFormat": "DD-MM-YYYY HH:mm",
+            "dateFormat": "DD.MM.YYYY HH:mm",
             "errorMessages": {
                 "eventExists":
                     "You have already made a reservation for the same event!. Try for another event."

@@ -134,8 +134,8 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                         <li>
                             <ClockLogo />
                             <strong>
-                                {dateFns.format(course.startDate, 'HH:MM')} -
-                                {dateFns.format(course.endDate, 'HH:MM')}
+                                {dateFns.format(course.startDate, 'HH:mm')} -
+                                {dateFns.format(course.endDate, 'HH:mm')}
                             </strong>
                         </li>
                     </ul>
@@ -188,8 +188,8 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <ClockLogo />
-                            {dateFns.format(course.startDate, 'HH:MM')} -
-                            {dateFns.format(course.endDate, 'HH:MM')}
+                            {dateFns.format(course.startDate, 'HH:mm')} -
+                            {dateFns.format(course.endDate, 'HH:mm')}
                         </li>
                         <li>
                             <EuroLogo />
