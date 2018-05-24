@@ -13,6 +13,7 @@ const ItemAnimation = posed.div({
     enter: {
         y: '0%',
         opacity: 1,
+        delay: (props) => 200 + props.id * 50,
     },
     exit: {
         y: '100%',
@@ -36,20 +37,24 @@ const ErrorMessageAnimation = posed.h4({
         opacity: 1,
     },
 });
-
-const AnimationCoordinator = posed.div({
+const EmptyStateContainerAnimation = posed.div({
     enter: {
-        delay: 500,
-        delayChildren: 300,
-        staggerChildren: 100,
+        delay: 400,
+        scale: 1,
+        opacity: 1,
     },
     exit: {
-        staggerChildren: 300,
+        scale: 0.3,
+        opacity: 0,
+    },
+    preEnter: {
+        scale: 0,
+        y: '-5%',
     },
 });
 
 // styled components
-const ScrollContainer = styled(AnimationCoordinator)`
+const ScrollContainer = styled('div')`
     overflow: scroll;
     flex-basis: 100%;
 `;
@@ -60,20 +65,20 @@ const CardWrapper = styled(ItemAnimation)`
     border-bottom: 1px #EBEBEB solid;
     padding: 2rem 0;
     color: rgba(0, 0, 0, 0.86);
-    transition: background-color 0.5s ease, border 0.5s ease;
+    transition: background-color 0.7s ease, border 0.5s ease;
     overflow: hidden;
     ${(props) =>
         props.errorColorCode &&
-        `border-left 5px ${props.theme[props.errorColorCode]} solid`}
+        `border-left: 5px ${props.theme[props.errorColorCode]} solid`}
     }
     & > div {
-        will-change: filter;
-        transition: filter 0.5s ease, transform 0.5s ease;
+        will-change: transform;
+        transition: transform 0.5s ease;
         display: flex;
         width: 100%;
         ${(props) =>
             props.blur &&
-            `filter: blur(6px); pointer-events: none; transform: scale(1.2);`};
+            `filter: blur(4px); pointer-events: none; transform: scale(1.2);`};
     }
 `;
 
@@ -119,7 +124,7 @@ const CourseArea = styled('div')`
         font-size: 2.5rem;
         font-weight: bold;
         color: rgba(0, 0, 0, 0.86);
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 
     > span {
@@ -144,11 +149,11 @@ const PriceTag = styled('span')`
     width: 10rem;
     color: ${(props) => props.theme.main};
     text-transform: uppercase;
-    font-size: 2.7rem;
+    font-size: 2.5rem;
     font-weight: bold;
 `;
 
-const EmptyStateContainer = styled(AnimationCoordinator)`
+const EmptyStateContainer = styled(EmptyStateContainerAnimation)`
     width: 100%;
     height: 100%;
     display: flex;
@@ -156,7 +161,7 @@ const EmptyStateContainer = styled(AnimationCoordinator)`
     align-items: center;
     justify-content: center;
     color: rgba(0, 0, 0, 0.3);
-    font-size: 2.5rem;
+    font-size: 2rem;
 
     svg {
         margin-bottom: 2rem;
@@ -165,10 +170,11 @@ const EmptyStateContainer = styled(AnimationCoordinator)`
     }
 `;
 
-const ErrorMessageTag = styled(ItemAnimation)`
+const ErrorMessageTag = styled(ErrorMessageAnimation)`
     color: ${(props) => props.theme[props.color]};
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     font-weight: bold;
+    margin: 0;
 `;
 
 const Card = class extends React.Component {
@@ -229,7 +235,7 @@ const Card = class extends React.Component {
             };
         if (type === 'auth')
             return {
-                longMessage: <Link to="/login">{auth.longMessage}</Link>,
+                longMessage: auth.longMessage,
                 shortMessage: auth.shortMessage,
                 colorCode: 'errorReservationAuth',
                 type,
@@ -254,12 +260,13 @@ const Card = class extends React.Component {
                 onMouseEnter={() => this.setState({ showMessage: true })}
                 onTouchStart={() => this.setState({ showMessage: true })}
                 onMouseLeave={() => this.setState({ showMessage: false })}
-                onTouchEnd={() =>
-                    window.setTimeout(
+                onTouchEnd={() => {
+                    window.clearTimeout(this.longMessageTick);
+                    this.longMessageTick = window.setTimeout(
                         () => this.setState({ showMessage: false }),
-                        1000
-                    )
-                }
+                        3000
+                    );
+                }}
             >
                 <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>
                     {errorDetail.longMessage || ''}
@@ -274,7 +281,7 @@ const Card = class extends React.Component {
                         <span>{course.location}</span>
                         <div>
                             {errorDetail.type !== 'reserved' && (
-                                <PriceTag>€ {course.price}</PriceTag>
+                                <PriceTag>{course.price} €</PriceTag>
                             )}
                             <PoseGroup
                                 animateOnMount
@@ -302,12 +309,58 @@ const Card = class extends React.Component {
             </CardWrapper>
         );
     }
+    componentWillUnmount() {
+        window.clearTimeout(this.longMessageTick);
+    }
 };
+
 class ClassCard extends React.Component {
     selectCourse = (course) => (e) => {
         this.props.courseStore.selectCourse(course);
     };
+    // WAITING FOR DECISION FROM CLIENT TO HAVE SORTING OR NOT
+    // sortCourseByPurchasedStatusAndTime = (courses) => {
+    //     // sorters
+    //     const sortByReserved = (A, B) => {
+    //         // we want user to see all of their reservation first
+    //         const checkReservedStatus = (item) =>
+    //             item.reasons && item.reasons[0] === 'reserved';
+    //         const isABdifferent =
+    //             checkReservedStatus(A) !== checkReservedStatus(B);
+    //         if (!isABdifferent) {
+    //             return 0;
+    //         }
+    //         if (checkReservedStatus(A) && !checkReservedStatus(B)) return 1;
+    //         return -1;
+    //     };
+    //     const sortByAvailability = (A, B) => {
+    //         // items that is available comes first
+    //         if (A.isAvailable === B.isAvailable) return 0;
+    //         if (A.isAvailable && !B.isAvailable) return 1;
+    //         return -1;
+    //     };
+    //     const sortByDateTime = (A, B) => {
+    //         // should be listed in a chronological order
+    //         return dateFns.compareAsc(A.startDate, B.startDate);
+    //     };
+    //     const sortCombiner = (...sorterFuncs) => (A, B) =>
+    //         sorterFuncs.reduce((accumulator, currentFunc) => {
+    //             // first sorter takes precedence.
+    //             if (accumulator === 0 && currentFunc(A, B) !== 0) {
+    //                 accumulator = currentFunc(A, B);
+    //             }
+    //             return accumulator;
+    //         }, 0);
+
+    //     return courses.sort(
+    //         sortCombiner(sortByReserved, sortByAvailability, sortByDateTime)
+    //     );
+    // };
+
     render() {
+        // const courses = this.sortCourseByPurchasedStatusAndTime(
+        //     this.props.courseStore.getCourses(Date.now())
+        // );
         const courses = this.props.courseStore.getCourses(Date.now());
         const buttonLabel = this.props.i18nStore.content.courseCard.select;
         const errorMessages = this.props.i18nStore.content.courseCard
@@ -315,12 +368,13 @@ class ClassCard extends React.Component {
         const noCourseContent = this.props.i18nStore.content.courseCard
             .noCourse;
         return (
-            <ScrollContainer pose="enter">
+            <ScrollContainer>
                 <PoseGroup preEnterPose="preEnter">
                     {courses.length > 0 ? (
                         courses.map((el, i) => (
                             <Card
                                 key={el.id || i}
+                                id={i}
                                 course={el}
                                 buttonLabel={buttonLabel}
                                 onButtonClick={this.selectCourse(el)}

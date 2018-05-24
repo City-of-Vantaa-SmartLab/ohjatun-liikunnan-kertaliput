@@ -6,7 +6,7 @@ import LocationIcon from '../../common/LocationIcon';
 import DateLogo from '../../common/DateLogo';
 import ClockLogo from '../../common/ClockLogo';
 import EuroLogo from '../../common/EuroLogo';
-import Button from '../../common/Button';
+import Button from '../../components/button';
 import dateFns from 'date-fns';
 
 const CourseContent = styled(Content)`

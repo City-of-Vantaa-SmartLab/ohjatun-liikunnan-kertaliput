@@ -93,7 +93,6 @@ const InputField = styled(DefaultInputField)`
         padding: 2rem !important;
         border: 1px ${(props) => props.theme.main} solid;
         width: auto;
-        margin-bottom: 10rem !important;
     }
 `;
 

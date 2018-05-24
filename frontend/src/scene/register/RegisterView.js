@@ -11,21 +11,21 @@ const FormAction = styled('div')`
     align-self: stretch;
     display: flex;
     justify-content: flex-end;
-    margin: 0 2rem;
+    margin: 2rem;
 `;
 const Title = styled('h1')`
-    font-size: 4rem;
+    margin: 0;
+    font-size: 3rem;
     color: white;
-    text-transform: uppercase;
     text-align: center;
 `;
-const ErrorMessage = styled('h4')`
+const ErrorMessage = styled('span')`
+    display: flex;
     font-size: 2rem;
-    margin: 0;
-    color: yellow;
-    text-align: right;
-    transition: all 0.5s ease;
-    opacity: ${(props) => (props.show ? 1 : 0)};
+    margin: 0 2rem;
+    color: ${(props) => props.theme.error};
+    font-weight: bold;
+    display: ${(props) => (props.show ? 'flex' : 'none')};
 `;
 
 class RegisterForm extends React.Component {
@@ -64,30 +64,31 @@ class RegisterForm extends React.Component {
                         />
                     </InputField>
                     <ErrorMessage show={this.state.submitError}>
-                        {this.state.phoneNumberAlreadyExists
+                        {this.state.submitError === 'alreadyExist'
                             ? i18nContent.registrationForm
                                   .phoneNumberAlreadyExists
                             : i18nContent.registrationForm.errorMessage}
                     </ErrorMessage>
-                    {this.state.phoneNumberAlreadyExists && (
-                        <FormLink>
+
+                    {this.state.submitError !== 'alreadyExist' && (
+                        <FormAction>
+                            <Button
+                                disabled={!this.state.formIsValid}
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    this.state.submitData();
+                                }}
+                            >
+                                {i18nContent.registrationForm.submit}
+                            </Button>
+                        </FormAction>
+                    )}
+                    <FormLink style={{ marginTop: '1rem' }}>
+                        {this.state.submitError === 'alreadyExist' && (
                             <Link to="/reset-pin">
                                 {i18nContent.signIn.form.forgotPassword}
                             </Link>
-                        </FormLink>
-                    )}
-                    <FormAction>
-                        <Button
-                            disabled={!this.state.formIsValid}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                this.state.submitData();
-                            }}
-                        >
-                            {i18nContent.registrationForm.submit}
-                        </Button>
-                    </FormAction>
-                    <FormLink style={{ marginTop: '1rem' }}>
+                        )}
                         <Link to="/login">
                             {i18nContent.registrationForm.hasAccountPrompt}{' '}
                         </Link>

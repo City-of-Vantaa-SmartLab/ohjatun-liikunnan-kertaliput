@@ -43,12 +43,10 @@ class RegisterFormState {
             this.submitting = false;
         } catch (error) {
             console.error(error);
-            this.submitError = true;
+            this.submitError = 'validation';
             this.submitting = false;
             if (error.message === '409') {
-                this.phoneNumberAlreadyExists = true;
-            } else {
-                this.phoneNumberAlreadyExists = false;
+                this.submitError = 'alreadyExist';
             }
         }
     };

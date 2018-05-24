@@ -10,15 +10,15 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 const theme = {
-    signInBackground: '#2979FF',
-    main: '#2979FF',
-    complementary: '#FFEB3B',
+    signInBackground: 'rgb(60, 143, 222)',
+    main: 'rgb(60, 143, 222)',
+    complementary: 'rgb(249, 229, 30)',
     green: '#66BB6A',
-    error: '#F44336',
-    errorReservationTime: '#512DA8',
-    errorReservationResource: '#FFA000',
+    error: 'rgb(250, 66, 59)',
+    errorReservationTime: 'rgb(117, 59, 189)',
+    errorReservationResource: 'rgb(255, 143, 28)',
     errorReservationAuth: '#616161',
-    errorReservationNoTicket: '#9E9E9E',
+    errorReservationNoTicket: '#795548',
 };
 const { i18nStore, userStore, courseStore } = stores;
 const Root = () => (

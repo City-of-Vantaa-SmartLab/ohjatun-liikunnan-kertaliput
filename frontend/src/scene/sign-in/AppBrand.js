@@ -21,12 +21,6 @@ const AppName = styled('h1')`
     font-family: 'GT-Walsheim', sans-serif;
 `;
 
-const AppHeadLine = styled('span')`
-    font-size: 3rem;
-    color: white;
-    font-weight: bold;
-`;
-
 class AppBrand extends Component {
     render() {
         return (
@@ -35,9 +29,6 @@ class AppBrand extends Component {
                     <AppName>
                         {this.props.i18nStore.content.global.appName}
                     </AppName>
-                    <AppHeadLine>
-                        {this.props.i18nStore.content.global.appHeadLine}
-                    </AppHeadLine>
                 </div>
             </Wrapper>
         );

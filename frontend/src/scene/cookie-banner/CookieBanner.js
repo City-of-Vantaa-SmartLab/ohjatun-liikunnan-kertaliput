@@ -26,12 +26,13 @@ const BannerWrapper = styled(ItemAnimation)`
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 10rem;
     padding: 2rem;
     background-color: white;
-    box-shadow: 0 -12px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.3);
     justify-content: space-between;
-
+    button {
+        padding: auto;
+    }
     div {
         display: inherit;
         align-items: center;
@@ -53,7 +54,6 @@ class CookieBanner extends Component {
     componentDidMount() {
         const okay = window.localStorage.getItem('cookieSetBannerFlag');
         if (okay === null) {
-            console.log('Okay is', okay);
             window.setTimeout(() => this.setState({ show: true }), 3000);
         } else this.setState({ show: !okay });
     }
@@ -68,10 +68,6 @@ class CookieBanner extends Component {
                 {this.state.show && (
                     <BannerWrapper key="1">
                         <div>
-                            <img
-                                src="https://image.flaticon.com/icons/svg/894/894355.svg"
-                                alt="Cookie"
-                            />
                             <span>{i18nContent.cookieBanner.message}</span>
                         </div>
                         <Button bold onClick={this.agree}>

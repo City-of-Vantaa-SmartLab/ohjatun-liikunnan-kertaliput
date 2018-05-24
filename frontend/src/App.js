@@ -12,15 +12,8 @@ const AppContainer = styled('section')`
     padding: 0;
     width: 100%;
     height: 100%;
+    min-height: 480px;
     position: relative;
-
-    /* small devices */
-    @media (max-width: 320px) and (max-height: 480px) {
-        height: 480px;
-    }
-    @media only screen and (max-height: 580px) {
-        height: 580px;
-    }
 `;
 
 class App extends React.Component {

@@ -34,7 +34,6 @@ export const InputField = styled('div')`
         margin-bottom: 1rem;
         font-size: 2.3rem;
         color: white;
-        font-weight: 700;
         transition: all 0.5s ease;
     }
     div {
@@ -62,7 +61,7 @@ export const Input = styled('input')`
     border-radius: 0.5rem;
     color: rgba(0, 0, 0, 0.8);
     padding: 2rem;
-    font-size: 2rem;
+    font-size: 16px;
     border: 2px transparent solid;
     transition: all 0.5s ease;
 

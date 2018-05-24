@@ -31,14 +31,15 @@ const ButtonStyled = styled(BaseAnimationButton)`
     letter-spacing: 0.5px;
     outline: none;
     font-weight: bold;
-    transition: all 0.5s ease;
     cursor: pointer;
+    transition: box-shadow 0.5s ease, background-color 0.5s ease,
+        border-color 0.5s ease, color 0.7s ease;
 
     ${(props) =>
         props.disabled &&
         `
         filter: grayscale(100%);
-        opacity: 0.5;
+        opacity: 0.5 !important;
         pointer-events: none;
     `};
     ${(props) =>
@@ -52,20 +53,33 @@ const ButtonStyled = styled(BaseAnimationButton)`
         color: ${(props) => props.theme.main};
         border-color: ${(props) => props.theme.main};
         background-color: white;
-        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.5);
+        box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
     }
 `;
 
 class Button extends React.Component {
     render() {
-        const { onClick, disabled, ...rest } = this.props;
+        const {
+            onClick,
+            disabled,
+            className,
+            style,
+            pose,
+            children,
+            bold,
+        } = this.props;
         return (
             <ButtonStyled
+                bold={bold}
+                className={className}
+                style={style}
+                pose={pose}
                 disabled={disabled}
                 onClick={disabled ? () => {} : onClick}
-                onTapStart={disabled ? () => {} : onClick}
-                {...rest}
-            />
+                onTouchStart={disabled ? () => {} : onClick}
+            >
+                {children}
+            </ButtonStyled>
         );
     }
 }

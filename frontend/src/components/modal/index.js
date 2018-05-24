@@ -1,15 +1,10 @@
 import React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import posed, { PoseGroup } from 'react-pose';
+import { tween, chain, delay } from 'popmotion';
 import { createPortal } from 'react-dom';
 import CloseIcon from '../../common/CloseIcon';
 
-// this class will be added to "root" element
-// when the modal is open
-// to simulate blur effect
-const rootBlurred = css`
-    filter: blur(8px);
-`;
 const ModalAnimatable = posed.div({
     enter: {
         scale: 1,
@@ -39,6 +34,7 @@ const CloseButton = posed.span({
 const Wrapper = styled('div')`
     position: absolute;
     width: 100%;
+    min-width: 100%;
     height: 100%;
     z-index: 10000;
     top: 0;
@@ -46,13 +42,16 @@ const Wrapper = styled('div')`
     display: flex;
     background-color: rgba(0, 0, 0, 0.7);
     transition: all 1s ease;
+    @media only screen and (min-width: 600px) {
+        border-radius: 2rem;
+    }
     ${(props) =>
         !props.block && 'pointer-events: none; background-color: transparent'};
 `;
 
 const ModalWrapper = styled(ModalAnimatable)`
-    height: 70%;
     width: 80%;
+    height: 70%;
     margin: auto;
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
@@ -64,6 +63,9 @@ const ModalWrapper = styled(ModalAnimatable)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    @media only screen and (max-height: 580px) {
+        height: auto;
+    }
 
     & > span {
         transform: scale(0);
@@ -109,19 +111,21 @@ export const Title = styled('h4')`
 `;
 
 class Blur extends React.Component {
+    target = document.querySelector('#root');
     componentDidMount() {
-        // apply blur effect to root
-        window.setTimeout(() => {
-            const root = document.querySelector('#root');
-            root.className = rootBlurred;
-        }, 100);
+        this.animation = chain(delay(300), tween({ from: 0, to: 8 }))
+            .pipe((v) => v + 'px')
+            .start((v) => (this.target.style.filter = `blur(${v})`));
     }
     render() {
         return null;
     }
     // remove the blur effect to root
     componentWillUnmount() {
-        document.querySelector('#root').className = '';
+        if (this.animation) this.animation.stop();
+        tween({ from: 8, to: -1 })
+            .pipe((v) => v + 'px')
+            .start((v) => (this.target.style.filter = `blur(${v})`));
     }
 }
 

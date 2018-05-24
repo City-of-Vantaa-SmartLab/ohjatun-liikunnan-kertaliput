@@ -12,10 +12,6 @@ const CoordinatorBase = posed.div({
     },
     exit: {
         opacity: 0,
-        scale: 4,
-        transition: (props) => {
-            return tween({ ...props, duration: 500 });
-        },
     },
 });
 const AnimatablePath = posed.path({
@@ -35,6 +31,7 @@ const AnimatablePath = posed.path({
 });
 
 const Wrapper = styled(CoordinatorBase)`
+    will-change: transform, opacity;
     width: 100%;
     height: 100%;
     display: flex;
@@ -45,6 +42,10 @@ const Wrapper = styled(CoordinatorBase)`
     z-index: 1000;
     left: 0;
     top: 0;
+
+    @media only screen and (min-width: 600px) {
+        border-radius: 2rem;
+    }
 
     svg {
         stroke-dasharray: 1000;

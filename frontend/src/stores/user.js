@@ -86,6 +86,7 @@ class userStore {
         this.username = null;
         this.balance = null;
         this.phoneNumber = null;
+        this.pinCode = DEFAULT_PIN;
     }
     setBalance(amount) {
         if (amount > this.balance) throw new Error('Insufficient fund!');

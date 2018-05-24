@@ -47,8 +47,8 @@ const StyledWrapper = styled('section')`
 `;
 
 const SizedLogo = styled(Logo)`
-    width: 13rem;
-    height: 13rem;
+    width: 9rem;
+    height: 9rem;
 `;
 
 class SignIn extends React.Component {
