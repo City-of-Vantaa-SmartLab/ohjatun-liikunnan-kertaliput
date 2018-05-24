@@ -128,7 +128,10 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                         <li>
                             <DateLogo />
                             <strong>
-                                {dateFns.format(seletectedDate, 'DD.MM.YYYY')}
+                                {dateFns.format(
+                                    seletectedDate,
+                                    'dd DD.MM.YYYY'
+                                )}
                             </strong>
                         </li>
                         <li>
@@ -172,7 +175,7 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
         {course && (
             <Fragment>
                 <CourseContent>
-                    <Title>Vahvista Varaus</Title>
+                    <Title>Vahvista varaus</Title>
                     <ul>
                         <li>Olet varaamassa kurssia:</li>
                         <li>
@@ -184,7 +187,7 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <DateLogo />
-                            {dateFns.format(seletectedDate, 'DD.MM.YYYY')}
+                            {dateFns.format(seletectedDate, 'dd DD.MM.YYYY')}
                         </li>
                         <li>
                             <ClockLogo />

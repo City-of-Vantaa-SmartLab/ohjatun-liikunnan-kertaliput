@@ -27,7 +27,7 @@
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
             "submit": "Luo uusi käyttäjätili",
             "phoneNumberAlreadyExists":
-                " !Tälle puhelinnumerolle on jo luotu käyttäjätili. Jos unohdit PIN-koodin, niin voit tilata uuden täältä.!"
+                "Tälle puhelinnumerolle on jo luotu käyttäjätili."
         },
         "appHeader": {
             "logout": "Kirjaudu ulos",
