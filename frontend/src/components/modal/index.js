@@ -112,8 +112,15 @@ export const Title = styled('h4')`
 
 class Blur extends React.Component {
     target = document.querySelector('#root');
+    isFireFox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
     componentDidMount() {
-        this.animation = chain(delay(300), tween({ from: 0, to: 8 }))
+        if (this.isFireFox) {
+            return;
+        }
+        this.animation = chain(
+            delay(300),
+            tween({ from: 0, to: 8, duration: 100 })
+        )
             .pipe((v) => v + 'px')
             .start((v) => (this.target.style.filter = `blur(${v})`));
     }
@@ -122,8 +129,11 @@ class Blur extends React.Component {
     }
     // remove the blur effect to root
     componentWillUnmount() {
+        if (this.isFireFox) {
+            return;
+        }
         if (this.animation) this.animation.stop();
-        tween({ from: 8, to: -1 })
+        tween({ from: 8, to: 0, duration: 100 })
             .pipe((v) => v + 'px')
             .start((v) => (this.target.style.filter = `blur(${v})`));
     }

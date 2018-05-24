@@ -30,6 +30,8 @@ const BannerWrapper = styled(ItemAnimation)`
     background-color: white;
     box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.3);
     justify-content: space-between;
+    border-radius: 0 0 2rem 2rem;
+
     button {
         padding: auto;
     }
