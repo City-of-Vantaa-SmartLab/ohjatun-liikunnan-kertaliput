@@ -170,9 +170,9 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                 <CourseContent>
                     <Title>Vahvista varaus</Title>
                     <ul>
-                        <li>Olet varaamassa kurssia:</li>
+                        <h4>Olet varaamassa kurssia</h4>
                         <li>
-                            <strong>{course.name}</strong>
+                            <Title>{course.name}</Title>
                         </li>
                         <li>
                             <LocationIcon />
@@ -180,7 +180,9 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <DateLogo />
-                            {dateFns.format(seletectedDate, 'dd DD.MM.YYYY')}
+                            {dateFns.format(seletectedDate, 'dd DD.MM.YYYY', {
+                                locale: getLocale(),
+                            })}
                         </li>
                         <li>
                             <ClockLogo />

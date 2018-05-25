@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
-import Modal, { Title, Content as ModalContent } from '../../components/modal';
+import BaseModal, {
+    Title,
+    Content as ModalContent,
+} from '../../components/modal';
 import Button from '../../components/button';
 import {
     Form as DefaultForm,
@@ -11,41 +14,41 @@ import posed, { PoseGroup } from 'react-pose';
 import { connect } from 'utils';
 import BalanceViewState from './state';
 
+const Modal = styled(BaseModal)`
+    justify-content: center;
+`;
 const Content = styled(ModalContent)`
-    width: 100%;
-    height: 100%;
     display: flex;
-    justify-content: baseline;
-    align-items: center;
     flex-direction: column;
-    margin-top: 5rem;
-    margin-bottom: 5rem;
 
     div {
         display: inherit;
         flex-direction: column;
         text-align: center;
-        margin: 4rem;
+        justify-content: center;
 
+        h4 {
+            text-transform: uppercase;
+        }
         * {
             margin: 1rem;
         }
         span {
-            font-size: 8rem;
+            font-size: 7rem;
             font-family: GT-Walsheim, sans-serif;
             color: ${(props) => props.theme.main};
         }
     }
 `;
 
-const BalanceInfoArea = posed.div({
+const BalanceInfoAreaAnimation = posed.div({
     show: {
-        y: -50,
-    },
-    normal: {
-        y: 0,
+        top: true,
     },
 });
+const BalanceInfoArea = styled(BalanceInfoAreaAnimation)`
+    align-self: center;
+`;
 const FormWarpper = posed.div({
     preEnter: {
         y: 300,
@@ -65,7 +68,6 @@ const Form = styled(DefaultForm)`
     flex-direction: column;
     justify-content: center;
     border-top: 5px ${(props) => props.theme.main} solid;
-    width: auto;
     margin: 0 !important;
 `;
 const InputField = styled(DefaultInputField)`
@@ -76,8 +78,8 @@ const InputField = styled(DefaultInputField)`
         text-align: left;
     }
     input {
-        border: 1px ${(props) => props.theme.main} solid;
         width: auto;
+        border: 1px ${(props) => props.theme.main} solid;
     }
 `;
 const SubmitButton = styled(Button)`
@@ -107,7 +109,7 @@ class BalanceView extends Component {
                 }}
             >
                 <Content>
-                    <BalanceInfoArea pose={formShown ? 'show' : 'normal'}>
+                    <BalanceInfoArea pose={'show'}>
                         <Title>{i18nContent.sectionTitle}</Title>
                         <span>{balance} €</span>
                         {!formShown && (
@@ -118,10 +120,7 @@ class BalanceView extends Component {
                     </BalanceInfoArea>
                     <PoseGroup animateOnMount>
                         {formShown && (
-                            <FormWarpper
-                                key="1"
-                                style={{ margin: 0, width: '90%' }}
-                            >
+                            <FormWarpper key="1">
                                 <Form>
                                     <InputField
                                         error={this.state.formIncorrect}
