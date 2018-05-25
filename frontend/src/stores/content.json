@@ -52,8 +52,8 @@
                     "shortMessage": "Suljettu"
                 },
                 "noTickets": {
-                    "longMessage": "There are no tickets left",
-                    "shortMessage": "No Tickets"
+                    "longMessage": "Kaikki yksittäisliput on jo myyty",
+                    "shortMessage": "Täynnä"
                 },
                 "resource": {
                     "longMessage": "Ei tarpeeksi saldoa",
