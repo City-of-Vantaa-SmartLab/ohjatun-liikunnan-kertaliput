@@ -103,7 +103,7 @@ const ModalContentAnimatable = posed.div({
 });
 
 export const Content = styled(ModalContentAnimatable)`
-    margin: 2rem 0;
+    margin: 0 0 2rem 0;
 `;
 export const Title = styled('h4')`
     margin: 0 0 2rem 0;

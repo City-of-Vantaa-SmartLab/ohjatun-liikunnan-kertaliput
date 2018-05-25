@@ -2,35 +2,27 @@ import React from 'react';
 import styled from 'react-emotion';
 import posed from 'react-pose';
 
-const BaseAnimationButton = posed.button({
-    preEnter: {
-        opacity: 0,
-        scale: 0,
-    },
-    enter: {
-        opacity: 1,
-        scale: 1,
-    },
-    exit: {
-        opacity: 0,
-        scale: 0,
-    },
-});
-
-const ButtonStyled = styled(BaseAnimationButton)`
-    background-color: rgba(255, 255, 255, 0.13);
-    border-radius: 8px;
+const ButtonStyled = styled('button')`
+    background-color: transparent;
+    border-radius: 1.5rem;
     border: 1px solid;
-    border-color: rgba(255, 255, 255, 0.8);
-    padding: 1.5rem;
-    color: white;
+    border-color: ${(props) =>
+        props.alternative
+            ? props.theme.complementary
+            : props.color || props.theme.main};
+    padding: 1.5rem 2rem;
+    color: ${(props) =>
+        props.alternative
+            ? props.theme.complementary
+            : props.color || props.theme.main};
     font-size: 2rem;
-    line-height: 0.5rem;
+    line-height: 1rem;
     display: inline-block;
     font-family: Calibri, sans-serif !important;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     outline: none;
     font-weight: bold;
+    text-transform: uppercase;
     cursor: pointer;
     transition: box-shadow 0.5s ease, background-color 0.5s ease,
         border-color 0.5s ease, color 0.7s ease;
@@ -42,17 +34,27 @@ const ButtonStyled = styled(BaseAnimationButton)`
         opacity: 0.5 !important;
         pointer-events: none;
     `};
+
     ${(props) =>
         props.bold &&
         `
-        border-color: ${props.theme.main};
-        color: ${props.theme.main};
+        background-color: ${
+            props.alternative
+                ? props.theme.complementary
+                : props.color || props.theme.main
+        };
+        color: ${
+            props.alternative ? 'rgba(0,0,0, .86)' : 'rgba(255,255,255, .86)'
+        };
     `};
 
     &:hover {
-        color: ${(props) => props.theme.main};
-        border-color: ${(props) => props.theme.main};
-        background-color: white;
+        background-color: ${(props) =>
+            props.alternative
+                ? props.theme.complementary
+                : props.color || props.theme.main};
+        color: ${(props) =>
+            props.alternative ? 'rgba(0,0,0, .86)' : 'rgba(255,255,255, .86)'};
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
     }
 `;
@@ -67,10 +69,14 @@ class Button extends React.Component {
             pose,
             children,
             bold,
+            color,
+            alternative,
         } = this.props;
         return (
             <ButtonStyled
+                alternative={alternative}
                 bold={bold}
+                color={color}
                 className={className}
                 style={style}
                 pose={pose}

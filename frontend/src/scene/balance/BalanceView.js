@@ -11,9 +11,6 @@ import posed, { PoseGroup } from 'react-pose';
 import { connect } from 'utils';
 import BalanceViewState from './state';
 
-const BalanceModal = styled(Modal)`
-    max-height: 100%;
-`;
 const Content = styled(ModalContent)`
     width: 100%;
     height: 100%;
@@ -63,7 +60,6 @@ const FormWarpper = posed.div({
         opacity: 0,
     },
 });
-
 const Form = styled(DefaultForm)`
     display: flex;
     flex-direction: column;
@@ -71,12 +67,6 @@ const Form = styled(DefaultForm)`
     border-top: 5px ${(props) => props.theme.main} solid;
     width: auto;
     margin: 0 !important;
-
-    button {
-        padding: 2rem !important;
-        width: auto;
-        align-self: center;
-    }
 `;
 const InputField = styled(DefaultInputField)`
     margin: 2rem 0 !important;
@@ -89,11 +79,9 @@ const InputField = styled(DefaultInputField)`
         border: 1px ${(props) => props.theme.main} solid;
         width: auto;
     }
-    button {
-        padding: 2rem !important;
-        border: 1px ${(props) => props.theme.main} solid;
-        width: auto;
-    }
+`;
+const SubmitButton = styled(Button)`
+    align-self: center;
 `;
 
 class BalanceView extends Component {
@@ -111,7 +99,7 @@ class BalanceView extends Component {
         const balance = this.props.userStore.balance;
         const i18nContent = this.props.i18nStore.content.balanceView;
         return (
-            <BalanceModal
+            <Modal
                 show={this.props.show}
                 onClear={() => {
                     this.state.hideForm();
@@ -123,7 +111,7 @@ class BalanceView extends Component {
                         <Title>{i18nContent.sectionTitle}</Title>
                         <span>{balance} €</span>
                         {!formShown && (
-                            <Button bold onClick={this.state.showForm}>
+                            <Button onClick={this.state.showForm}>
                                 {i18nContent.topUp}
                             </Button>
                         )}
@@ -148,20 +136,20 @@ class BalanceView extends Component {
                                             value={this.state.amount}
                                             onChange={this.setAmount}
                                         />
-                                        <Button
-                                            bold
-                                            onClick={this.onConfirm}
-                                            disabled={this.state.formIncorrect}
-                                        >
-                                            {i18nContent.confirm}!
-                                        </Button>
                                     </InputField>
                                 </Form>
+                                <SubmitButton
+                                    bold
+                                    onClick={this.onConfirm}
+                                    disabled={this.state.formIncorrect}
+                                >
+                                    {i18nContent.confirm}!
+                                </SubmitButton>
                             </FormWarpper>
                         )}
                     </PoseGroup>
                 </Content>
-            </BalanceModal>
+            </Modal>
         );
     }
 }

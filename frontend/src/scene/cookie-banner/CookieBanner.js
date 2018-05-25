@@ -30,7 +30,9 @@ const BannerWrapper = styled(ItemAnimation)`
     background-color: white;
     box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.3);
     justify-content: space-between;
-    border-radius: 0 0 2rem 2rem;
+    @media only screen and (min-width: 600px) {
+        border-radius: 0 0 2rem 2rem;
+    }
 
     button {
         padding: auto;
@@ -39,12 +41,9 @@ const BannerWrapper = styled(ItemAnimation)`
         display: inherit;
         align-items: center;
 
-        img {
-            margin-right: 2rem;
-            width: 4rem;
-        }
         span {
             font-size: 2rem;
+            margin-right: 2rem;
         }
     }
 `;

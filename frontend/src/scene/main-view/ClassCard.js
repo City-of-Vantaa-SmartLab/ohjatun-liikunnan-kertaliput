@@ -62,14 +62,16 @@ const CardWrapper = styled(ItemAnimation)`
     width: 100%;
     background-color: ${(props) =>
         props.blur ? props.theme[props.errorColorCode] : 'white'};;
-    border-bottom: 1px #EBEBEB solid;
-    padding: 2rem 0;
+    margin-top: 1px;
+    padding: 1.5rem 0;
     color: rgba(0, 0, 0, 0.86);
     transition: background-color 0.7s ease, border 0.5s ease;
     overflow: hidden;
     ${(props) =>
         props.errorColorCode &&
-        `border-left: 5px ${props.theme[props.errorColorCode]} solid`}
+        `border-left: ${props.blur ? 0 : 5}px ${
+            props.theme[props.errorColorCode]
+        } solid`}
     }
     & > div {
         will-change: transform;
@@ -133,16 +135,14 @@ const CourseArea = styled('div')`
     }
     div {
         display: flex;
-        height: 3rem;
         align-items: center;
     }
 `;
 const BookingButton = styled(Button)`
-    background-color: ${(props) => props.theme.complementary};
     color: rgba(0, 0, 0, 0.7);
-    border: none;
-    padding: 2rem;
-    font-size: 2rem;
+    &:hover {
+        color: rgba(0, 0, 0, 0.7);
+    }
 `;
 const PriceTag = styled('span')`
     display: inline-block;
@@ -283,26 +283,23 @@ const Card = class extends React.Component {
                             {errorDetail.type !== 'reserved' && (
                                 <PriceTag>{course.price} €</PriceTag>
                             )}
-                            <PoseGroup
-                                animateOnMount
-                                preEnterPose="preEnterPose"
-                            >
-                                {!disabled ? (
-                                    <BookingButton
-                                        key="2"
-                                        onClick={onButtonClick}
-                                    >
-                                        {buttonLabel}
-                                    </BookingButton>
-                                ) : (
-                                    <ErrorMessageTag
-                                        key="3"
-                                        color={errorDetail.colorCode}
-                                    >
-                                        {errorDetail.shortMessage}
-                                    </ErrorMessageTag>
-                                )}
-                            </PoseGroup>
+                            {!disabled ? (
+                                <BookingButton
+                                    key="2"
+                                    onClick={onButtonClick}
+                                    bold
+                                    alternative
+                                >
+                                    {buttonLabel}
+                                </BookingButton>
+                            ) : (
+                                <ErrorMessageTag
+                                    key="3"
+                                    color={errorDetail.colorCode}
+                                >
+                                    {errorDetail.shortMessage}
+                                </ErrorMessageTag>
+                            )}
                         </div>
                     </CourseArea>
                 </div>

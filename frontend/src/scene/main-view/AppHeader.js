@@ -20,15 +20,7 @@ const LogoBar = styled('div')`
         color: inherit;
     }
     button {
-        border-color: ${(props) => props.theme.main};
-        color: inherit;
         flex-shrink: 0;
-
-        &:hover {
-            color: white;
-            background-color: ${(props) => props.theme.main};
-            border-color: transparent;
-        }
     }
 
     span {
@@ -55,7 +47,6 @@ class AppHeader extends React.Component {
         const content = this.props.i18nStore.content.appHeader;
         const appName = this.props.i18nStore.content.global.appName;
         const { isAuthenticated, logout, balance } = this.props.userStore;
-        console.log(this.state.redirect, 'auth', isAuthenticated);
         if (this.state.redirect) return <Redirect to="/login" />;
         return (
             <AppHeaderWrapper>

@@ -26,14 +26,7 @@
     font-style: normal;
 }
 
-html {
-    display: flex;
-    background: url('./assets/Sports.png');
-}
-#root {
-    will-change: filter;
-}
-
+/* style normalization cross browsers */
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     appearance: none;
@@ -52,6 +45,15 @@ input::-webkit-inner-spin-button {
     box-sizing: border-box;
 }
 
+/* styles */
+html {
+    display: flex;
+    background: url('./assets/Sports.png');
+}
+#root {
+    will-change: filter;
+}
+/* responsive designs */
 /* Extra small devices (phones, 600px and down) */
 
 @media only screen and (max-width: 600px) {

@@ -10,7 +10,6 @@ import Button from '../../components/button';
 import dateFns from 'date-fns';
 
 const CourseContent = styled(Content)`
-    margin: 2rem 0;
     width: 100%;
     max-height: 70%;
     overflow-y: scroll;
@@ -21,19 +20,20 @@ const CourseContent = styled(Content)`
         margin: 0;
     }
     p {
-        margin-left: 1rem;
+        margin: 1rem;
     }
     li {
-        margin: 1rem 0;
-        padding-left: 1rem;
+        padding: 1rem 0;
+        margin-left: 1rem;
         display: flex;
         align-items: center;
+        text-transform: capitalize;
 
         svg {
-            fill: ${(props) => props.theme.main};
+            fill: ${(props) => props.theme.complementary};
             width: 2.5rem;
-            height: 2.5rem;
-            margin-right: 1rem;
+            height: auto;
+            margin-right: 1.5rem;
             flex-shrink: 0;
         }
     }
@@ -45,7 +45,7 @@ const BottomSection = styled(Content)`
 
     & > div {
         width: 100%;
-        border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
+        border-bottom: 1px rgba(0, 0, 0, 0.8) solid;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -71,19 +71,9 @@ const BottomSection = styled(Content)`
         }
     }
     & > button {
-        background-color: ${(props) => props.theme.complementary};
-        color: rgba(0, 0, 0, 0.7);
         margin-top: 2rem;
-        margin-left: 1rem;
-        margin-right: 1rem;
-        border: none !important;
-        box-shadow: none !important;
         padding: 2rem;
-
-        &: hover {
-            background-color: ${(props) => props.theme.complementary};
-            color: rgba(0, 0, 0, 0.7);
-        }
+        flex-basis: 70%;
     }
 `;
 
@@ -130,7 +120,8 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                             <strong>
                                 {dateFns.format(
                                     seletectedDate,
-                                    'dd DD.MM.YYYY'
+                                    'dddd DD.MM.YYYY',
+                                    { locale: getLocale() }
                                 )}
                             </strong>
                         </li>
@@ -163,7 +154,9 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                         </div>
                         <span>{course.price} €</span>
                     </div>
-                    <Button onClick={onConfirm}>Varaa</Button>
+                    <Button alternative bold onClick={onConfirm}>
+                        Varaa
+                    </Button>
                 </BottomSection>
             </Fragment>
         )}
@@ -202,8 +195,12 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                     <p>{course.description}</p>
                 </CourseContent>
                 <BottomSection>
-                    <Button onClick={clear}>Keskeytä</Button>
-                    <Button onClick={() => reserve(course)}>Vahvista</Button>
+                    <Button color="red" onClick={clear}>
+                        Keskeytä
+                    </Button>
+                    <Button bold onClick={() => reserve(course)}>
+                        Vahvista
+                    </Button>
                 </BottomSection>
             </Fragment>
         )}
