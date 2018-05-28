@@ -26,7 +26,14 @@
     font-style: normal;
 }
 
-/* style normalization cross browsers */
+html {
+    display: flex;
+    background: url('./assets/Sports.png');
+}
+#root {
+    will-change: filter;
+}
+
 input[type='number']::-webkit-inner-spin-button,
 input[type='number']::-webkit-outer-spin-button {
     appearance: none;

@@ -80,6 +80,7 @@ const InputField = styled(DefaultInputField)`
     input {
         width: auto;
         border: 1px ${(props) => props.theme.main} solid;
+        width: auto;
     }
 `;
 const SubmitButton = styled(Button)`
