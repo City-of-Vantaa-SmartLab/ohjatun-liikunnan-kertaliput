@@ -73,6 +73,8 @@ class RegisterForm extends React.Component {
                     {this.state.submitError !== 'alreadyExist' && (
                         <FormAction>
                             <Button
+                                color="white"
+                                hoveredTextColor="rgba(0,0,0, .8)"
                                 disabled={!this.state.formIsValid}
                                 onClick={(e) => {
                                     e.preventDefault();

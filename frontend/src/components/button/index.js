@@ -54,7 +54,11 @@ const ButtonStyled = styled('button')`
                 ? props.theme.complementary
                 : props.color || props.theme.main};
         color: ${(props) =>
-            props.alternative ? 'rgba(0,0,0, .86)' : 'rgba(255,255,255, .86)'};
+            !props.hoveredTextColor
+                ? props.alternative
+                    ? 'rgba(0,0,0, .86)'
+                    : 'rgba(255,255,255, .86)'
+                : props.hoveredTextColor};
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.3);
     }
 `;
@@ -71,12 +75,14 @@ class Button extends React.Component {
             bold,
             color,
             alternative,
+            hoveredTextColor,
         } = this.props;
         return (
             <ButtonStyled
                 alternative={alternative}
                 bold={bold}
                 color={color}
+                hoveredTextColor={hoveredTextColor}
                 className={className}
                 style={style}
                 pose={pose}
