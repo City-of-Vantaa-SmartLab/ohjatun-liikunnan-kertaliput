@@ -8,8 +8,8 @@ describe('getCourses API call', () => {
     });
 
     test('should load course data', async () => {
-        const startRange = new Date();
-        const endRange = datefns.addDays(new Date(), 8);
+        const startRange = datefns.setHours(new Date(), 0);
+        const endRange = datefns.setHours(datefns.addDays(new Date(), 8), 23);
         let courses = await db.courses.getCourses(startRange, endRange);
         courses = courses.sort((a, b) => a.id - b.id);
         expect(courses).not.toBeNull();

@@ -1,4 +1,6 @@
 const datefns = require('date-fns');
+const POOL_ID = process.env.POOL_ID || 1;
+const GYM_ID = process.env.GYM_ID || 4;
 const courses = {
     language: 'suomi',
     wholecount: 19,
@@ -34,12 +36,12 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 1,
-                    start: +datefns.addHours(new Date(), 4),
-                    end: +datefns.addHours(new Date(), 6),
+                    start: +datefns.setHours(new Date(), 15),
+                    end: +datefns.setHours(new Date(), 17),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -72,12 +74,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554746,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 1), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 1), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 1),
+                        17
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 1), 20),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -110,12 +115,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554749,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 2), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 2), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 2),
+                        14
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 2), 16),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -148,12 +156,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554752,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 3), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 3), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 3),
+                        16
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 3), 18),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -186,12 +197,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554755,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 4), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 4), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 4),
+                        12
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 4), 14),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -224,12 +238,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554758,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 5), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 5), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 5),
+                        17
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 5), 19),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -262,12 +279,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554764,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 6), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 6), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 6),
+                        18
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 6), 20),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: '',
@@ -300,12 +320,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554767,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 7), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 7), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 7),
+                        12
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 7), 14),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -338,12 +361,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554770,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 1), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 1), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 1),
+                        14
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 1), 16),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -376,12 +402,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554773,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 2), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 2), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 2),
+                        10
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 2), 12),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -414,12 +443,12 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554776,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 3), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 3), 6),
+                    start: +datefns.setHours(datefns.addDays(new Date(), 3), 9),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 3), 11),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -452,12 +481,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554761,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 4), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 4), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 4),
+                        11
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 4), 13),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: '',
@@ -490,12 +522,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554779,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 5), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 5), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 5),
+                        15
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 5), 17),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -528,12 +563,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554782,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 6), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 6), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 6),
+                        17
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 6), 19),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -566,12 +604,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554785,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 7), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 7), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 7),
+                        18
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 7), 20),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -604,12 +645,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554788,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 1), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 1), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 1),
+                        17
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 1), 19),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -642,12 +686,12 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554791,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 2), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 2), 6),
+                    start: +datefns.setHours(datefns.addDays(new Date(), 2), 9),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 2), 11),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -680,12 +724,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554794,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 3), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 3), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 3),
+                        10
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 3), 12),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -718,12 +765,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554797,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 4), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 4), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 4),
+                        10
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 4), 11),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -756,12 +806,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554800,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 5), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 5), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 5),
+                        13
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 5), 14),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -794,12 +847,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554803,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 6), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 6), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 6),
+                        17
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 6), 19),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -832,12 +888,15 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554806,
-                    start: +datefns.addHours(datefns.addDays(new Date(), 7), 4),
-                    end: +datefns.addHours(datefns.addDays(new Date(), 7), 6),
+                    start: +datefns.setHours(
+                        datefns.addDays(new Date(), 7),
+                        17
+                    ),
+                    end: +datefns.setHours(datefns.addDays(new Date(), 7), 19),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -870,12 +929,12 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: POOL_ID,
             teachingSession: [
                 {
                     id: 2554809,
-                    start: +datefns.addHours(new Date(), 4),
-                    end: +datefns.addHours(new Date(), 6),
+                    start: +datefns.setHours(new Date(), 4),
+                    end: +datefns.setHours(new Date(), 6),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
@@ -908,12 +967,12 @@ const courses = {
             acceptedCount: -1,
             ilmolink: '',
             single_payment_count: 5,
-            course_type_id: 1,
+            course_type_id: GYM_ID,
             teachingSession: [
                 {
                     id: 2554812,
-                    start: +datefns.addHours(new Date(), 4),
-                    end: +datefns.addHours(new Date(), 6),
+                    start: +datefns.setHours(new Date(), 17),
+                    end: +datefns.setHours(new Date(), 19),
                     teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                     address: null,
                     description: null,
