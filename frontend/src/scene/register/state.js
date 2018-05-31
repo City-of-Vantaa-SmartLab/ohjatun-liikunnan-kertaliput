@@ -30,6 +30,7 @@ class RegisterFormState {
 
     submitData = async () => {
         try {
+            this.submitting = true;
             const responseFromServer = await register({
                 username: this.username,
                 phoneNumber: processPhoneNumber(this.phoneNumber),
