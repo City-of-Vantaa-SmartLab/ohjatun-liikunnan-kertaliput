@@ -10,10 +10,10 @@ const myFetch = async (url, config = {}) => {
         body: JSON.stringify(config.body),
     });
     if (response.status >= 200 && response.status < 300) {
-        if (response.type === 'cors') {
-            window.location.href = response.url;
-        }
         try {
+            if (response.type === 'cors') {
+                window.location.href = response.url;
+            }
             return await response.json();
         } catch (error) {
             console.log('Not a json :)');

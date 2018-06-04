@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'react-emotion';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import Button from '../../components/button';
+import LoadingSpinner from '../../components/spinner';
 import { connect } from 'utils';
 import { Link } from 'react-router-dom';
 import FormState from './state';
@@ -96,6 +97,10 @@ class RegisterForm extends React.Component {
                         </Link>
                     </FormLink>
                 </Form>
+                <LoadingSpinner
+                    show={this.state.submitting}
+                    text={i18nContent.registrationForm.spinnerText}
+                />
                 <ConfirmationModal
                     show={this.state.submitSuccess}
                     username={this.state.username}

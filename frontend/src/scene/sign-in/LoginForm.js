@@ -4,6 +4,7 @@ import { Form, InputField, Input, FormLink } from '../../components/form';
 import { connect } from 'utils';
 import { autorun } from 'mobx';
 import { Link } from 'react-router-dom';
+import LoadingSpinner from '../../components/spinner';
 
 const PinCodeInput = styled(Input)`
     width: 7rem;
@@ -60,52 +61,60 @@ class LoginForm extends React.Component {
         const { hasEverFailed } = this.state;
 
         return (
-            <Form>
-                <InputField error={hasEverFailed}>
-                    <label htmlFor="telephone">
-                        {hasEverFailed
-                            ? content.signIn.form.telIsWrong
-                            : content.signIn.form.tel}
-                    </label>
-                    <Input
-                        name="telephone"
-                        type="tel"
-                        value={this.props.userStore.phoneNumber || ''}
-                        onChange={this.onTelephoneInputChange}
-                    />
-                </InputField>
-                <InputField error={hasEverFailed}>
-                    <label htmlFor="pinCode">
-                        {hasEverFailed
-                            ? content.signIn.form.pinCodeIsWrong
-                            : content.signIn.form.pinCode}
-                    </label>
-                    <div>
-                        {pinArr.map((key) => (
-                            <PinCodeInput
-                                innerRef={(instance) =>
-                                    (this['input' + key] = instance)
-                                }
-                                key={key}
-                                type="number"
-                                onKeyUp={this.onPinCodeInputsKeyUp(key)}
-                                onChange={this.onPinCodeInputsChange(key)}
-                                value={this.props.userStore.pinCode[key]}
-                                name="pinCode"
-                            />
-                        ))}
-                    </div>
-                </InputField>
-                <FormLink>
-                    <Link to="/main">
-                        {content.signIn.form.viewWithoutLogin}
-                    </Link>
-                    <Link to="/register">{content.signIn.form.register}</Link>
-                    <Link to="/reset-pin">
-                        {content.signIn.form.forgotPassword}
-                    </Link>
-                </FormLink>
-            </Form>
+            <React.Fragment>
+                <Form>
+                    <InputField error={hasEverFailed}>
+                        <label htmlFor="telephone">
+                            {hasEverFailed
+                                ? content.signIn.form.telIsWrong
+                                : content.signIn.form.tel}
+                        </label>
+                        <Input
+                            name="telephone"
+                            type="tel"
+                            value={this.props.userStore.phoneNumber || ''}
+                            onChange={this.onTelephoneInputChange}
+                        />
+                    </InputField>
+                    <InputField error={hasEverFailed}>
+                        <label htmlFor="pinCode">
+                            {hasEverFailed
+                                ? content.signIn.form.pinCodeIsWrong
+                                : content.signIn.form.pinCode}
+                        </label>
+                        <div>
+                            {pinArr.map((key) => (
+                                <PinCodeInput
+                                    innerRef={(instance) =>
+                                        (this['input' + key] = instance)
+                                    }
+                                    key={key}
+                                    type="number"
+                                    onKeyUp={this.onPinCodeInputsKeyUp(key)}
+                                    onChange={this.onPinCodeInputsChange(key)}
+                                    value={this.props.userStore.pinCode[key]}
+                                    name="pinCode"
+                                />
+                            ))}
+                        </div>
+                    </InputField>
+                    <FormLink>
+                        <Link to="/main">
+                            {content.signIn.form.viewWithoutLogin}
+                        </Link>
+                        <Link to="/register">
+                            {content.signIn.form.register}
+                        </Link>
+                        <Link to="/reset-pin">
+                            {content.signIn.form.forgotPassword}
+                        </Link>
+                    </FormLink>
+                </Form>
+                <LoadingSpinner
+                    show={this.props.userStore.isAuthenticating}
+                    text={content.signIn.spinnerText}
+                />
+            </React.Fragment>
         );
     }
 }

@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import { connect } from 'utils';
 import { Link, Redirect } from 'react-router-dom';
 import BalanceView from '../balance';
+import LoadingSpinner from '../../components/spinner';
 
 const AppHeaderWrapper = styled('div')`
     width: 100%;
@@ -38,6 +39,7 @@ class AppHeader extends React.Component {
     };
     clear = () => {
         this.setState({ show: false });
+        this.props.userStore.setPaymentFailed(false);
     };
     show = () => {
         this.setState({ show: true });
@@ -46,7 +48,12 @@ class AppHeader extends React.Component {
     render() {
         const content = this.props.i18nStore.content.appHeader;
         const appName = this.props.i18nStore.content.global.appName;
-        const { isAuthenticated, logout, balance } = this.props.userStore;
+        const {
+            isAuthenticated,
+            isPaymentInProgress,
+            logout,
+            balance,
+        } = this.props.userStore;
         if (this.state.redirect) return <Redirect to="/login" />;
         return (
             <AppHeaderWrapper>
@@ -71,6 +78,10 @@ class AppHeader extends React.Component {
                     )}
                 </LogoBar>
                 <BalanceView show={this.state.show} onClear={this.clear} />
+                <LoadingSpinner
+                    show={isPaymentInProgress}
+                    text={content.balanceLoader.spinnerText}
+                />
             </AppHeaderWrapper>
         );
     }

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Button from '../../components/button';
 import FormState from './state';
 import ConfirmationModal from './ConfirmationModal';
+import LoadingSpinner from '../../components/spinner';
 
 const FormAction = styled('div')`
     align-self: stretch;
@@ -73,6 +74,10 @@ class ResetPin extends React.Component {
                         </Link>
                     </FormLink>
                 </Form>
+                <LoadingSpinner
+                    show={this.state.submitting}
+                    text={i18nContent.resetPinForm.spinnerText}
+                />
                 <ConfirmationModal
                     show={this.state.submitSuccess}
                     username={this.props.userStore.username}

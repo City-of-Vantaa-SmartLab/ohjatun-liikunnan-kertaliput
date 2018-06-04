@@ -29,6 +29,8 @@ class userStore {
     token = null;
     balance = 0;
     reservedCourses = null;
+    isPaymentInProgress = false;
+    isPaymentFailed = false;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -96,12 +98,21 @@ class userStore {
     addBalance(amount) {
         this.balance = this.balance + amount;
     }
-    requestAddBalance(amount) {
+
+    setPaymentFailed(status) {
+        this.isPaymentFailed = status;
+    }
+
+    async requestAddBalance(amount) {
         try {
-            requestAddBalanceApi(amount);
+            this.isPaymentInProgress = true;
+            await requestAddBalanceApi(amount);
+            this.isPaymentFailed = false;
         } catch (error) {
-            console.err(error);
+            this.isPaymentFailed = true;
+            console.error(error);
         }
+        this.isPaymentInProgress = false;
     }
 
     async logout() {
@@ -122,6 +133,7 @@ class userStore {
                     phoneNumber: processPhoneNumber(this.phoneNumber),
                 });
                 this.setCredentials(userData);
+                this.isAuthenticating = false;
             } catch (err) {
                 this.authenticationFailed = true;
                 console.error(err);
@@ -164,6 +176,8 @@ class userStore {
 export default decorate(userStore, {
     isAuthenticating: observable,
     isAuthenticated: computed,
+    isPaymentInProgress: observable,
+    isPaymentFailed: observable,
     authenticationFailed: observable,
     phoneNumberIncorrect: computed,
     token: observable,
@@ -178,4 +192,5 @@ export default decorate(userStore, {
     setBalance: action,
     resetCredentials: action,
     logout: action.bound,
+    setPaymentFailed: action.bound,
 });

@@ -14,7 +14,8 @@
                 "register": "Luo uusi tili",
                 "forgotPassword": "Unohtuiko PIN-koodi?",
                 "viewWithoutLogin": "Jatka kirjautumatta"
-            }
+            },
+            "spinnerText": "Please wait!."
         },
         "registrationForm": {
             "title": "Luo uusi käyttäjätili",
@@ -27,13 +28,18 @@
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
             "submit": "Luo uusi käyttäjätili",
             "phoneNumberAlreadyExists":
-                "Tälle puhelinnumerolle on jo luotu käyttäjätili."
+                "Tälle puhelinnumerolle on jo luotu käyttäjätili.",
+            "spinnerText": "Please wait!."
         },
         "appHeader": {
             "logout": "Kirjaudu ulos",
             "balance": "Saldo",
             "checkBalance": "Hallinnoi saldoasi",
-            "login": "Kirjaudu sisään"
+            "login": "Kirjaudu sisään",
+            "balanceLoader": {
+                "spinnerText":
+                    "Sinut uudelleenohjataan maksupalveluun, odota hetki"
+            }
         },
         "calendar": {
             "date": "Päivä"
@@ -76,13 +82,16 @@
             "congratulationMessage":
                 "PIN-koodi on lähetetty puhelinnumeroosi. Syötä uusi nelinumeroinen PIN-koodi kirjautuaksesi",
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
-            "submit": "Lähetä"
+            "submit": "Lähetä",
+            "spinnerText": "Resetting Pin. Please wait!."
         },
         "balanceView": {
             "sectionTitle": "Saldosi",
             "topUp": "Lataa saldoa",
             "amount": "Syötä määrä (enintään 50 euroa)",
-            "confirm": "Lataa Saldoa"
+            "confirm": "Lataa Saldoa",
+            "failureText":
+                "Failed to add Balance due to server error!.Please try after sometime."
         },
         "paymentConfirmationForm": {
             "success": {

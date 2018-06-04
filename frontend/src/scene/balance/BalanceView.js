@@ -87,6 +87,18 @@ const SubmitButton = styled(Button)`
     align-self: center;
 `;
 
+const ErrorMessage = styled('span')`
+    p {
+        display: flex;
+        font-size: 2rem;
+        margin: 0;
+        text-align: left;
+        color: ${(props) => props.theme.error} !important;
+        font-weight: bold;
+        display: ${(props) => (props.show ? 'flex' : 'none')};
+    }
+`;
+
 class BalanceView extends Component {
     state = new BalanceViewState();
 
@@ -100,6 +112,7 @@ class BalanceView extends Component {
     render() {
         const formShown = this.state.formShown;
         const balance = this.props.userStore.balance;
+        const isPaymentFailed = this.props.userStore.isPaymentFailed;
         const i18nContent = this.props.i18nStore.content.balanceView;
         return (
             <Modal
@@ -137,6 +150,9 @@ class BalanceView extends Component {
                                             onChange={this.setAmount}
                                         />
                                     </InputField>
+                                    <ErrorMessage show={isPaymentFailed}>
+                                        <p>{i18nContent.failureText}</p>
+                                    </ErrorMessage>
                                 </Form>
                                 <SubmitButton
                                     bold
