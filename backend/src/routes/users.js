@@ -94,13 +94,13 @@ const createUser = async (req, res) => {
                 .status(201)
                 .json(
                     `Successfully created the account. Your login PIN will arrive shortly in your phone number ${
-                        createdUser.phoneNumber
+                    createdUser.phoneNumber
                     }.`
                 );
         } else {
             return res
                 .status(500)
-                .json(`Failed to generate new PIN for you. Please try again.`);
+                .json(`Sending SMS failed for "${user.phoneNumber}". Please try again.`);
         }
     } catch (err) {
         res
@@ -177,7 +177,7 @@ const resetPin = async (req, res) => {
                     res
                         .status(500)
                         .json(
-                            `Failed to generate new PIN for you. Please try again.`
+                            `Sending SMS failed for "${phoneNumber}". Please try again.`
                         );
                 }
             } else {
