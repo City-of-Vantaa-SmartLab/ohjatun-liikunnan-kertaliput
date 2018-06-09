@@ -38,7 +38,7 @@ export const persistToStorage = (name, data) => {
     try {
         window.localStorage.setItem(name, serialize(data));
     } catch (error) {
-        console.err(error, 'Cannot persist to storage');
+        console.error(error, 'Cannot persist to storage');
     }
 };
 

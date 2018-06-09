@@ -96,11 +96,11 @@ class userStore {
     addBalance(amount) {
         this.balance = this.balance + amount;
     }
-    requestAddBalance(amount) {
+    async requestAddBalance(amount) {
         try {
-            requestAddBalanceApi(amount);
+            await requestAddBalanceApi(amount);
         } catch (error) {
-            console.err(error);
+            console.error(error);
         }
     }
 
@@ -134,7 +134,7 @@ class userStore {
                 const reservedCourses = await fetchReservedCourses();
                 this.reservedCourses = reservedCourses;
             } catch (error) {
-                console.err(
+                console.error(
                     'Cannot fetch reserved courses for this user',
                     error
                 );
