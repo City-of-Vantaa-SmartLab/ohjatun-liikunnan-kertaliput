@@ -1,135 +1,94 @@
-# The Frontend
+# Frontend
 
 This README will cover the topics regarding the Frontend application. We will not be discussing about how to get started or development on the Frontend, because those details have been talked in great details [in the project-wide README.md](/README.md)
 
-That being said, here are the topics you can expect coverage in this README.
-
-*   Technologies and framework
-*   Communication with backend
-*   Authentication, Cookies and Local storage
-*   Theming, styling and, responsive design and customizations
-*   Localization and Internationalization
-*   Progressive aspect of the stack
-*   Tested browsers and platform
-
-Without further ado, let's dive into the words.
-
 ## Technologies and Framework
 
-A frontend application has many aspects, so it's natural that there are many technologies at play. Here's the list of what we use in the frontend.
+*   Single-page application (SPA) architecture.
+*   React as the view library.
+*   Mobx as state management library. Data is organized in OOP style (not as tree like in Redux).
+*   React-emotion as a CSS-in-JS styling solution.
+*   Prettier as code formatter.
+*   ESLint as linter.
 
-*   Single page application
-*   React as the view library
-*   Mobx as state management. Data is organized as OOP style (not tree like Redux)
-*   React-emotion (a library like Styled-Components) as a CSS-in-JS styling solution.
-*   Prettier as code formatter
-*   Eslint as linter
+The project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
 
-The project was bootstrapped by [Create React App](https://github.com/facebook/create-react-app)
+## Getting Started
 
-## Communication with backend
+Once you have the backend up and running and run:
 
-The frontend is a single page application, thus, it will talk to the backend via REST API endpoints.
+```bash
+npm install
+npm start
+```
 
-All the styles, images and assets are managed by the frontend.
+Please note that in development mode the Service worker will be disabled.
 
-## Authentiaction, Cookies and Local storage
+To see the production version, install `http-server` globally as:
 
-The frontend uses authentication token embedded in secure, HTTP ONLY cookies to do authentication.
+```bash
+npm install -g http-server
+```
 
-Upon start-up, it will attempt to authenticate against the backend using the cookies.
+To build and run, use:
 
-The app stores 1 piece of data in the target host localStorage. It is a flag to see if the user has grant us the right to use cookies or not.
+```bash
+npm run build
+cd build
+http-server .
+```
 
-## Theming, styling and customizations
+Access the site in `localhost:8080`.
+
+## Authentication, Cookies and Local Storage
+
+Authentication token is stored in secure, HTTP-only cookies. On start-up, the frontend will make a test request to see if the token is still valid.
+
+The app stores a flag to see if the user has grant us the right to use cookies or not `localStorage`.
+
+## Styling
 
 ### Theming
 
 The application uses a simple Javascript object to hold styling configurations. This object is in [index.js](./src/index.js)
 
-It looked like this:
+Main parameters and their function:
 
-```javascript
-theme = {
-    signInBackground: 'rgb(60, 143, 222)',
-    main: 'rgb(60, 143, 222)',
-    complementary: 'rgb(249, 229, 30)',
-    green: '#66BB6A',
-    error: 'rgb(250, 66, 59)',
-    errorReservationTime: 'rgb(117, 59, 189)',
-    errorReservationResource: 'rgb(255, 143, 28)',
-    errorReservationAuth: '#616161',
-    errorReservationNoTicket: '#795548',
-};
-```
-
-Here are the functionalities of the parameters:
-
-*   signInBackGround: is the background color of the sign-in page
-*   main: the main color of the app, used thoroughly in text, shapes, buttons, etc
-*   complementary: the secondary color of the app, used for highlighting
-*   green: the successful "green" of the app
-*   error: is the typical error color code
-
-Below that, is the color error code signifying the reason why the user cannot reserve a class session.
+*   `signInBackGround`: is the background color of the sign-in page
+*   `main`: the main color of the app, used thoroughly in text, shapes, buttons, etc
+*   `complementary`: the secondary color of the app, used for highlighting
+*   `green`: the successful "green" of the app
+*   `error`: is the typical error color code
 
 The app use Calibri as the main font for typography.
 
 ### Customization
 
-Certain components have been standardized and are used as the basis of the app. these includes:
+Certain components (e.g. input, modal and button) have been standardized and are used as the basis of the app. These can be found in `./src/components/`.
 
-*   Input components
-*   Modal
-*   Button
+### Responsive Design
 
-These can be found at `./src/components/`
-
-If you have a need to use these elements, make sure to import these instead of creating your own!
-
-### Responsive design
-
-Most of the responsive design and global css are in [index.css](./src/index.css).
 At the moment, two type of screens are supported: phones and desktop.
 
-## Localization and internationalization.
+## Localization and Internationalization
 
-The app supports localization and internalization.
+The app supports localization and internalization of strings and time/date formats. The translations are located in [content.json](./src/stores/content.json). There is no way to switch language currently.
 
-These belongs to 2 categorization: Translation and Datetime
+## Progressive Aspects of the App
 
-At the moment, only the Finnish language are supported. The translations are put in one place at [content.json](./src/stores/content.json)
+The app is a PWA (Progressive Web Application). All static assets for frontend are cached by default when environment is production.
 
-If you are working on adding translation in English or Swedish, please extends the data in the json file. For example, if you are working to add swedish translation, you can modify the file in this way:
+## Browser and Device Compatibility
 
-```json
-{
-    "finnish": {...}
-    "swedish": {
-        // fill in your contents in Swedish here
-    }
-}
-```
+The frontend is tested primarily against multiple iOS and Android versions.
 
-Do note that, we have yet to implement a system to let user switch language.
+To test PWA features, make sure you use a browser compatible with Service worker and Web app manifests.
 
-## Progressive aspect of the app
+### Tested Browsers
 
-The app is a progressive web app and can be installed on Android and ios 11+ devices.
-
-For now, we have used the default configuration of service worker from Create React App. This caches all static assets for front-end application.
-
-## Tested browsers and platforms
-
-The frontend supports iOS and android.
-
-For ios devices, you must use a version of safari that supports Progressive web app implementation (coming with ios 11)
-
-Here is a list of tested and supported browsers.
-
-| Browser (Platform/Version) | Supported |               🐛 Bugs                |
-| -------------------------- | :-------: | :----------------------------------: |
-| Chrome (v66/Desktop)       |    ✅     |                  -                   |
-| Firefox (v60/Desktop)      |    ✅     |            No blur effect            |
-| Safari (iOS 11)            |    ✅     | No prompt installing to home devices |
-| Safari (v11/Desktop)       |    ✅     | No prompt installing to home devices |
+| Browser (Platform/Version) |               🐛 Bugs                |
+| -------------------------- | :----------------------------------: |
+| Chrome (v66/Desktop)       |                  -                   |
+| Firefox (v60/Desktop)      |            No blur effect            |
+| Safari (iOS 11)            | No prompt installing to home devices |
+| Safari (v11/Desktop)       | No prompt installing to home devices |
