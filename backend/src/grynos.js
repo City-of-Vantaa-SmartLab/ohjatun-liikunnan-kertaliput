@@ -33,7 +33,7 @@ const mapCourseDetailsFromGrynos = async (course) => {
     const courseDetails = await axios(courseDetailUrl + course.code);
     return {
         ...course,
-        description: courseDetails.data.description,
+        description: courseDetails.data.descriptionInternet,
         single_payment_count: courseDetails.data.singlePaymentCount,
         company_name: courseDetails.data.companyName,
         course_type_id: courseDetails.data.courseTypeID,
@@ -58,17 +58,14 @@ const updateCoursesToDb = async () => {
         await sequelize.sync();
         let courses = await fetchCoursesFromGrynos();
         const dbCourses = await db.courses.getAllCourses();
-
         courses = courses.filter(
             (course) => !dbCourses.find((dbCourse) => course.id === dbCourse.id)
         );
-
         if (courses) {
             return await Promise.all(
                 courses.map((course) => {
                     return models.courses.create(course, {
                         include: [
-                            { model: models.locations, as: 'location' },
                             { model: models.events, as: 'teachingSession' },
                         ],
                     });
@@ -78,7 +75,7 @@ const updateCoursesToDb = async () => {
             console.error(`No courses available from Grynos.`);
         }
     } catch (error) {
-        console.error(`Failed to fetch course from Gryros: ${error.message}`);
+        console.error(`Failed to fetch course from Gryros: ${error}`);
     }
 };
 

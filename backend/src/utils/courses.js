@@ -1,7 +1,7 @@
-const POOL_ID = process.env.POOL_ID || 1;
-const WATER_ID = process.env.WATER_ID || 2;
-const FLOOR_ID = process.env.FLOOR_ID || 3;
-const GYM_ID = process.env.GYM_ID || 4;
+const POOL_ID = process.env.POOL_ID || 488;
+const WATER_ID = process.env.WATER_ID || 488;
+const FLOOR_ID = process.env.FLOOR_ID || 82;
+const GYM_ID = process.env.GYM_ID || 82;
 const POOL_WATER_PRICE_BEFORE_4 = process.env.POOL_WATER_PRICE_BEFORE_4 || 1.5;
 const POOL_WATER_PRICE_AFTER_4 = process.env.POOL_WATER_PRICE_AFTER_4 || 2.5;
 const FLOOR_GYM_PRICE_BEFORE_4 = process.env.FLOOR_GYM_PRICE_BEFORE_4 || 2.5;

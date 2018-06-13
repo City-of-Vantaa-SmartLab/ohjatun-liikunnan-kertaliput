@@ -147,7 +147,6 @@ const getCourseById = (id) => {
 const reduceCoursesByDate = async (courses) => {
     const mappedCourses = await Promise.all(
         courses
-            .filter((course) => course.location[0]) // Removes courses that doesn't have any locations
             .filter((course) => course.teachingSession[0]) // Removes courses that doesn't have any teaching sessions
             .map(async (course) => {
                 const reservedCount = await reservations.getReservationCount(
@@ -178,7 +177,7 @@ const reduceCoursesByDate = async (courses) => {
                     course_type_id: course.course_type_id,
                     course_type_name: course.course_type_name,
                     teacher: course.teacher,
-                    location: course.location[0].dataValues.location,
+                    location: course.teachingSession[0].dataValues.location,
                     eventId: course.teachingSession[0].dataValues.eventId,
                     startDate: course.teachingSession[0].dataValues.startDate,
                     endDate: course.teachingSession[0].dataValues.endDate,

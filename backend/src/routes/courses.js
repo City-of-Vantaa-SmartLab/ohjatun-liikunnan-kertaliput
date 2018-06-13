@@ -30,6 +30,16 @@ const getCourses = async (req, res) => {
     }
 };
 
+const getAllCourses = async (req, res) => {
+    try {
+        const courses = await db.courses.getAllCourses();
+        const response = await db.courses.reduceCoursesByDate(courses);
+        res.status(200).json(response);
+    } catch (err) {
+        res.status(500).json(`Failed to get courses. Error: ${err.message}`);
+    }
+};
+
 const getCourseById = async (req, res) => {
     try {
         const courseId = Number(req.params.id);
@@ -50,6 +60,7 @@ const getCourseById = async (req, res) => {
 };
 
 router.get('/', getCourses);
+router.get('/all', getAllCourses);
 router.get('/:id', getCourseById);
 
 module.exports = router;
