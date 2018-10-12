@@ -7,6 +7,9 @@ const services = require('../services');
 const datefns = require('date-fns');
 const eventReservationLimit = process.env.EVENT_RESERVATION_LIMIT || 5;
 const i18n = require('../i18n').i18n();
+const { formatToTimeZone } = require('date-fns-timezone');
+const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)';
+
 const getReservationsByUser = async (req, res) => {
     try {
         const user = req.user;
@@ -38,7 +41,10 @@ const getReservationCountForEvents = async (req, res) => {
     }
 };
 
-const formatDate = (date) => datefns.format(date, i18n.reservations.dateFormat);
+const formatDate = (date) => {
+    date = formatToTimeZone(date, format, { timeZone: 'Europe/Helsinki' });
+    return datefns.format(date, i18n.reservations.dateFormat);
+};
 
 const createReservation = async (req, res) => {
     try {
@@ -107,7 +113,7 @@ const createReservation = async (req, res) => {
 
             const message = `${i18n.reservations.confirmationMessage} ${
                 course.name
-            }.\n${startDate}\n${event.dataValues.teachingplace}`;
+                }.\n${startDate}\n${event.dataValues.teachingplace}`;
 
             const response = await services.sms.sendMessageToUser(
                 dbUser,
