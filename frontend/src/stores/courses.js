@@ -37,14 +37,7 @@ const isAvailable = (
     const enoughFund = hasSufficientFund(balance, courseItem);
     const notReserved = !hasBeenReserved(reservedCourseList || [], courseItem);
     const hasTickets = hasEnoughTickets(courseItem);
-    if (!authenticationStatus) reservedCourseList = [];
     return {
-        isAvailable:
-            reservedCourseList !== null &&
-            openedYet &&
-            !closedYet &&
-            notReserved &&
-            hasTickets,
         reasons: [
             !authenticationStatus && 'auth',
             !notReserved && 'reserved',

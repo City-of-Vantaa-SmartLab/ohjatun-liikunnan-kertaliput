@@ -24,7 +24,7 @@ const ItemAnimation = posed.div({
     },
 });
 
-export const ErrorMessageAnimation = posed.h4({
+const ErrorMessageAnimation = posed.h4({
     hidden: {
         y: -10,
         x: 50,
@@ -79,21 +79,6 @@ const CardWrapper = styled(ItemAnimation)`
         ${(props) =>
             props.blur &&
             `filter: blur(4px); pointer-events: none; transform: scale(1.2);`};
-    }
-`;
-
-const ErrorMessage = styled(ErrorMessageAnimation)`
-    text-align: center;
-    font-size: 2.5rem;
-    color: white;
-    opacity: 0;
-    position: absolute;
-    top: 30%;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-    * {
-        color: inherit !important;
     }
 `;
 
@@ -179,20 +164,17 @@ const Card = class extends React.Component {
     state = {
         showMessage: false,
     };
+
     render() {
         const {
             course,
             buttonLabel,
+            seeCourseDetails,
             onButtonClick,
-            disabled,
             errorMessages,
             ...rest
         } = this.props;
-        const blurAndShowMessage = disabled && this.state.showMessage;
-        const errorDetail =
-            getErrorDetail(course, this.props.errorMessages) || {};
-
-        // noinspection JSAnnotator
+        const errorDetail = getErrorDetail(course, errorMessages) || {};
         return (
             <CardWrapper {...rest} errorColorCode={errorDetail.colorCode || ''}>
                 <div>
@@ -212,35 +194,36 @@ const Card = class extends React.Component {
                                         .replace('.', ',') + ' €'}
                                 </PriceTag>
                             )}
-                            {errorDetail.type !== 'reserved' ? (
-                                <BookingButton
-                                    key="2"
-                                    onClick={onButtonClick}
-                                    bold
-                                    alternative
-                                >
-                                    {buttonLabel}
-                                </BookingButton>
-                            ) : null}
+
+                            <BookingButton
+                                key="2"
+                                onClick={onButtonClick}
+                                bold
+                                alternative
+                            >
+                                {errorDetail.shortMessage
+                                    ? seeCourseDetails
+                                    : buttonLabel}
+                            </BookingButton>
                         </div>
                         <div>
-                            {errorDetail !== null &&
-                                disabled && (
-                                    <div>
-                                        <ErrorMessageTag
-                                            key="3"
-                                            color={errorDetail.colorCode}
-                                        >
-                                            {errorDetail.shortMessage}
-                                        </ErrorMessageTag>
-                                    </div>
-                                )}
+                            {errorDetail.shortMessage !== null && (
+                                <div>
+                                    <ErrorMessageTag
+                                        key="3"
+                                        color={errorDetail.colorCode}
+                                    >
+                                        {errorDetail.shortMessage}
+                                    </ErrorMessageTag>
+                                </div>
+                            )}
                         </div>
                     </CourseArea>
                 </div>
             </CardWrapper>
         );
     }
+
     componentWillUnmount() {
         window.clearTimeout(this.longMessageTick);
     }
@@ -300,7 +283,8 @@ class ClassCard extends React.Component {
             .errorMessages;
         const noCourseContent = this.props.i18nStore.content.courseCard
             .noCourse;
-
+        const seeCourseDetails = this.props.i18nStore.content.courseCard
+            .seeCourseDetails;
         return (
             <ScrollContainer>
                 <PoseGroup preEnterPose="preEnter">
@@ -311,9 +295,9 @@ class ClassCard extends React.Component {
                                 id={i}
                                 course={el}
                                 buttonLabel={buttonLabel}
+                                seeCourseDetails={seeCourseDetails}
                                 onButtonClick={this.selectCourse(el)}
                                 errorMessages={errorMessages}
-                                disabled={!el.isAvailable}
                             />
                         ))
                     ) : (

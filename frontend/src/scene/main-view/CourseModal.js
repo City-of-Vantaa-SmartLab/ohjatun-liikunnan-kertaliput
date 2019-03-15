@@ -25,7 +25,7 @@ const CourseContent = styled(Content)`
         margin: 1rem;
     }
     li {
-        courseutilpadding: 1rem 0;
+        padding: 1rem 0;
         margin-left: 1rem;
         display: flex;
         align-items: center;
@@ -119,26 +119,14 @@ const ErrorMessageAnimation = posed.h4({
     },
 });
 
-const ErrorMessage = styled(ErrorMessageAnimation)`
-    text-align: center;
-    font-size: 2.5rem;
-    color: white;
-    opacity: 0;
-    position: absolute;
-    top: 30%;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-    * {
-        color: inherit !important;
-    }
-`;
-
 const ErrorMessageTag = styled(ErrorMessageAnimation)`
     color: ${(props) => props.theme[props.color]};
     font-size: 2.3rem;
     font-weight: bold;
     margin: 0;
+    key="3"
+    color={errorDetail.colorCode}
+    margin-Top : 1rem
 `;
 
 const MainModal = ({
@@ -200,11 +188,7 @@ const MainModal = ({
                         </span>
                     </div>
 
-                    <ErrorMessageTag
-                        key="3"
-                        color={errorDetail.colorCode}
-                        style={{ marginTop: 10 }}
-                    >
+                    <ErrorMessageTag color={errorDetail.colorCode}>
                         {errorDetail.longMessage}
                     </ErrorMessageTag>
                     <Button
