@@ -158,15 +158,18 @@ class courseStore {
 
     async reserveCourse(course) {
         try {
-            const reservation = await reserveTicket({
-                courseId: course.id,
-                eventId: course.eventId,
-            });
-            this.rootStore.userStore.setBalance(course.price);
-            this.rootStore.userStore.reservedCourses.push(reservation);
+            if (course !== null) {
+                const reservation = await reserveTicket({
+                    courseId: course.id,
+                    eventId: course.eventId,
+                });
+                this.rootStore.userStore.setBalance(course.price);
+                reservation.bookingStatus = 1;
+                this.rootStore.userStore.reservedCourses.push(reservation);
+                // @TODO: handle failure states: Error messages, etc
+            }
             this.selectCourse(null);
             this.checkAvailability();
-            // @TODO: handle failure states: Error messages, etc
         } catch (error) {
             console.error('Cannot reserve course', error);
             return false;
