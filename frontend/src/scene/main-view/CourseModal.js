@@ -8,6 +8,8 @@ import ClockLogo from '../../common/ClockLogo';
 import EuroLogo from '../../common/EuroLogo';
 import Button from '../../components/button';
 import dateFns from 'date-fns';
+import posed from 'react-pose';
+import { getErrorDetail } from './CourseUtil';
 
 const CourseContent = styled(Content)`
     width: 100%;
@@ -23,7 +25,7 @@ const CourseContent = styled(Content)`
         margin: 1rem;
     }
     li {
-        padding: 1rem 0;
+        courseutilpadding: 1rem 0;
         margin-left: 1rem;
         display: flex;
         align-items: center;
@@ -104,7 +106,48 @@ const ReservationContent = styled(Content)`
     }
 `;
 
-const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
+const ErrorMessageAnimation = posed.h4({
+    hidden: {
+        y: -10,
+        x: 50,
+        opacity: 0,
+    },
+    shown: {
+        y: -10,
+        x: 0,
+        opacity: 1,
+    },
+});
+
+const ErrorMessage = styled(ErrorMessageAnimation)`
+    text-align: center;
+    font-size: 2.5rem;
+    color: white;
+    opacity: 0;
+    position: absolute;
+    top: 30%;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    * {
+        color: inherit !important;
+    }
+`;
+
+const ErrorMessageTag = styled(ErrorMessageAnimation)`
+    color: ${(props) => props.theme[props.color]};
+    font-size: 2.3rem;
+    font-weight: bold;
+    margin: 0;
+`;
+
+const MainModal = ({
+    course,
+    seletectedDate,
+    onConfirm,
+    clear,
+    errorDetail,
+}) => (
     <Modal show={course} onClear={clear}>
         {course && (
             <Fragment>
@@ -156,7 +199,20 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                             {Number(course.price).toLocaleString('fi')} €
                         </span>
                     </div>
-                    <Button alternative bold onClick={onConfirm}>
+
+                    <ErrorMessageTag
+                        key="3"
+                        color={errorDetail.colorCode}
+                        style={{ marginTop: 10 }}
+                    >
+                        {errorDetail.longMessage}
+                    </ErrorMessageTag>
+                    <Button
+                        alternative
+                        bold
+                        onClick={onConfirm}
+                        disabled={errorDetail.longMessage}
+                    >
                         Varaa
                     </Button>
                 </BottomSection>
@@ -276,6 +332,11 @@ class CourseModal extends React.Component {
         const seletectedDate = this.props.courseStore.filters.date;
         const course = this.props.courseStore.courseInFocus;
         const i18nContent = this.props.i18nStore.content;
+        const errorDetail =
+            getErrorDetail(
+                course,
+                this.props.i18nStore.content.courseCard.errorMessages
+            ) || {};
         return (
             <div>
                 {this.state.showDetails && (
@@ -284,6 +345,7 @@ class CourseModal extends React.Component {
                         seletectedDate={seletectedDate}
                         onConfirm={this.onConfirm}
                         clear={this.clear}
+                        errorDetail={errorDetail}
                     />
                 )}
                 {this.state.showConfirm && (

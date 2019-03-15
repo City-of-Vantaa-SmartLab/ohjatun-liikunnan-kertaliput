@@ -7,13 +7,12 @@ import NotFoundIcon from '../../common/NotFoundIcon';
 import posed, { PoseGroup } from 'react-pose';
 import { Link } from 'react-router-dom';
 import stringInterpolator from 'interpolate';
-
+import { getErrorDetail } from './CourseUtil';
 // posed components
 const ItemAnimation = posed.div({
     enter: {
         y: '0%',
         opacity: 1,
-        delay: (props) => 200 + props.id * 50,
     },
     exit: {
         y: '100%',
@@ -25,7 +24,7 @@ const ItemAnimation = posed.div({
     },
 });
 
-const ErrorMessageAnimation = posed.h4({
+export const ErrorMessageAnimation = posed.h4({
     hidden: {
         y: -10,
         x: 50,
@@ -39,7 +38,6 @@ const ErrorMessageAnimation = posed.h4({
 });
 const EmptyStateContainerAnimation = posed.div({
     enter: {
-        delay: 400,
         scale: 1,
         opacity: 1,
     },
@@ -181,72 +179,6 @@ const Card = class extends React.Component {
     state = {
         showMessage: false,
     };
-    getErrorDetail = (course) => {
-        if (!course || !course.reasons) return;
-        const types = course.reasons;
-
-        const {
-            openTime,
-            closeTime,
-            resource,
-            auth,
-            reserved,
-            noTickets,
-        } = this.props.errorMessages;
-        const type = types[0];
-
-        if (type === 'reserved')
-            return {
-                longMessage: reserved.longMessage,
-                shortMessage: reserved.shortMessage,
-                colorCode: 'green',
-                type,
-            };
-        if (type === 'openTime')
-            return {
-                longMessage: stringInterpolator(openTime.longMessage, {
-                    date: dateFns.format(
-                        dateFns.subDays(course.startDate, 3),
-                        'DD.MM'
-                    ),
-                    time: dateFns.format(course.startDate, 'HH:mm'),
-                }),
-                shortMessage: openTime.shortMessage,
-                colorCode: 'errorReservationTime',
-                type,
-            };
-        if (type === 'closingTime')
-            return {
-                longMessage: stringInterpolator(closeTime.longMessage, {
-                    numberOfFreeSeats:
-                        course.single_payment_count - course.reservedCount,
-                }),
-                shortMessage: closeTime.shortMessage,
-                colorCode: 'errorReservationTime',
-                type,
-            };
-        if (type === 'noTickets')
-            return {
-                longMessage: noTickets.longMessage,
-                shortMessage: noTickets.shortMessage,
-                colorCode: 'errorReservationNoTicket',
-                type,
-            };
-        if (type === 'resource')
-            return {
-                longMessage: resource.longMessage,
-                shortMessage: resource.shortMessage,
-                colorCode: 'errorReservationResource',
-                type,
-            };
-        if (type === 'auth')
-            return {
-                longMessage: auth.longMessage,
-                shortMessage: auth.shortMessage,
-                colorCode: 'errorReservationAuth',
-                type,
-            };
-    };
     render() {
         const {
             course,
@@ -257,26 +189,12 @@ const Card = class extends React.Component {
             ...rest
         } = this.props;
         const blurAndShowMessage = disabled && this.state.showMessage;
-        const errorDetail = (disabled && this.getErrorDetail(course)) || {};
+        const errorDetail =
+            getErrorDetail(course, this.props.errorMessages) || {};
+
+        // noinspection JSAnnotator
         return (
-            <CardWrapper
-                {...rest}
-                blur={blurAndShowMessage}
-                errorColorCode={errorDetail.colorCode || ''}
-                onMouseEnter={() => this.setState({ showMessage: true })}
-                onMouseLeave={() => this.setState({ showMessage: false })}
-                onTouchEnd={() => {
-                    this.setState({ showMessage: true });
-                    window.clearTimeout(this.longMessageTick);
-                    this.longMessageTick = window.setTimeout(
-                        () => this.setState({ showMessage: false }),
-                        3000
-                    );
-                }}
-            >
-                <ErrorMessage pose={blurAndShowMessage ? 'shown' : 'hidden'}>
-                    {errorDetail.longMessage || ''}
-                </ErrorMessage>
+            <CardWrapper {...rest} errorColorCode={errorDetail.colorCode || ''}>
                 <div>
                     <TimeArea>
                         <span>{dateFns.format(course.startDate, 'HH.mm')}</span>
@@ -294,7 +212,7 @@ const Card = class extends React.Component {
                                         .replace('.', ',') + ' €'}
                                 </PriceTag>
                             )}
-                            {!disabled ? (
+                            {errorDetail.type !== 'reserved' ? (
                                 <BookingButton
                                     key="2"
                                     onClick={onButtonClick}
@@ -303,14 +221,20 @@ const Card = class extends React.Component {
                                 >
                                     {buttonLabel}
                                 </BookingButton>
-                            ) : (
-                                <ErrorMessageTag
-                                    key="3"
-                                    color={errorDetail.colorCode}
-                                >
-                                    {errorDetail.shortMessage}
-                                </ErrorMessageTag>
-                            )}
+                            ) : null}
+                        </div>
+                        <div>
+                            {errorDetail !== null &&
+                                disabled && (
+                                    <div>
+                                        <ErrorMessageTag
+                                            key="3"
+                                            color={errorDetail.colorCode}
+                                        >
+                                            {errorDetail.shortMessage}
+                                        </ErrorMessageTag>
+                                    </div>
+                                )}
                         </div>
                     </CourseArea>
                 </div>
@@ -376,6 +300,7 @@ class ClassCard extends React.Component {
             .errorMessages;
         const noCourseContent = this.props.i18nStore.content.courseCard
             .noCourse;
+
         return (
             <ScrollContainer>
                 <PoseGroup preEnterPose="preEnter">
@@ -388,10 +313,7 @@ class ClassCard extends React.Component {
                                 buttonLabel={buttonLabel}
                                 onButtonClick={this.selectCourse(el)}
                                 errorMessages={errorMessages}
-                                disabled={
-                                    !el.isAvailable ||
-                                    !this.props.userStore.isAuthenticated
-                                }
+                                disabled={!el.isAvailable}
                             />
                         ))
                     ) : (
