@@ -8,6 +8,8 @@ import ClockLogo from '../../common/ClockLogo';
 import EuroLogo from '../../common/EuroLogo';
 import Button from '../../components/button';
 import dateFns from 'date-fns';
+import posed from 'react-pose';
+import { getErrorDetail } from './CourseUtil';
 
 const CourseContent = styled(Content)`
     width: 100%;
@@ -104,7 +106,36 @@ const ReservationContent = styled(Content)`
     }
 `;
 
-const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
+const ErrorMessageAnimation = posed.h4({
+    hidden: {
+        y: -10,
+        x: 50,
+        opacity: 0,
+    },
+    shown: {
+        y: -10,
+        x: 0,
+        opacity: 1,
+    },
+});
+
+const ErrorMessageTag = styled(ErrorMessageAnimation)`
+    color: ${(props) => props.theme[props.color]};
+    font-size: 2.3rem;
+    font-weight: bold;
+    margin: 0;
+    key="3"
+    color={errorDetail.colorCode}
+    margin-Top : 1rem
+`;
+
+const MainModal = ({
+    course,
+    seletectedDate,
+    onConfirm,
+    clear,
+    errorDetail,
+}) => (
     <Modal show={course} onClear={clear}>
         {course && (
             <Fragment>
@@ -156,7 +187,16 @@ const MainModal = ({ course, seletectedDate, onConfirm, clear }) => (
                             {Number(course.price).toLocaleString('fi')} €
                         </span>
                     </div>
-                    <Button alternative bold onClick={onConfirm}>
+
+                    <ErrorMessageTag color={errorDetail.colorCode}>
+                        {errorDetail.longMessage}
+                    </ErrorMessageTag>
+                    <Button
+                        alternative
+                        bold
+                        onClick={onConfirm}
+                        disabled={errorDetail.longMessage}
+                    >
                         Varaa
                     </Button>
                 </BottomSection>
@@ -276,6 +316,11 @@ class CourseModal extends React.Component {
         const seletectedDate = this.props.courseStore.filters.date;
         const course = this.props.courseStore.courseInFocus;
         const i18nContent = this.props.i18nStore.content;
+        const errorDetail =
+            getErrorDetail(
+                course,
+                this.props.i18nStore.content.courseCard.errorMessages
+            ) || {};
         return (
             <div>
                 {this.state.showDetails && (
@@ -284,6 +329,7 @@ class CourseModal extends React.Component {
                         seletectedDate={seletectedDate}
                         onConfirm={this.onConfirm}
                         clear={this.clear}
+                        errorDetail={errorDetail}
                     />
                 )}
                 {this.state.showConfirm && (

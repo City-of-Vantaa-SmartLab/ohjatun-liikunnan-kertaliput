@@ -41,6 +41,7 @@
         "courseCard": {
             "select": "Valitse",
             "noCourse": "Ei löytynyt tunteja tälle päivälle",
+            "seeCourseDetails": "View details",
             "errorMessages": {
                 "openTime": {
                     "longMessage":

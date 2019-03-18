@@ -38,14 +38,6 @@ const isAvailable = (
     const notReserved = !hasBeenReserved(reservedCourseList || [], courseItem);
     const hasTickets = hasEnoughTickets(courseItem);
     return {
-        isAvailable:
-            reservedCourseList !== null &&
-            openedYet &&
-            !closedYet &&
-            enoughFund &&
-            authenticationStatus &&
-            notReserved &&
-            hasTickets,
         reasons: [
             !authenticationStatus && 'auth',
             !notReserved && 'reserved',
