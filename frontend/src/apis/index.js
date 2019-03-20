@@ -2,6 +2,16 @@
 
 const BASE_PATH = '/api';
 
+class FetchException {
+    message = null;
+    code = null;
+
+    constructor(code, message) {
+        this.code = code;
+        this.message = message;
+    }
+}
+
 const myFetch = async (url, config = {}) => {
     const response = await window.fetch(BASE_PATH + url, {
         headers: { 'content-type': 'application/json', ...config.headers },
@@ -18,7 +28,9 @@ const myFetch = async (url, config = {}) => {
         } catch (error) {
             console.log('Not a json :)');
         }
-    } else throw new Error(response.status);
+    } else {
+        throw new FetchException(response.status, await response.json());
+    }
 };
 
 export const checkLoginStatus = () => myFetch(`/users/me`);

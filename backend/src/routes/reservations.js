@@ -5,7 +5,6 @@ const db = require('../db');
 const utils = require('../utils');
 const services = require('../services');
 const datefns = require('date-fns');
-const eventReservationLimit = process.env.EVENT_RESERVATION_LIMIT || 5;
 const i18n = require('../i18n').i18n();
 const { formatToTimeZone } = require('date-fns-timezone');
 const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)';
@@ -83,7 +82,7 @@ const createReservation = async (req, res) => {
             );
             const bookingLimitReached = utils.reservations.checkBookingLimit(
                 existingReservations.count,
-                eventReservationLimit
+                course.single_payment_count
             );
 
             // Check whether the same event has been already reserverd by the user.
@@ -99,7 +98,7 @@ const createReservation = async (req, res) => {
             }
 
             if (bookingLimitReached) {
-                return res.status(400).json(bookingLimitReached);
+                return res.status(422).json(bookingLimitReached);
             }
             if (notEnoughBalance) {
                 return res.status(422).json(notEnoughBalance);
