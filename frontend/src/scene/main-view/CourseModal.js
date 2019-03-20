@@ -253,6 +253,24 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
     </Modal>
 );
 
+const RefreshModal = ({ showModal, refreshApp }) => (
+    <Modal show={showModal} hideCloseButton>
+        <Fragment>
+            <CourseContent>
+                <Title>New Content Available</Title>
+                <ul>
+                    <h4>Please refresh</h4>
+                </ul>
+            </CourseContent>
+            <BottomSection>
+                <Button bold onClick={() => refreshApp()}>
+                    Refresh App
+                </Button>
+            </BottomSection>
+        </Fragment>
+    </Modal>
+);
+
 const ReservationModal = ({ course, seletectedDate, clear }) => (
     <Modal show={course} onClear={clear}>
         {course && (
@@ -279,6 +297,18 @@ class CourseModal extends React.Component {
         showConfirm: false,
         showReserve: false,
         reservedCourse: null,
+        showRefreshModal: false,
+    };
+
+    componentDidMount() {
+        setInterval(this.checkForUpdates, 60000);
+    }
+
+    checkForUpdates = () => {
+        let updateAvailable = window['updateAvailable'];
+        if (updateAvailable) {
+            this.setState({ showRefreshModal: true });
+        }
     };
 
     clear = () => {
@@ -308,6 +338,12 @@ class CourseModal extends React.Component {
         });
     };
 
+    refreshApp = () => {
+        window['updateAvailable'] = false;
+        this.setState({ showReserve: false });
+        window.location.reload();
+    };
+
     removeFocusesCourse = () => {
         this.props.courseStore.reserveCourse(null);
     };
@@ -332,6 +368,15 @@ class CourseModal extends React.Component {
                         errorDetail={errorDetail}
                     />
                 )}
+
+                {this.state.showRefreshModal &&
+                !this.state.showConfirm &&
+                !this.state.showReserve ? (
+                    <RefreshModal
+                        showModal={this.state.showRefreshModal}
+                        refreshApp={this.refreshApp}
+                    />
+                ) : null}
                 {this.state.showConfirm && (
                     <ConfirmationModal
                         course={course}
