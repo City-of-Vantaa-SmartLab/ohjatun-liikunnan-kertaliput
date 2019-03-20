@@ -7,10 +7,12 @@ module.exports = {
     getEventById: (id) => {
         return models.events.find({
             attributes: [
+                'id',
                 ['id', 'eventId'],
                 ['start', 'startDate'],
                 ['end', 'endDate'],
                 'teachingplace',
+                'courseId'
             ],
             where: {
                 id,

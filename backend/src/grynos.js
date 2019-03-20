@@ -74,14 +74,27 @@ const updateCoursesToDb = async (courses) => {
                     if (dbCourseIds.includes(course.id)) {
                         const dbCourse = dbCourses.find(item => item.id === course.id);
                         await handleCancellations(dbCourse, dbCourse.teachingSession, course.teachingSession);
-                        if (dbCourse.single_payment_count < course.single_payment_count) {
-                            console.log('Updating singlePaymentCount for course', dbCourse.id, 'as', course.single_payment_count);
-                            return await updateSinglePaymentTickets(dbCourse, course);
-                        } else {
-                            return dbCourse;
+                        const locationId = dbCourse.location && dbCourse.location.length > 0 ? dbCourse.location[0].dataValues.id : null;
+                        dbCourse.update(course);
+
+                        for (let teachingSession of course.teachingSession) {
+                            const session = await db.events.getEventById(teachingSession.id);
+                            if (session) {
+                                await session.update(teachingSession);
+                            } else {
+                                teachingSession.courseId = dbCourse.id;
+                                await models.events.create(teachingSession);
+                            }
+                        }
+
+                        if (locationId && course.location.length > 0) {
+                            const location = await db.locations.getLocationById(locationId);
+                            if (location) {
+                                await location.update({ ...course.location[0] });
+
+                            }
                         }
                     } else {
-                        delete course.location[0].id;
                         return models.courses.create(course, {
                             include: [
                                 { model: models.events, as: 'teachingSession' },
@@ -97,6 +110,7 @@ const updateCoursesToDb = async (courses) => {
     } catch (error) {
         console.error(`Failed to fetch course from Gryros: ${error}`);
     }
+
 }
 
 const updateSinglePaymentTickets = async (dbCourse, course) => {
