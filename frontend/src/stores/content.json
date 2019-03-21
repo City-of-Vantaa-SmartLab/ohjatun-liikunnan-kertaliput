@@ -96,7 +96,6 @@
                 "title": "Saldon lataaminen epäonnistui.",
                 "balanceDesc": "Nykyinen saldosi on"
             },
-
             "dismiss": "Sulje"
         },
         "reservationConfirmationForm": {
@@ -107,7 +106,6 @@
             "failure": {
                 "title": "Reservation Failed! Please try again!."
             },
-
             "dismiss": "Sulje"
         },
         "courseDescriptionForm": {
