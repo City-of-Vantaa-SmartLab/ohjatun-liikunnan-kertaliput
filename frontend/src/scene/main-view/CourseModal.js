@@ -271,9 +271,26 @@ const RefreshModal = ({ showModal, refreshApp }) => (
     </Modal>
 );
 
-const ReservationModal = ({ course, seletectedDate, clear }) => (
+const ReservationModal = ({
+    course,
+    seletectedDate,
+    reservationError,
+    clear,
+}) => (
     <Modal show={course} onClear={clear}>
-        {course && (
+        {reservationError ? (
+            <Fragment>
+                <ReservationContent>
+                    <Title>Reservation failed</Title>
+                    <strong>{reservationError}</strong>
+
+                    <div>Please try again later</div>
+                </ReservationContent>
+                <BottomSection>
+                    <Button onClick={clear}>Sulje</Button>
+                </BottomSection>
+            </Fragment>
+        ) : (
             <Fragment>
                 <ReservationContent>
                     <Title>Varaus Onnistui</Title>
@@ -311,6 +328,17 @@ class CourseModal extends React.Component {
         }
     };
 
+    componentDidMount() {
+        setInterval(this.checkForUpdates, 60000);
+    }
+
+    checkForUpdates = () => {
+        let updateAvailable = window['updateAvailable'];
+        if (updateAvailable) {
+            this.setState({ showRefreshModal: true });
+        }
+    };
+
     clear = () => {
         this.props.courseStore.selectCourse(null);
         this.setState({
@@ -328,13 +356,16 @@ class CourseModal extends React.Component {
         });
     };
 
-    reserve = (course) => {
-        this.props.courseStore.reserveCourse(course);
+    reserve = async (course) => {
+        const reservationError = await this.props.courseStore.reserveCourse(
+            course
+        );
         this.setState({
             showDetails: true,
             showConfirm: false,
             showReserve: true,
             reservedCourse: course,
+            reservationError: reservationError,
         });
     };
 
@@ -389,6 +420,7 @@ class CourseModal extends React.Component {
                     <ReservationModal
                         course={this.state.reservedCourse}
                         seletectedDate={seletectedDate}
+                        reservationError={this.state.reservationError}
                         clear={composeFunction(
                             this.clear,
                             this.removeFocusesCourse
