@@ -61,7 +61,7 @@ class RegisterFormState {
             console.error(error);
             this.submitError = 'validation';
             this.submitting = false;
-            if (error.message === '409') {
+            if (error.code === '409') {
                 this.submitError = 'alreadyExist';
             }
         }

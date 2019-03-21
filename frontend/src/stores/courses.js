@@ -163,8 +163,10 @@ class courseStore {
             this.selectCourse(null);
             this.checkAvailability();
         } catch (error) {
-            console.error('Cannot reserve course', error);
-            return false;
+            console.log('Cannot reserve course ', error.message);
+            this.rootStore.userStore.checkAuthenticationStatusOnStart();
+            await this.fetchCourses();
+            return error.message;
         }
     }
 
