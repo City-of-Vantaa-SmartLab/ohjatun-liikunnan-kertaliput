@@ -75,7 +75,7 @@ const updateCoursesToDb = async (courses) => {
                         const dbCourse = dbCourses.find(item => item.id === course.id);
                         await handleCancellations(dbCourse, dbCourse.teachingSession, course.teachingSession);
                         const locationId = dbCourse.location && dbCourse.location.length > 0 ? dbCourse.location[0].dataValues.id : null;
-                        dbCourse.update(course);
+                        const updatedCourses = await dbCourse.update(course);
 
                         for (let teachingSession of course.teachingSession) {
                             const session = await db.events.getEventById(teachingSession.id);
@@ -94,6 +94,7 @@ const updateCoursesToDb = async (courses) => {
 
                             }
                         }
+                        return updatedCourses;
                     } else {
                         return models.courses.create(course, {
                             include: [

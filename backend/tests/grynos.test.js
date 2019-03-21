@@ -1,5 +1,6 @@
 const seed = require('../src/seed/db-seed');
 const db = require('../src/db');
+const models = require('../src/models');
 const mockData = require('./testdata');
 const coursesToUpdate = require('../src/seed/mockDataForUpdate').updateCourses;
 const updateCoursesToDb = require('../src/grynos').updateCoursesToDb;
@@ -59,7 +60,6 @@ describe('getCourses API call', () => {
 
     test('should update seats when single payment seats is greater than current number', async () => {
         let reservation = {
-            id: 100,
             courseId: 1,
             eventId: 1,
             ticketType: 'Single_Ticket',
@@ -68,18 +68,15 @@ describe('getCourses API call', () => {
         };
 
         const user = {
-            id: 100,
             username: 'test user',
-            phoneNumber: '+358123412345',
             pin: 1234,
         };
 
         let reservationId = 2;
         const defaultBalance = 0;
 
-        await db.users.createUser(user).then((createdUser) => {
-            reservation.userId = createdUser.id;
-        });
+        const createdUser = await models.users.create(user);
+        reservation.userId = createdUser.id;
         const dbReservation = await db.reservations.createReservation(
             reservation
         );
@@ -92,7 +89,7 @@ describe('getCourses API call', () => {
         const updatedCourses = await updateCoursesToDb(coursesToUpdate);
 
         expect(updatedCourses[0].dataValues.single_payment_count).toEqual(10);
-        expect(updatedCourses[1].dataValues.single_payment_count).toEqual(5);
+        expect(updatedCourses[1].dataValues.single_payment_count).toEqual(4);
         expect(updatedCourses[2].dataValues.single_payment_count).toEqual(11);
         expect(updatedCourses[3].dataValues.single_payment_count).toEqual(5);
 

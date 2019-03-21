@@ -77,6 +77,8 @@ describe('Users API testing.', async () => {
     });
 
     test('check saldo update is working properly', async () => {
+        const number = '+358' + randtoken.generate(9, '0123456789');
+        user.phoneNumber = number;
         await db.users.createUser(user);
         let dbuser = await db.users.getUserByToken(token);
         expect(dbuser.balance).toEqual(0);
