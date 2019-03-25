@@ -318,22 +318,12 @@ class CourseModal extends React.Component {
     };
 
     componentDidMount() {
-        setInterval(this.checkForUpdates, 60000);
+        setInterval(this.checkForUpdates, 10000);
     }
 
     checkForUpdates = () => {
         let updateAvailable = window['updateAvailable'];
-        if (updateAvailable) {
-            this.setState({ showRefreshModal: true });
-        }
-    };
-
-    componentDidMount() {
-        setInterval(this.checkForUpdates, 60000);
-    }
-
-    checkForUpdates = () => {
-        let updateAvailable = window['updateAvailable'];
+        console.log('Update Available: ' + updateAvailable);
         if (updateAvailable) {
             this.setState({ showRefreshModal: true });
         }
