@@ -10,6 +10,8 @@ import Button from '../../components/button';
 import dateFns from 'date-fns';
 import posed from 'react-pose';
 import { getErrorDetail } from './CourseUtil';
+import { Link } from 'react-router-dom';
+import BalanceView from '../balance';
 
 const CourseContent = styled(Content)`
     width: 100%;
@@ -133,8 +135,10 @@ const MainModal = ({
     course,
     seletectedDate,
     onConfirm,
+    onAddSaldo,
     clear,
     errorDetail,
+    content,
 }) => (
     <Modal show={course} onClear={clear}>
         {course && (
@@ -191,14 +195,32 @@ const MainModal = ({
                     <ErrorMessageTag color={errorDetail.colorCode}>
                         {errorDetail.longMessage}
                     </ErrorMessageTag>
-                    <Button
-                        alternative
-                        bold
-                        onClick={onConfirm}
-                        disabled={errorDetail.longMessage}
-                    >
-                        Varaa
-                    </Button>
+                    {!course.reasons[0] ||
+                    (course.reasons[0] !== 'auth' &&
+                        course.reasons[0] !== 'resource') ? (
+                        <Button
+                            alternative
+                            bold
+                            onClick={onConfirm}
+                            disabled={errorDetail.longMessage}
+                        >
+                            Varaa
+                        </Button>
+                    ) : (
+                        [
+                            course.reasons[0] === 'auth' ? (
+                                <Link to="/login">
+                                    <Button>{content.appHeader.login}</Button>
+                                </Link>
+                            ) : (
+                                course.reasons[0] === 'resource' && (
+                                    <Button onClick={onAddSaldo}>
+                                        {content.balanceView.topUp}
+                                    </Button>
+                                )
+                            ),
+                        ]
+                    )}
                 </BottomSection>
             </Fragment>
         )}
@@ -313,6 +335,7 @@ class CourseModal extends React.Component {
         showDetails: true,
         showConfirm: false,
         showReserve: false,
+        showSaldo: false,
         reservedCourse: null,
         showRefreshModal: false,
     };
@@ -335,6 +358,7 @@ class CourseModal extends React.Component {
             showDetails: true,
             showConfirm: false,
             showReserve: false,
+            showSaldo: false,
         });
     };
 
@@ -343,6 +367,15 @@ class CourseModal extends React.Component {
             showDetails: false,
             showConfirm: true,
             showReserve: false,
+        });
+    };
+
+    onAddSaldo = () => {
+        this.setState({
+            showDetails: false,
+            showConfirm: false,
+            showReserve: false,
+            showSaldo: true,
         });
     };
 
@@ -385,8 +418,10 @@ class CourseModal extends React.Component {
                         course={course}
                         seletectedDate={seletectedDate}
                         onConfirm={this.onConfirm}
+                        onAddSaldo={this.onAddSaldo}
                         clear={this.clear}
                         errorDetail={errorDetail}
+                        content={i18nContent}
                     />
                 )}
 
@@ -405,6 +440,9 @@ class CourseModal extends React.Component {
                         reserve={this.reserve}
                         clear={this.clear}
                     />
+                )}
+                {this.state.showSaldo && (
+                    <BalanceView isShown={true} onClear={this.clear} />
                 )}
                 {this.state.showReserve && (
                     <ReservationModal
