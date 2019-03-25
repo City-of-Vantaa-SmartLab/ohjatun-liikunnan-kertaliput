@@ -3,5 +3,5 @@ const users = require('./users');
 const events = require('./events');
 const reservations = require('./reservations');
 const payments = require('./payments');
-
-module.exports = { courses, users, events, reservations, payments };
+const locations = require('./locations');
+module.exports = { courses, users, events, reservations, payments, locations };

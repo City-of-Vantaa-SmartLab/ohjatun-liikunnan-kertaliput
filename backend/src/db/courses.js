@@ -34,7 +34,7 @@ const getCourses = (startDate, endDate) => {
                 model: models.locations,
                 as: 'location',
                 attributes: [['path', 'location'],
-                    'address'],
+                    'address', 'id'],
             },
             {
                 model: models.events,
@@ -85,8 +85,10 @@ const getAllCourses = () => {
             {
                 model: models.locations,
                 as: 'location',
-                attributes: [['path', 'location'],
-                    'address'],
+                attributes: [
+                    ['path', 'location'],
+                    'address',
+                    'id'],
             },
             {
                 model: models.events,
