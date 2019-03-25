@@ -157,6 +157,7 @@ class courseStore {
                 });
                 this.rootStore.userStore.setBalance(course.price);
                 reservation.bookingStatus = 1;
+                await this.fetchCourses();
                 this.rootStore.userStore.reservedCourses.push(reservation);
                 // @TODO: handle failure states: Error messages, etc
             }
