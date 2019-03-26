@@ -319,6 +319,7 @@ class CourseModal extends React.Component {
         showReserve: false,
         reservedCourse: null,
         showRefreshModal: false,
+        reservationInProgress: false,
     };
 
     componentDidMount() {
@@ -351,16 +352,22 @@ class CourseModal extends React.Component {
     };
 
     reserve = async (course) => {
-        const reservationError = await this.props.courseStore.reserveCourse(
-            course
-        );
-        this.setState({
-            showDetails: true,
-            showConfirm: false,
-            showReserve: true,
-            reservedCourse: course,
-            reservationError: reservationError,
-        });
+        if (!this.state.reservationInProgress) {
+            this.setState({
+                reservationInProgress: true,
+            });
+            const reservationError = await this.props.courseStore.reserveCourse(
+                course
+            );
+            this.setState({
+                showDetails: true,
+                showConfirm: false,
+                showReserve: true,
+                reservedCourse: course,
+                reservationError: reservationError,
+                reservationInProgress: false,
+            });
+        }
     };
 
     refreshApp = () => {

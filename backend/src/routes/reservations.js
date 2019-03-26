@@ -95,30 +95,28 @@ const createReservation = async (req, res) => {
                 return res
                     .send(422)
                     .json(i18n.reservations.errorMessages.eventExists);
-            }
-
-            if (bookingLimitReached) {
+            } else if (bookingLimitReached) {
                 return res.status(422).json(bookingLimitReached);
-            }
-            if (notEnoughBalance) {
+            } else if (notEnoughBalance) {
                 return res.status(422).json(notEnoughBalance);
-            }
+            } else {
+                await db.reservations.createReservation(reservationObj);
+                // Get the event details to be sent to user in the reservation SMS.
+                const event = await db.events.getEventById(
+                    reservationObj.eventId
+                );
+                const startDate = formatDate(event.dataValues.startDate);
 
-            await db.reservations.createReservation(reservationObj);
-
-            // Get the event details to be sent to user in the reservation SMS.
-            const event = await db.events.getEventById(reservationObj.eventId);
-            const startDate = formatDate(event.dataValues.startDate);
-
-            const message = `${i18n.reservations.confirmationMessage} ${
-                course.name
+                const message = `${i18n.reservations.confirmationMessage} ${
+                    course.name
                 }.\n${startDate}\n${event.dataValues.teachingplace}`;
 
-            const response = await services.sms.sendMessageToUser(
-                dbUser,
-                message
-            );
-            res.status(201).json(reservationObj);
+                const response = await services.sms.sendMessageToUser(
+                    dbUser,
+                    message
+                );
+                res.status(201).json(reservationObj);
+            }
         }
     } catch (err) {
         console.log(err);
@@ -139,9 +137,12 @@ const cancelReservation = async (req, res) => {
             const [cancelled, reservation, dbUser] = await Promise.all([
                 db.reservations.cancelReservation(reservationId),
                 db.reservations.getReservationById(reservationId),
-                db.users.getUser(user.phoneNumber)]);
+                db.users.getUser(user.phoneNumber),
+            ]);
 
-            const message = await services.sms.buildCancellationMessage(reservation);
+            const message = await services.sms.buildCancellationMessage(
+                reservation
+            );
             const response = await services.sms.sendMessageToUser(
                 dbUser,
                 message
@@ -149,9 +150,9 @@ const cancelReservation = async (req, res) => {
             res.status(200).json('Reservation cancelled successfully');
         }
     } catch (err) {
-        res
-            .status(500)
-            .json(`Failed to cancel reservation. Error: ${err.message}`);
+        res.status(500).json(
+            `Failed to cancel reservation. Error: ${err.message}`
+        );
     }
 };
 
