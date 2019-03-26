@@ -169,7 +169,6 @@ const Card = class extends React.Component {
         const {
             course,
             buttonLabel,
-            seeCourseDetails,
             onButtonClick,
             errorMessages,
             ...rest
@@ -186,14 +185,12 @@ const Card = class extends React.Component {
                         <strong>{course.name}</strong>
                         <span>{course.location}</span>
                         <div>
-                            {errorDetail.type !== 'reserved' && (
-                                <PriceTag>
-                                    {Number(course.price)
-                                        .toFixed(2)
-                                        .toString()
-                                        .replace('.', ',') + ' €'}
-                                </PriceTag>
-                            )}
+                            <PriceTag>
+                                {Number(course.price)
+                                    .toFixed(2)
+                                    .toString()
+                                    .replace('.', ',') + ' €'}
+                            </PriceTag>
 
                             <BookingButton
                                 key="2"
@@ -201,9 +198,7 @@ const Card = class extends React.Component {
                                 bold
                                 alternative
                             >
-                                {errorDetail.shortMessage
-                                    ? seeCourseDetails
-                                    : buttonLabel}
+                                {buttonLabel}
                             </BookingButton>
                         </div>
                         <div>
@@ -283,8 +278,7 @@ class ClassCard extends React.Component {
             .errorMessages;
         const noCourseContent = this.props.i18nStore.content.courseCard
             .noCourse;
-        const seeCourseDetails = this.props.i18nStore.content.courseCard
-            .seeCourseDetails;
+
         return (
             <ScrollContainer>
                 <PoseGroup preEnterPose="preEnter">
@@ -295,7 +289,6 @@ class ClassCard extends React.Component {
                                 id={i}
                                 course={el}
                                 buttonLabel={buttonLabel}
-                                seeCourseDetails={seeCourseDetails}
                                 onButtonClick={this.selectCourse(el)}
                                 errorMessages={errorMessages}
                             />
