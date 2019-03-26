@@ -158,6 +158,7 @@ const ErrorMessageTag = styled(ErrorMessageAnimation)`
     font-size: 2.3rem;
     font-weight: bold;
     margin: 0;
+    padding-top: 0.5rem;
 `;
 
 const Card = class extends React.Component {
