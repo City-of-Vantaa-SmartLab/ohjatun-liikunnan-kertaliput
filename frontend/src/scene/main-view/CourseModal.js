@@ -195,7 +195,7 @@ const MainModal = ({
                     <ErrorMessageTag color={errorDetail.colorCode}>
                         {errorDetail.longMessage}
                     </ErrorMessageTag>
-                    {!course.reasons[0] ||
+                    {!course.reasons ||
                     (course.reasons[0] !== 'auth' &&
                         course.reasons[0] !== 'resource') ? (
                         <Button
