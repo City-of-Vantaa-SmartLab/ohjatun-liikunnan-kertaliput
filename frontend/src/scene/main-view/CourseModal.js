@@ -5,6 +5,7 @@ import Modal, { Content, Title } from '../../components/modal';
 import LocationIcon from '../../common/LocationIcon';
 import DateLogo from '../../common/DateLogo';
 import ClockLogo from '../../common/ClockLogo';
+import TeacherLogo from '../../common/TeacherLogo';
 import EuroLogo from '../../common/EuroLogo';
 import Button from '../../components/button';
 import dateFns from 'date-fns';
@@ -148,20 +149,19 @@ const MainModal = ({
                         </li>
                         <li>
                             <DateLogo />
-                            <strong>
-                                {dateFns.format(
-                                    seletectedDate,
-                                    'dddd DD.MM.YYYY',
-                                    { locale: getLocale() }
-                                )}
-                            </strong>
+
+                            {dateFns.format(seletectedDate, 'dddd DD.MM.YYYY', {
+                                locale: getLocale(),
+                            })}
                         </li>
                         <li>
                             <ClockLogo />
-                            <strong>
-                                {dateFns.format(course.startDate, 'HH:mm')} -
-                                {dateFns.format(course.endDate, 'HH:mm')}
-                            </strong>
+                            {dateFns.format(course.startDate, 'HH:mm')} -
+                            {dateFns.format(course.endDate, 'HH:mm')}
+                        </li>
+                        <li>
+                            <TeacherLogo />
+                            {course.teacher}
                         </li>
                     </ul>
                     <p>{course.description}</p>
@@ -230,6 +230,10 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                             <ClockLogo />
                             {dateFns.format(course.startDate, 'HH:mm')} -
                             {dateFns.format(course.endDate, 'HH:mm')}
+                        </li>
+                        <li>
+                            <TeacherLogo />
+                            {course.teacher}
                         </li>
                         <li>
                             <EuroLogo />
