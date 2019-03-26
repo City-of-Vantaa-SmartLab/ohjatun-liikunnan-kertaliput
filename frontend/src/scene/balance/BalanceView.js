@@ -103,7 +103,7 @@ class BalanceView extends Component {
         const i18nContent = this.props.i18nStore.content.balanceView;
         return (
             <Modal
-                show={this.props.show}
+                show={this.props.show || this.props.isShown}
                 onClear={() => {
                     this.state.hideForm();
                     this.props.onClear();
@@ -113,14 +113,15 @@ class BalanceView extends Component {
                     <BalanceInfoArea pose={'show'}>
                         <Title>{i18nContent.sectionTitle}</Title>
                         <span>{Number(balance).toLocaleString('fi')} €</span>
-                        {!formShown && (
-                            <Button onClick={this.state.showForm}>
-                                {i18nContent.topUp}
-                            </Button>
-                        )}
+                        {!formShown &&
+                            !this.props.isShown && (
+                                <Button onClick={this.state.showForm}>
+                                    {i18nContent.topUp}
+                                </Button>
+                            )}
                     </BalanceInfoArea>
                     <PoseGroup animateOnMount>
-                        {formShown && (
+                        {(formShown || this.props.isShown) && (
                             <FormWarpper key="1">
                                 <Form>
                                     <InputField
