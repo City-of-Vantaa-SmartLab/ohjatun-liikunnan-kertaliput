@@ -307,10 +307,8 @@ const ReservationModal = ({
         {reservationError ? (
             <Fragment>
                 <ReservationContent>
-                    <Title>Reservation failed</Title>
+                    <Title>Voi harmi!</Title>
                     <strong>{reservationError}</strong>
-
-                    <div>Please try again later</div>
                 </ReservationContent>
                 <BottomSection>
                     <Button onClick={clear}>Sulje</Button>

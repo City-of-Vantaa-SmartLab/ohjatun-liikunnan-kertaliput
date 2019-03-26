@@ -47,7 +47,7 @@ const checkBalance = (balance, ticketPrice) => {
 
 const checkBookingLimit = (count, limit) => {
     if (count === limit) {
-        return 'There are no tickets left for this event.';
+        return 'Tunti ehti täyttyä. Tutustu muuhun tuntitarjontaamme.';
     }
 };
 
