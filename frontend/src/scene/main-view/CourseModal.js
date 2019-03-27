@@ -180,7 +180,7 @@ const MainModal = ({
                         </li>
                         <li>
                             <TeacherLogo />
-                            {course.teacher}
+                            {course.teacher ? course.teacher : 'N/A'}
                         </li>
                     </ul>
                     <p>{course.description}</p>
