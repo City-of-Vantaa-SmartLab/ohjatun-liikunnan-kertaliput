@@ -364,7 +364,7 @@ class CourseModal extends React.Component {
 
     checkForUpdates = () => {
         let updateAvailable = window['updateAvailable'];
-        console.log('Update Available v1: ' + updateAvailable);
+        console.log('Update Available' + updateAvailable);
         if (updateAvailable) {
             this.setState({ showRefreshModal: true });
         }
