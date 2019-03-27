@@ -82,6 +82,21 @@ const BottomSection = styled(Content)`
     }
 `;
 
+const UpdateContent = styled(Content)`
+    height: 100%;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 10rem;
+
+    div {
+        padding-top: 15rem;
+        font-size: 2rem;
+        text-align: center;
+    }
+`;
+
 const ReservationContent = styled(Content)`
     height: 100%;
     display: flex;
@@ -282,15 +297,13 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
 const RefreshModal = ({ showModal, refreshApp }) => (
     <Modal show={showModal} hideCloseButton>
         <Fragment>
-            <CourseContent>
-                <Title>New Content Available</Title>
-                <ul>
-                    <h4>Please refresh</h4>
-                </ul>
-            </CourseContent>
+            <UpdateContent>
+                <Title>Hei!</Title>
+                <div>Uusi versio sovelluksesta on saatavilla</div>
+            </UpdateContent>
             <BottomSection>
                 <Button bold onClick={() => refreshApp()}>
-                    Refresh App
+                    Päivitä
                 </Button>
             </BottomSection>
         </Fragment>
@@ -346,12 +359,12 @@ class CourseModal extends React.Component {
     };
 
     componentDidMount() {
-        setInterval(this.checkForUpdates, 10000);
+        setInterval(this.checkForUpdates, 5000);
     }
 
     checkForUpdates = () => {
         let updateAvailable = window['updateAvailable'];
-        console.log('Update Available: ' + updateAvailable);
+        console.log('Update Available v1: ' + updateAvailable);
         if (updateAvailable) {
             this.setState({ showRefreshModal: true });
         }
