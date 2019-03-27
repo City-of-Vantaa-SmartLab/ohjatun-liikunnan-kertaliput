@@ -109,6 +109,22 @@ const ReservationContent = styled(Content)`
     }
 `;
 
+const ReservationFailedContent = styled(Content)`
+    height: 100%;
+    display: flex;
+    justify-content: baseline;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 20rem;
+
+    div {
+        padding-top: 10rem;
+        padding: 10rem 3rem 0 3 rem;
+        font-size: 2rem;
+        text-align: center;
+    }
+`;
+
 const ErrorMessageAnimation = posed.h4({
     hidden: {
         y: -10,
@@ -306,12 +322,13 @@ const ReservationModal = ({
     <Modal show={course} onClear={clear}>
         {reservationError ? (
             <Fragment>
-                <ReservationContent>
+                <ReservationFailedContent>
                     <Title>Voi harmi!</Title>
-                    <strong>{reservationError}</strong>
-                </ReservationContent>
+
+                    <div>{reservationError}</div>
+                </ReservationFailedContent>
                 <BottomSection>
-                    <Button onClick={clear}>Sulje</Button>
+                    <Button onClick={clear}>Takaisin</Button>
                 </BottomSection>
             </Fragment>
         ) : (
