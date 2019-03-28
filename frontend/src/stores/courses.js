@@ -68,7 +68,6 @@ class courseStore {
                     window.requestIdleCallback(
                         () => {
                             this.checkAvailability();
-                            this.fetchCourses();
                             checkEvery5Sec();
                         },
                         {
@@ -77,7 +76,6 @@ class courseStore {
                     );
                 else {
                     this.checkAvailability();
-                    this.fetchCourses();
                     checkEvery5Sec();
                 }
             }, 5000);
