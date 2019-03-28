@@ -240,7 +240,7 @@ const MainModal = ({
                     ) : (
                         [
                             course.reasons[0] === 'auth' ? (
-                                <Link to="/login">
+                                <Link onClick={clear} to="/login">
                                     <Button>{content.appHeader.login}</Button>
                                 </Link>
                             ) : (
