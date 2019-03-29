@@ -97,6 +97,11 @@ const UpdateContent = styled(Content)`
     }
 `;
 
+const LinkContent = styled(Link)`
+    color: inherit;
+    text-decoration: none;
+`;
+
 const ReservationContent = styled(Content)`
     height: 100%;
     display: flex;
@@ -240,9 +245,11 @@ const MainModal = ({
                     ) : (
                         [
                             course.reasons[0] === 'auth' ? (
-                                <Link onClick={clear} to="/login">
-                                    <Button>{content.appHeader.login}</Button>
-                                </Link>
+                                <Button alternative bold>
+                                    <LinkContent onClick={clear} to="/login">
+                                        {content.appHeader.login}
+                                    </LinkContent>
+                                </Button>
                             ) : (
                                 course.reasons[0] === 'resource' && (
                                     <Button onClick={onAddSaldo}>
