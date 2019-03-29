@@ -252,7 +252,11 @@ const MainModal = ({
                                 </Button>
                             ) : (
                                 course.reasons[0] === 'resource' && (
-                                    <Button onClick={onAddSaldo}>
+                                    <Button
+                                        alternative
+                                        bold
+                                        onClick={onAddSaldo}
+                                    >
                                         {content.balanceView.topUp}
                                     </Button>
                                 )
