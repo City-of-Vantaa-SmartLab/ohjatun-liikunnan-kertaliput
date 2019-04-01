@@ -166,6 +166,10 @@ const Card = class extends React.Component {
         showMessage: false,
     };
 
+    componentDidMount() {
+        this.props.courseStore.checkAvailability();
+    }
+
     render() {
         const {
             course,
@@ -292,6 +296,7 @@ class ClassCard extends React.Component {
                                 buttonLabel={buttonLabel}
                                 onButtonClick={this.selectCourse(el)}
                                 errorMessages={errorMessages}
+                                courseStore={this.props.courseStore}
                             />
                         ))
                     ) : (
