@@ -81,8 +81,30 @@ class courseStore {
             }, 5000);
         };
 
+        const checkEveryFewMins = () => {
+            // schedule this checking to find if any data
+            // in backend has changed
+            window.setTimeout(() => {
+                if (window.requestIdleCallback)
+                    window.requestIdleCallback(
+                        () => {
+                            this.fetchCourses();
+                            checkEveryFewMins();
+                        },
+                        {
+                            timeout: Infinity,
+                        }
+                    );
+                else {
+                    this.fetchCourse();
+                    checkEveryFewMins();
+                }
+            }, 300000);
+        };
+
         this.fetchCourses();
         checkEvery5Sec();
+        checkEveryFewMins();
     }
 
     // this check the availability regarding time constrains
