@@ -96,7 +96,7 @@ class courseStore {
                         }
                     );
                 else {
-                    this.fetchCourse();
+                    this.fetchCourses();
                     checkEveryFewMins();
                 }
             }, 30000);
