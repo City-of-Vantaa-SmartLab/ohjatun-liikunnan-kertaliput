@@ -99,7 +99,7 @@ class courseStore {
                     this.fetchCourse();
                     checkEveryFewMins();
                 }
-            }, 300000);
+            }, 30000);
         };
 
         this.fetchCourses();
