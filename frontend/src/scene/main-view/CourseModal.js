@@ -210,14 +210,6 @@ const MainModal = ({
                     <div>
                         <div>
                             <span>
-                                Kesto{' '}
-                                {dateFns.distanceInWords(
-                                    course.endDate,
-                                    course.startDate,
-                                    { locale: getLocale() }
-                                )}
-                            </span>
-                            <span>
                                 {course.single_payment_count -
                                     course.reservedCount}{' '}
                                 vapaana
@@ -358,7 +350,7 @@ const ReservationModal = ({
         ) : (
             <Fragment>
                 <ReservationContent>
-                    <Title>Varaus Onnistui</Title>
+                    <Title>Varaus onnistui</Title>
                     <strong>Varasit tunnin hintaan</strong>
                     <span>{Number(course.price).toLocaleString('fi')} €</span>
                     <div>
@@ -390,7 +382,7 @@ class CourseModal extends React.Component {
 
     checkForUpdates = () => {
         let updateAvailable = window['updateAvailable'];
-        console.log('Update Available' + updateAvailable);
+        console.log('Update Available : ' + updateAvailable);
         if (updateAvailable) {
             this.setState({ showRefreshModal: true });
         }
