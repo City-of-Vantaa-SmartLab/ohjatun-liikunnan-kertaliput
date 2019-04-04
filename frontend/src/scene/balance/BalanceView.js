@@ -123,7 +123,11 @@ class BalanceView extends Component {
                     <PoseGroup animateOnMount>
                         {(formShown || this.props.isShown) && (
                             <FormWarpper key="1">
-                                <Form>
+                                <Form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                    }}
+                                >
                                     <InputField
                                         error={this.state.formIncorrect}
                                     >
@@ -131,6 +135,7 @@ class BalanceView extends Component {
                                             {i18nContent.amount}
                                         </label>
                                         <Input
+                                            id="coincard"
                                             name="amount"
                                             type="number"
                                             value={this.state.amount}

@@ -93,7 +93,7 @@ const createReservation = async (req, res) => {
 
             if (existingEvent) {
                 return res
-                    .send(422)
+                    .status(422)
                     .json(i18n.reservations.errorMessages.eventExists);
             } else if (bookingLimitReached) {
                 return res.status(422).json(bookingLimitReached);
