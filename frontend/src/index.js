@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import { register, checkForUpdates } from './registerServiceWorker';
 
 const theme = {
     signInBackground: 'rgb(60, 143, 222)',
@@ -35,4 +35,5 @@ const Root = () => (
     </BrowserRouter>
 );
 ReactDOM.render(<Root />, document.getElementById('root'));
-registerServiceWorker();
+register();
+checkForUpdates();
