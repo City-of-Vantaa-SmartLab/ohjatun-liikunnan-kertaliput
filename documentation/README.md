@@ -1,7 +1,7 @@
 
 # Prototype
 
-https://projects.invisionapp.com/share/2QGQG18TXD4#/screens
+[Original Invision prototype](https://projects.invisionapp.com/share/2QGQG18TXD4#/screens)
 
 # Bambora documentation
 
