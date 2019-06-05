@@ -37,3 +37,9 @@ To deploy, Heroku CLI needs to be set-up along with Docker.
 ### Production
 
 TBD
+
+# Documentation of used APIs
+
+See (API)[documentation/README.md]
+
+
