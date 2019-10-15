@@ -25,6 +25,8 @@ const getUser = async (req, res) => {
 };
 
 const checkLogin = async (req, res) => {
+    pendingPayment = await db.payments.getPendingPaymentOfUser(req.user.dataValues.id);
+    req.user.dataValues.pendingPayment = pendingPayment;
     res.status(200).json(req.user);
 };
 
@@ -122,6 +124,7 @@ const login = async (req, res) => {
         } else {
             const user = await db.users.getUserByPhoneAndPin(phoneNumber, pin);
             if (user) {
+                user.dataValues.pendingPayment = await db.payments.getPendingPaymentOfUser(user.id);
                 res
                     .cookie('token', user.token, {
                         signed: true,

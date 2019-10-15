@@ -29,6 +29,7 @@ class userStore {
     token = null;
     balance = 0;
     reservedCourses = null;
+    pendingPayment = null;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -79,6 +80,7 @@ class userStore {
         this.username = userData.username;
         this.balance = userData.balance;
         this.phoneNumber = userData.phoneNumber;
+        this.pendingPayment = userData.pendingPayment;
         this.authenticationFailed = false;
     }
     resetCredentials() {
@@ -170,6 +172,7 @@ export default decorate(userStore, {
     phoneNumber: observable,
     balance: observable,
     pinCode: observable,
+    pendingPayment: observable,
     reservedCourses: observable,
     checkAuthenticationStatusOnStart: action,
     setPhoneNumber: action,
