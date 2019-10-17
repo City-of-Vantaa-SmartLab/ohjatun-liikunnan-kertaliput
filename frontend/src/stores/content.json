@@ -95,6 +95,10 @@
                 "title": "Saldon lataaminen epäonnistui.",
                 "balanceDesc": "Nykyinen saldosi on"
             },
+            "pending": {
+                "title": "Sinulla on keskeneräinen maksutapahtuma. Maksu lisätään saldoosi automaattisesti tapahtuman sulkeuduttua onnistuneesti.",
+                "balanceDesc": "Saldosi on:"
+            },
             "dismiss": "Sulje"
         },
         "reservationConfirmationForm": {

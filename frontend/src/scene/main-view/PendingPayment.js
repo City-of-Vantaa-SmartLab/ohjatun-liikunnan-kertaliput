@@ -39,6 +39,7 @@ class PendingPayment extends Component {
     };
     render() {
         const pendingPayment = this.props.userStore.pendingPayment;
+        const i18nContent = this.props.i18nStore.content;
         const show = !!pendingPayment;
         return (
             <Modal show = {show} onClear = {this.clear}>
@@ -46,12 +47,12 @@ class PendingPayment extends Component {
                     <div>
                         <Title>
                             {
-                                "Your payment is being processed."
+                                i18nContent.paymentConfirmationForm.pending.title
                             }
                         </Title>
                         <Title>
                             {
-                                "Your current balance is:"
+                                i18nContent.paymentConfirmationForm.pending.balanceDesc
                             }
                         </Title>
                         <span>{this.props.userStore.balance} €</span>
