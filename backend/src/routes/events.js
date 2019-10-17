@@ -12,6 +12,7 @@ const getEventById = async (req, res) => {
             res.status(422).json(validationErrors);
         } else {
             const events = await db.events.getEventById(eventId);
+            console.log("Test here");
             if (events.length !== 0) {
                 res.status(200).json(events);
             } else {
