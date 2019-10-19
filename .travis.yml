@@ -2,6 +2,7 @@ language: generic
 sudo: required
 services:
 - docker
+- postgresql
 script:
 - cd backend
 - npm install

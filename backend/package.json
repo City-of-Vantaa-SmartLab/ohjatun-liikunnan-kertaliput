@@ -20,7 +20,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.18.0",
+        "axios": "^0.18.1",
         "body-parser": "^1.18.2",
         "cookie-parser": "^1.4.3",
         "crypto": "^1.0.1",
@@ -29,13 +29,14 @@
         "dotenv": "^5.0.1",
         "express": "^4.16.3",
         "interpolate": "^0.1.0",
+        "mysql2": "^1.7.0",
         "pg": "^7.4.1",
         "rand-token": "^0.4.0",
-        "sequelize": "^4.37.6",
-        "sequelize-cli": "^4.0.0"
+        "sequelize": "^4.44.3",
+        "sequelize-cli": "^5.5.1"
     },
     "devDependencies": {
-        "jest": "^22.4.3",
+        "jest": "^25.0.0",
         "nodemon": "^1.17.4"
     },
     "jest": {
