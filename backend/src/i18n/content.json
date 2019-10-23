@@ -15,6 +15,9 @@
             "register": {
                 "confirmationSms": "Onneksi olkoon onnistuneesta rekisteröitymisestä Vantaan jumppaliput -palveluun. PIN-koodisi on: {pin}"
             }
+        },
+        "payment": {
+            "paymentNotifySuccess": "Your payment has been processed. Saldosi on {balance} EUR"
         }
     }
 }

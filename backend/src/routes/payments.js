@@ -5,6 +5,8 @@ const db = require('../db');
 const auth = require('../auth');
 const utils = require('../utils');
 const sequalize = require('../sequalize_pg');
+const i18n = require('../i18n').i18n();
+const stringInterpolator = require('interpolate');
 
 const BamboraReturnCodes = {
     SUCCESS: '0',
@@ -109,6 +111,17 @@ const paymentNotify = async (req, res) => {
                     transaction
                 );
             });
+            const message = stringInterpolator(
+                i18n.payment.paymentNotifySuccess,
+                {
+                    "balance": newBalance,
+                }
+            );
+
+            await services.sms.sendMessageToUser(
+                dbUser,
+                message
+            );
             return res.status(200).json('');
         } else {
             console.error(
