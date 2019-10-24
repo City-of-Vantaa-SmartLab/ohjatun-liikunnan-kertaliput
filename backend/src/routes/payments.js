@@ -81,7 +81,7 @@ const paymentNotify = async (req, res) => {
             if (!payment) {
                 console.error(
                     `Cant' update payment status for the payment: ${
-                        payment.order_number
+                        orderNumber
                         }`
                 );
                 return res.status(200).json('');
