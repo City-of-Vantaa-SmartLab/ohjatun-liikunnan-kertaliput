@@ -7,7 +7,7 @@ const model = db.define('payment_requests', {
     amount: Sequelize.DOUBLE,
     payment_status: {
         type: Sequelize.INTEGER,
-        defaultValue: 0,
+        defaultValue: -1,
     },
     userId: Sequelize.INTEGER,
 });
