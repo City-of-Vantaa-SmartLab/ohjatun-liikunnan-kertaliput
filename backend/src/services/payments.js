@@ -11,7 +11,7 @@ const getPaymentRedirectUrl = async (paymentObj) => {
     const paymentRequest = bambora.createBamboraPaymentRequest(paymentModel);
     const response = await axios
         .post(TOKEN_URL, paymentRequest)
-        .catch(function(error) {
+        .catch(function (error) {
             console.log(`Failed to get payment token. Error: ${error.message}`);
         });
     const token = response.data.token;

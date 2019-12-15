@@ -1,4 +1,4 @@
-version: '3.3'
+version: "3.3"
 
 services:
   frontend:
@@ -28,17 +28,17 @@ services:
       HOST: postgres-dev-db
       GRYNOS_COURSES_UPDATE_INTERVAL: 3600000
       GRYNOS_COURSE_API_URL:
-      GRYNOS_COURSE_DETAILS_API_URL: 
+      GRYNOS_COURSE_DETAILS_API_URL:
       POPULATE_SEED_DATA: 0
-      PAYMENT_RETURN_URL: 
-      PAYMENT_NOTIFY_URL: 
-      BAMBORA_SECRET_KEY: 
-      BAMBORA_API_KEY: 
-      BAMBORA_PRODUCT_ID: 
-      BAMBORA_PRODUCT_TITLE: 
-      TELIA_USERNAME: 
-      TELIA_PASSWORD: 
-      TELIA_USER: 
+      PAYMENT_RETURN_URL:
+      PAYMENT_NOTIFY_URL:
+      BAMBORA_SECRET_KEY:
+      BAMBORA_API_KEY:
+      BAMBORA_PRODUCT_ID:
+      BAMBORA_PRODUCT_TITLE:
+      TELIA_USERNAME:
+      TELIA_PASSWORD:
+      TELIA_USER:
 
   postgres-dev-db:
     image: postgres:10.3

@@ -6,6 +6,7 @@ router.use('/users', require('./users'));
 router.use('/courses', require('./courses'));
 router.use('/reservations', require('./reservations'));
 router.use('/payments', require('./payments'));
+router.use('/reports', require('./reports'));
 
 router.get('*', (req, res) => {
     res.sendStatus(404);
