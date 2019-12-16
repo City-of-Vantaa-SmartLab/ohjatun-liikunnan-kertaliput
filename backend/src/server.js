@@ -34,6 +34,12 @@ server.use(
     '/app/',
     express.static(path.join(__dirname, '..', 'public'), { maxAge: 600000 })
 );
+server.get('/reports', (req, res) => {
+    res.redirect('/api/reports/');
+});
+server.get('/reports/:year', (req, res) => {
+    res.redirect(`/api/reports/${req.params.year}`)
+});
 server.get('/app/**', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
