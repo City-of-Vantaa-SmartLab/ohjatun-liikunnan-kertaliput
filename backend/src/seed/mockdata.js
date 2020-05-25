@@ -1,6 +1,6 @@
 const datefns = require('date-fns');
-const POOL_ID = process.env.POOL_ID || 1;
-const GYM_ID = process.env.GYM_ID || 4;
+const POOL_ID = process.env.POOL_ID || 488;
+const GYM_ID = process.env.GYM_ID || 82;
 const courses = {
     language: 'suomi',
     wholecount: 19,
