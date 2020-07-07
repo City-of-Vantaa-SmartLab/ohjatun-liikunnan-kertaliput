@@ -20,37 +20,37 @@ module.exports = {
 }
 
 const RAW_REPOT_QUERY = `
-    SELECT
-   "courseId" as "course_id", ticket_total as "ticket_total" , start as "start_date", name as "name" 
+   SELECT
+   course_type_id as "course_id", ticket_total as "ticket_total" , start as "start_date", name as "name"
     FROM
     (
       SELECT
          eventDetails.start,
          eventDetails."courseId",
-         count(*) as "ticket_total" 
+         count(*) as "ticket_total"
       FROM
          (
             SELECT
                id,
                start,
-               "courseId" 
+               "courseId"
             FROM
-               events 
+               events
             WHERE
                start BETWEEN (:startDate) AND (:endDate)
          )
-         as eventDetails 
+         as eventDetails
          INNER JOIN
             (
                SELECT
-                  "eventId" 
+                  "eventId"
                FROM
-                  reservations 
+                  reservations
                WHERE
                   "bookingStatus" = 1
             )
-            as reservationDetails 
-            ON eventDetails.id = reservationDetails."eventId" 
+            as reservationDetails
+            ON eventDetails.id = reservationDetails."eventId"
       GROUP BY
          eventDetails.id,
          eventdetails.start,
@@ -60,11 +60,12 @@ const RAW_REPOT_QUERY = `
       (
          SELECT
             id,
-            name 
+            name,
+            course_type_id
          FROM
             courses
       )
-      as courseDetails 
+      as courseDetails
       ON "courseId" = courseDetails.id
       ORDER BY start_date DESC
     `;
