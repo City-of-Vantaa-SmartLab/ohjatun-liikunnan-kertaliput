@@ -25,13 +25,14 @@ const getUser = async (req, res) => {
 };
 
 const checkLogin = async (req, res) => {
-    pendingPayment = await db.payments.getPendingPaymentOfUser(req.user.dataValues.id);
-    if(pendingPayment && utils.payments.checkPendingPaymentIsValid(pendingPayment)){
-        req.user.dataValues.pendingPayment = pendingPayment;
-    } else {
-        await db.payments.deletePaymentByOrderNumber(pendingPayment.order_number)
+    const pendingPayment = await db.payments.getPendingPaymentOfUser(req.user.dataValues.id);
+    if(pendingPayment){
+        if(utils.payments.checkPendingPaymentIsValid(pendingPayment)){
+            req.user.dataValues.pendingPayment = pendingPayment;
+        } else {
+            await db.payments.deletePaymentByOrderNumber(pendingPayment["order_number"])
+        }
     }
-
     res.status(200).json(req.user);
 };
 
@@ -130,10 +131,12 @@ const login = async (req, res) => {
             const user = await db.users.getUserByPhoneAndPin(phoneNumber, pin);
             if (user) {
                 const pendingPayment  = await db.payments.getPendingPaymentOfUser(user.id);
-                if(pendingPayment && utils.payments.checkPendingPaymentIsValid(pendingPayment)){
-                    user.dataValues.pendingPayment = pendingPayment;
-                } else {
-                    await db.payments.deletePaymentByOrderNumber(pendingPayment.order_number)
+                if (pendingPayment) {
+                    if(utils.payments.checkPendingPaymentIsValid(pendingPayment)){
+                        user.dataValues.pendingPayment = pendingPayment;
+                    } else {
+                        await db.payments.deletePaymentByOrderNumber(pendingPayment["order_number"])
+                    }
                 }
                 res
                     .cookie('token', user.token, {
