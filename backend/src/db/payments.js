@@ -24,6 +24,10 @@ const getPendingPaymentByOrderNumber = (orderNumber) => {
     })
 };
 
+const deletePaymentByOrderNumber = async(orderNumber) => {
+    return await models.payments.destroy({ where: { order_number: orderNumber } });
+}
+
 const updatePaymentStatus = (orderNumber, status, transaction) => {
     return models.payments.update(
         { payment_status: status },
@@ -50,5 +54,6 @@ module.exports = {
     updatePaymentStatus,
     getPaymentByOrderNumber,
     getPendingPaymentOfUser,
+    deletePaymentByOrderNumber,
     getPendingPaymentByOrderNumber,
 };

@@ -28,7 +28,10 @@ const checkLogin = async (req, res) => {
     pendingPayment = await db.payments.getPendingPaymentOfUser(req.user.dataValues.id);
     if(pendingPayment && utils.payments.checkPendingPaymentIsValid(pendingPayment)){
         req.user.dataValues.pendingPayment = pendingPayment;
+    } else {
+        await db.payments.deletePaymentByOrderNumber(pendingPayment.order_number)
     }
+
     res.status(200).json(req.user);
 };
 
@@ -129,6 +132,8 @@ const login = async (req, res) => {
                 const pendingPayment  = await db.payments.getPendingPaymentOfUser(user.id);
                 if(pendingPayment && utils.payments.checkPendingPaymentIsValid(pendingPayment)){
                     user.dataValues.pendingPayment = pendingPayment;
+                } else {
+                    await db.payments.deletePaymentByOrderNumber(pendingPayment.order_number)
                 }
                 res
                     .cookie('token', user.token, {
