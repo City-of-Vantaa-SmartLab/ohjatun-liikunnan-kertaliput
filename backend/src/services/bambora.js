@@ -1,3 +1,5 @@
+// Bambora was acquired by Visma and renamed as Visma Pay.
+
 const crypto = require('crypto');
 
 const payment_return_url = process.env.PAYMENT_RETURN_URL;

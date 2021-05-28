@@ -4,19 +4,33 @@
 
 This project is simple client-server application built with
 
-*   Frontend: React.js & MobX
-*   Backend: Node.js & Express.js
-*   Database: PostgreSQL
+-   Frontend: React.js & MobX
+-   Backend: Node.js & Express.js
+-   Database: PostgreSQL
 
 It integrates to Grynos to get the information about current courses available in Vantaa.
+
+---
 
 ## Running locally
 
 The local development is set up using docker. Docker is a containerization that help shipping application easy, and without the hassle of installing many many things. We highly recommend you install docker.
 
-### With Docker
+By default, Docker compose won't install dev dependencies inside the containers, so this needs to be done
+manually first:
 
-Run
+```
+cd backend && npm install && cd ..
+cd frontend && npm install && cd ..
+```
+
+Next, log in to AWS account `vantaa-pwa` and navigate to Elastic Beanstalk on `eu-west-1` region.
+Go to Environments > `liikuntaliput-dev` > Configuration, and click the Edit button of the Software
+category. Populate the environment variables inside `docker-compose.yml` with values from the environment
+configuration. For `PAYMENT_NOTIFY_URL` and `PAYMENT_RETURN_URL`, substitute `localhost:3000` for the
+Elastic Beanstalk domain. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1.
+
+Finally, run
 
 ```
 . ./run-locally.sh
@@ -24,45 +38,59 @@ Run
 
 This local development includes hot reloading on the front-end and the back-end.
 
+---
+
 ## Deployment
 
-### Development
-
-To deploy, Heroku CLI needs to be set-up along with Docker.
-
-```
-. ./deploy-to-dev.sh
-```
-
-### Production
-
-The production runs in Vantaa AWS Elastic Beanstalk in Ireland (EU-West-1).
-
-To update production using EB CLI tools:
+The application runs in `vantaa-pwa` AWS account's Elastic Beanstalk in Ireland region `eu-west-1`. App
+environments can be updated using EB CLI tools:
 
 Install the tools (for quick setup, follow the README in GitHub):
-* [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html)
-* [GitHub](https://github.com/aws/aws-elastic-beanstalk-cli-setup)
-* Remember to add EB CLI to PATH (e.g. `export PATH="/home/username/.ebcli-virtual-env/executables:$PATH"`).
+
+-   [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html)
+-   [GitHub](https://github.com/aws/aws-elastic-beanstalk-cli-setup)
+-   Remember to add EB CLI to PATH (e.g. `export PATH="/home/username/.ebcli-virtual-env/executables:$PATH"`).
 
 Configure the EB CLI:
-* [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html)
-* Note: this process only initializes the current directory/repository on your computer. The relevant files have been added to gitignore.
+
+-   [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html)
+-   Note: this process only initializes the current directory/repository on your computer. The relevant files have been added to gitignore.
+
 1. Go to project directory root (where this file is). Type: `eb init`.
 2. Select `eu-west-1` as the location (unless something's been changed).
-3. If you haven't set up your AWS credentials yet, provide your personal Access key ID and Secret access key. You got them when receiving the AWS credentials (you should have got the following: **User name,Password,Access key ID,Secret access key,Console login link**). On Linux/OS X, the credentials will be stored in `~/.aws/config`.
-4. Select the `liikuntaliput` as application and default environment. Don't continue with CodeCommit (defaults to N).
-5. Ensure the environment is set up by typing `eb list`. You should see **liikuntaliput**.
+3. If you haven't set up your AWS credentials yet, provide your personal Access key ID and Secret access key. These can be generated in the AWS IAM console.
+    - Be sure to use the credentials for the correct account, since they determine where the app will be deployed!
+4. Select the `liikuntaliput` as application and `liikuntaliput-dev` as the default environment. Don't continue with CodeCommit (defaults to Y).
+5. Ensure the environment is set up by typing `eb list`. You should see that the development environment is selected:
 
-**Deploy a new version to production:**
-* While in the project root directory, type: `eb deploy liikuntaliput`
-* To see how things are progressing, type: `eb events -f`
+```
+liikuntaliput
+* liikuntaliput-dev
+```
 
-# Documentation of used APIs
+_Note: only committed changes are going to be deployed._
+
+### Deploy a new version to the development environment
+
+-   Run `eb use liikuntaliput-dev` to switch to the development environment
+-   Run `eb deploy`
+-   Optionally, to see how things are progressing, run `eb events -f`
+
+### Deploy a new version to the production environment
+
+-   Run `eb use liikuntaliput` to switch to the production environment
+-   Run `eb deploy`
+-   Optionally, to see how things are progressing, run `eb events -f`
+
+---
+
+## Documentation of used APIs
 
 See (API)[documentation/README.md]
 
-# Updating prices
+---
+
+## Updating prices
 
 See the file backend/src/utils/courses.js
 There are the following environment variables:

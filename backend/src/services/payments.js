@@ -3,8 +3,8 @@ const db = require('../db');
 const bambora = require('./bambora');
 const sequalize = require('../sequalize_pg');
 
-const TOKEN_URL = 'https://payform.bambora.com/pbwapi/auth_payment';
-const BAMBORA_API_URL = 'https://payform.bambora.com/pbwapi/token/';
+const TOKEN_URL = 'https://www.vismapay.com/pbwapi/auth_payment';
+const PAYMENT_API_URL = 'https://www.vismapay.com/pbwapi/token/';
 
 const getPaymentRedirectUrl = async (paymentObj) => {
     const paymentModel = bambora.createPaymentModel(paymentObj);
@@ -25,7 +25,7 @@ const getPaymentRedirectUrl = async (paymentObj) => {
             );
         });
     }
-    const redirectUrl = BAMBORA_API_URL + token;
+    const redirectUrl = PAYMENT_API_URL + token;
     return redirectUrl;
 };
 
