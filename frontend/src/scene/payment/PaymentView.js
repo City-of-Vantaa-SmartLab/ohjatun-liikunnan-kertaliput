@@ -93,4 +93,4 @@ class PaymentView extends Component {
     }
 }
 
-export default connect('i18nStore', 'userStore')(withRouter(PaymentView));
+export default withRouter(connect('i18nStore', 'userStore')(PaymentView));
