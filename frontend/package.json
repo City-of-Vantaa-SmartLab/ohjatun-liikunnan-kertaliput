@@ -10,7 +10,7 @@
         "interpolate": "^0.1.0",
         "mobx": "^4.1.1",
         "mobx-react": "^5.0.0",
-        "moment": "^2.22.1",
+        "moment": "^2.29.2",
         "react": "^16.3.1",
         "react-dom": "^16.3.1",
         "react-emotion": "^9.1.1",
