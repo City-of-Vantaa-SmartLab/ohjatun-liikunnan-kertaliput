@@ -20,7 +20,7 @@ class ResetPinFormState {
     resetPin = async () => {
         try {
             this.submitting = true;
-            const responseFromServer = await resetPin({
+            await resetPin({
                 phoneNumber: processPhoneNumber(this.phoneNumber),
             });
             this.submitSuccess = true;

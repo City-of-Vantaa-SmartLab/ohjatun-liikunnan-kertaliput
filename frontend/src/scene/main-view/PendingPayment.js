@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'react-emotion';
 import Modal, { Title, Content as ModalContent } from '../../components/modal';
-import Button from '../../components/button';
 import { connect } from 'utils';
-import { withRouter, Redirect } from 'react-router-dom';
 
 const Content = styled(ModalContent)`
     width: 100%;
@@ -32,27 +30,25 @@ const Content = styled(ModalContent)`
 `;
 
 class PendingPayment extends Component {
-
     clear = () => {
         this.props.userStore.pendingPayment = null;
-        this.setState({ show: false});
+        this.setState({ show: false });
     };
     render() {
         const pendingPayment = this.props.userStore.pendingPayment;
         const i18nContent = this.props.i18nStore.content;
         const show = !!pendingPayment;
         return (
-            <Modal show = {show} onClear = {this.clear}>
+            <Modal show={show} onClear={this.clear}>
                 <Content>
                     <div>
                         <Title>
-                            {
-                                i18nContent.paymentConfirmationForm.pending.title
-                            }
+                            {i18nContent.paymentConfirmationForm.pending.title}
                         </Title>
                         <Title>
                             {
-                                i18nContent.paymentConfirmationForm.pending.balanceDesc
+                                i18nContent.paymentConfirmationForm.pending
+                                    .balanceDesc
                             }
                         </Title>
                         <span>{this.props.userStore.balance} €</span>

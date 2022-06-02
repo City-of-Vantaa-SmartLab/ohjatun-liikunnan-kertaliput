@@ -5,8 +5,6 @@ import { connect } from 'utils';
 import Button from '../../components/button';
 import NotFoundIcon from '../../common/NotFoundIcon';
 import posed, { PoseGroup } from 'react-pose';
-import { Link } from 'react-router-dom';
-import stringInterpolator from 'interpolate';
 import { getErrorDetail } from './CourseUtil';
 // posed components
 const ItemAnimation = posed.div({

@@ -56,7 +56,6 @@ class LoginForm extends React.Component {
     };
     render() {
         const content = this.props.i18nStore.content;
-        const authenticationFailed = this.props.userStore.authenticationFailed;
         const { hasEverFailed } = this.state;
 
         return (

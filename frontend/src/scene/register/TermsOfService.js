@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-import posed from 'react-pose';
 import styled from 'react-emotion';
 import Modal, {
     Title as ModalTitle,
     Content as ModalContent,
 } from '../../components/modal';
 import Button from '../../components/button';
-
-const BaseOverlay = posed.div({
-    show: {
-        opacity: 1,
-    },
-    hidden: {
-        opacity: 0,
-    },
-});
 
 const Overlay = styled(Modal)`
     width: 100%;

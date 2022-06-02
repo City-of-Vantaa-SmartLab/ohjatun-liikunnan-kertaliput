@@ -11,13 +11,14 @@
         "mobx": "^4.1.1",
         "mobx-react": "^5.0.0",
         "moment": "^2.22.1",
+        "node-pre-gyp": "^0.17.0",
         "react": "^16.3.1",
         "react-dom": "^16.3.1",
         "react-emotion": "^9.1.1",
         "react-pose": "^1.5.2",
         "react-router": "^4.2.0",
         "react-router-dom": "^4.2.2",
-        "react-scripts": "1.1.4",
+        "react-scripts": "^2.1.8",
         "utils": "file:src/utils"
     },
     "scripts": {
@@ -36,9 +37,26 @@
         "prettier": "^1.11.1"
     },
     "lint-staged": {
-        "*.{js,json,css,md}": ["prettier --write", "git add"]
+        "*.{js,json,css,md}": [
+            "prettier --write",
+            "git add"
+        ]
     },
     "babel": {
-        "plugins": ["transform-decorators-legacy"]
+        "plugins": [
+            "transform-decorators-legacy"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
     }
 }

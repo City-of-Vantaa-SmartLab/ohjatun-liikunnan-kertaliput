@@ -28,7 +28,7 @@ Next, log in to AWS account `vantaa-pwa` and navigate to Elastic Beanstalk on `e
 Go to Environments > `liikuntaliput-dev` > Configuration, and click the Edit button of the Software
 category. Populate the environment variables inside `docker-compose.yml` with values from the environment
 configuration. For `PAYMENT_NOTIFY_URL` and `PAYMENT_RETURN_URL`, substitute `localhost:3000` for the
-Elastic Beanstalk domain. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1.
+Elastic Beanstalk domain. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1 in docker-compose.yml.
 
 Finally, run
 
@@ -37,6 +37,7 @@ Finally, run
 ```
 
 This local development includes hot reloading on the front-end and the back-end.
+Frontend responds at: http://localhost:3000/
 
 ---
 
