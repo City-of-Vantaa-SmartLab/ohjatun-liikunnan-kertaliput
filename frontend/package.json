@@ -1,8 +1,8 @@
 {
-    "name": "vantaa-pwa-dev",
+    "name": "jumppaliput",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://vantaa-pwa",
+    "proxy": "http://backend",
     "dependencies": {
         "date-fns": "^1.29.0",
         "emotion": "^9.1.1",

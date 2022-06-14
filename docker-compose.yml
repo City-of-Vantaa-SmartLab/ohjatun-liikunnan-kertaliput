@@ -10,11 +10,11 @@ services:
     ports:
       - 3000:3000
     depends_on:
-      - vantaa-pwa
+      - backend
     environment:
       DANGEROUSLY_DISABLE_HOST_CHECK: 'true'
 
-  vantaa-pwa:
+  backend:
     build: ./backend
     ports:
       - 5000:80
@@ -27,7 +27,7 @@ services:
     environment:
       BAMBORA_API_KEY:
       BAMBORA_PRODUCT_ID:
-      BAMBORA_PRODUCT_TITLE:
+      BAMBORA_PRODUCT_TITLE: Saldovaraus Jumppaliput-sovellukseen
       BAMBORA_SECRET_KEY:
       # Use "vantaa_pwa" for local development.
       DATABASE:
@@ -45,8 +45,8 @@ services:
       POPULATE_SEED_DATA: 0
       PORT: 80
       TELIA_PASSWORD:
-      TELIA_USER:
       TELIA_USERNAME:
+      TELIA_USER:
       # Database username. Use "postgres" for local development.
       USERNAME:
 

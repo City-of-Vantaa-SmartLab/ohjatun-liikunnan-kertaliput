@@ -14,21 +14,10 @@ It integrates to Grynos to get the information about current courses available i
 
 ## Running locally
 
-The local development is set up using docker. Docker is a containerization that help shipping application easy, and without the hassle of installing many many things. We highly recommend you install docker.
-
-By default, Docker compose won't install dev dependencies inside the containers, so this needs to be done
-manually first:
-
-```
-cd backend && npm install && cd ..
-cd frontend && npm install && cd ..
-```
-
-Next, log in to AWS account `vantaa-pwa` and navigate to Elastic Beanstalk on `eu-west-1` region.
-Go to Environments > `liikuntaliput-dev` > Configuration, and click the Edit button of the Software
+Log in to AWS account `vantaa-pwa` and navigate to Elastic Beanstalk on `eu-west-1` region.
+Go to Environments > `jumppaliput-vantaa-dev` > Configuration, and click the Edit button of the Software
 category. Populate the environment variables inside `docker-compose.yml` with values from the environment
-configuration. For `PAYMENT_NOTIFY_URL` and `PAYMENT_RETURN_URL`, substitute `localhost:3000` for the
-Elastic Beanstalk domain. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1 in docker-compose.yml.
+configuration. For `PAYMENT_NOTIFY_URL` and `PAYMENT_RETURN_URL`, substitute `localhost:3000` for domain. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1 in docker-compose.yml.
 
 Finally, run
 
@@ -65,21 +54,21 @@ Configure the EB CLI:
 5. Ensure the environment is set up by typing `eb list`. You should see that the development environment is selected:
 
 ```
-liikuntaliput
-* liikuntaliput-dev
+jumppaliput-vantaa-prod
+* jumppaliput-vantaa-dev
 ```
 
 _Note: only committed changes are going to be deployed._
 
 ### Deploy a new version to the development environment
 
--   Run `eb use liikuntaliput-dev` to switch to the development environment
+-   Run `eb use jumppaliput-vantaa-dev` to switch to the development environment
 -   Run `eb deploy`
 -   Optionally, to see how things are progressing, run `eb events -f`
 
 ### Deploy a new version to the production environment
 
--   Run `eb use liikuntaliput` to switch to the production environment
+-   Run `eb use jumppaliput-vantaa-prod` to switch to the production environment
 -   Run `eb deploy`
 -   Optionally, to see how things are progressing, run `eb events -f`
 

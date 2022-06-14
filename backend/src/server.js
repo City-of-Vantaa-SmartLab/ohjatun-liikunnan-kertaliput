@@ -47,10 +47,11 @@ server.get('/app/**', (req, res) => {
 const startServer = () => {
     const dbPopulation = populateSeedData ? loadMockCoursesToDatabase() : fetchAndSaveCoursesToDb();
     dbPopulation.then(() => {
+        console.log("Starting server.");
         server.listen(port, () =>
             console.log(`Server deployed at ${new Date()} and running on ${port}`)
         );
-    }).catch(error => console.log('error in starting server', error));
+    }).catch(error => console.log('Error starting server', error));
 }
 
 resetDatabase ? clearDatabase().then(() => startServer()) : startServer();

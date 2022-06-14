@@ -45,6 +45,7 @@ const mapCourseDetailsFromGrynos = async (course) => {
 
 const fetchCoursesFromGrynos = async () => {
     const response = await axios(url);
+    console.log("Courses response data.total: " + response.data.total);
     if (response.data.course) {
         return await Promise.all(
             response.data.course
@@ -109,7 +110,7 @@ const updateCoursesToDb = async (courses) => {
             console.error(`No courses available from Grynos.`);
         }
     } catch (error) {
-        console.error(`Failed to fetch course from Gryros: ${error}`);
+        console.error(`Failed to update courses to database: ${error}`);
     }
 
 }
