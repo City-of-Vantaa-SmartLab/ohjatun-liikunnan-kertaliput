@@ -5,40 +5,50 @@ services:
     build: ./frontend
     volumes:
       - ./frontend:/app
+      - /app/node_modules
     command: npm run start
     ports:
       - 3000:3000
     depends_on:
       - vantaa-pwa
+    environment:
+      DANGEROUSLY_DISABLE_HOST_CHECK: 'true'
 
   vantaa-pwa:
     build: ./backend
     ports:
       - 5000:80
-    command: npm run dev
+    command: npm run start
     volumes:
       - ./backend:/backend
+      - /backend/node_modules
     depends_on:
       - postgres-dev-db
     environment:
-      PORT: 80
-      USERNAME: postgres
-      PASSWORD: password
-      DATABASE: vantaa_pwa
-      HOST: postgres-dev-db
-      GRYNOS_COURSES_UPDATE_INTERVAL: 3600000
-      GRYNOS_COURSE_API_URL:
-      GRYNOS_COURSE_DETAILS_API_URL:
-      POPULATE_SEED_DATA: 0
-      PAYMENT_RETURN_URL:
-      PAYMENT_NOTIFY_URL:
-      BAMBORA_SECRET_KEY:
       BAMBORA_API_KEY:
       BAMBORA_PRODUCT_ID:
       BAMBORA_PRODUCT_TITLE:
-      TELIA_USERNAME:
+      BAMBORA_SECRET_KEY:
+      # Use "vantaa_pwa" for local development.
+      DATABASE:
+      FLOOR_GYM_PRICE_AFTER_4:
+      FLOOR_GYM_PRICE_BEFORE_4:
+      GRYNOS_COURSE_API_URL:
+      GRYNOS_COURSE_DETAILS_API_URL:
+      GRYNOS_COURSES_UPDATE_INTERVAL: 3600000
+      # Use "postgres-dev-db" for local development.
+      HOST:
+      # Use "password" for local development.
+      PASSWORD:
+      PAYMENT_NOTIFY_URL:
+      PAYMENT_RETURN_URL:
+      POPULATE_SEED_DATA: 0
+      PORT: 80
       TELIA_PASSWORD:
       TELIA_USER:
+      TELIA_USERNAME:
+      # Database username. Use "postgres" for local development.
+      USERNAME:
 
   postgres-dev-db:
     image: postgres:10.3

@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-*   Node 8.10 or later
+*   Node 16
 
 ## Development
 
