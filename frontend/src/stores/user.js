@@ -41,7 +41,7 @@ class userStore {
             const userData = await checkLoginStatus();
             this.setCredentials(userData);
         } catch (error) {
-            console.error(error);
+            console.log('Not logged in.');
         }
     };
     // computed values
