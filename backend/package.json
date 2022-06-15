@@ -30,7 +30,7 @@
         "mysql2": "^1.7.0",
         "pg": "^7.4.1",
         "rand-token": "^0.4.0",
-        "sequelize": "^6.20.1",
+        "sequelize": "^4.44.4",
         "sequelize-cli": "^6.4.1"
     },
     "devDependencies": {
