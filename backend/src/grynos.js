@@ -44,6 +44,10 @@ const mapCourseDetailsFromGrynos = async (course) => {
 };
 
 const fetchCoursesFromGrynos = async () => {
+    if (!url) {
+      console.log("Warning: no Grynos URL set in environment.");
+      return;
+    }
     const response = await axios(url);
     console.log("Courses response data.total: " + response.data.total);
     if (response.data.course) {

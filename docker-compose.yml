@@ -6,7 +6,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: npm run start
+    command: npm run build
     ports:
       - 3000:3000
     depends_on:
@@ -22,6 +22,7 @@ services:
     volumes:
       - ./backend:/backend
       - /backend/node_modules
+      - ./frontend/build:/backend/public
     depends_on:
       - postgres-dev-db
     environment:
