@@ -382,10 +382,14 @@ class CourseModal extends React.Component {
 
     checkForUpdates = () => {
         let updateAvailable = window['updateAvailable'];
-        console.log('New version Available: ' + updateAvailable);
+        console.log('New version available: ' + updateAvailable);
 
+        // TODO: a working update process. The old one just reloads the page from cache, only manual Ctrl+F5 actually worked.
         if (updateAvailable) {
-            this.setState({ showRefreshModal: true });
+            console.log(
+                'Uusi versio saatavilla, päivitä sivu painamalla Ctrl+F5.'
+            );
+            //this.setState({ showRefreshModal: true });
         }
     };
 
@@ -438,6 +442,7 @@ class CourseModal extends React.Component {
     refreshApp = () => {
         window['updateAvailable'] = false;
         this.setState({ showReserve: false });
+        // TODO/fixme: this doesn't reload a new version. Reload uses old cache.
         window.location.reload();
     };
 
