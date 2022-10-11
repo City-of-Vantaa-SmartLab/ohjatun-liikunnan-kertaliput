@@ -7,7 +7,7 @@
         "signIn": {
             "form": {
                 "tel": "Puhelinnumero",
-                "name": "Etunimi",
+                "name": "Nimi tai sähköpostiosoite",
                 "telIsWrong": "Tarkista puhelinnumero",
                 "pinCode": "PIN-koodi",
                 "pinCodeIsWrong": "Tarkista PIN-koodi",
@@ -18,16 +18,13 @@
         },
         "registrationForm": {
             "title": "Luo uusi käyttäjätili",
-            "errorMessage":
-                "Uuden tilin luontiepäonnistui. Tarkista puhelinnumero ja yritä uudelleen",
+            "errorMessage": "Uuden tilin luontiepäonnistui. Tarkista puhelinnumero ja yritä uudelleen",
             "hasAccountPrompt": "Onko sinulla jo tili?",
             "welcome": "Tervetuloa",
-            "congratulationMessage":
-                "Onneksi olkoon, tilin luominen onnistui. PIN-koodisi on lähetetty tekstiviestillä numeroon {phoneNumber}.",
+            "congratulationMessage": "Onneksi olkoon, tilin luominen onnistui. PIN-koodisi on lähetetty tekstiviestillä numeroon {phoneNumber}.",
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
             "submit": "Luo uusi käyttäjätili",
-            "phoneNumberAlreadyExists":
-                "Tälle puhelinnumerolle on jo luotu käyttäjätili."
+            "phoneNumberAlreadyExists": "Tälle puhelinnumerolle on jo luotu käyttäjätili."
         },
         "appHeader": {
             "logout": "Kirjaudu ulos",
@@ -43,13 +40,11 @@
             "noCourse": "Ei löytynyt tunteja tälle päivälle",
             "errorMessages": {
                 "openTime": {
-                    "longMessage":
-                        "Ilmoittautuminen aukeaa {date}. kello {time}",
+                    "longMessage": "Ilmoittautuminen aukeaa {date}. kello {time}",
                     "shortMessage": "Avautuu myöhemmin"
                 },
                 "closeTime": {
-                    "longMessage":
-                        "Ilmoittautuminen on päättynyt. Vapaita paikkoja {numberOfFreeSeats}",
+                    "longMessage": "Ilmoittautuminen on päättynyt. Vapaita paikkoja {numberOfFreeSeats}",
                     "shortMessage": "Suljettu"
                 },
                 "noTickets": {
@@ -74,8 +69,7 @@
             "title": "Lähetä uusi PIN-koodi",
             "errorMessage": "Salasanan nollaus epäonnistui. Yritä uudelleen",
             "welcome": "PIN-koodin lähetys onnistui",
-            "congratulationMessage":
-                "PIN-koodi on lähetetty puhelinnumeroosi. Syötä uusi nelinumeroinen PIN-koodi kirjautuaksesi",
+            "congratulationMessage": "PIN-koodi on lähetetty puhelinnumeroosi. Syötä uusi nelinumeroinen PIN-koodi kirjautuaksesi",
             "promptPinCode": "Kirjoita nelinumeroinen PIN-koodi kirjautuaksesi",
             "submit": "Lähetä"
         },
@@ -86,6 +80,7 @@
             "confirm": "Lataa Saldoa"
         },
         "paymentConfirmationForm": {
+            "selectProvider": "Valitse maksutapa",
             "success": {
                 "title": "Maksu onnistui!",
                 "amountDesc": "Ostit saldoa",

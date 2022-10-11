@@ -4,6 +4,7 @@ import styled from 'react-emotion';
 import { connect } from 'utils';
 import { Link, Redirect } from 'react-router-dom';
 import BalanceView from '../balance';
+import PaymentProvidersView from '../payment-providers';
 
 const AppHeaderWrapper = styled('div')`
     width: 100%;
@@ -35,12 +36,28 @@ class AppHeader extends React.Component {
     state = {
         show: false,
         redirect: false,
+        showPaymentProviders: false,
+        paymentProviders: null,
     };
     clear = () => {
         this.setState({ show: false });
     };
+    clearPayment = () => {
+        this.clear();
+        this.setState({
+            showPaymentProviders: false,
+            paymentProviders: null,
+        });
+    };
     show = () => {
         this.setState({ show: true });
+    };
+    initiatePayment = async (paymentProviders) => {
+        console.log('Payment initiated from app header.');
+        this.setState({
+            paymentProviders: await paymentProviders,
+            showPaymentProviders: true,
+        });
     };
 
     render() {
@@ -72,7 +89,17 @@ class AppHeader extends React.Component {
                         </Button>
                     )}
                 </LogoBar>
-                <BalanceView show={this.state.show} onClear={this.clear} />
+                <BalanceView
+                    show={this.state.show}
+                    onClear={this.clear}
+                    initiatePayment={this.initiatePayment}
+                />
+                {this.state.showPaymentProviders && (
+                    <PaymentProvidersView
+                        providers={this.state.paymentProviders}
+                        onClear={this.clearPayment}
+                    />
+                )}
             </AppHeaderWrapper>
         );
     }

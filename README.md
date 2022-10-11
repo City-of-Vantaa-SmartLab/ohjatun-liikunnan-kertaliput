@@ -17,7 +17,7 @@ It integrates to Grynos to get the information about current courses available i
 Log in to AWS account `vantaa-pwa` and navigate to Elastic Beanstalk on `eu-west-1` region.
 Go to Environments > `jumppaliput-vantaa-dev` > Configuration, and click the Edit button of the Software
 category. Populate the environment variables inside `docker-compose.yml` with values from the environment
-configuration. For `PAYMENT_NOTIFY_URL` and `PAYMENT_RETURN_URL`, substitute `localhost:3000` for domain. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1 in docker-compose.yml.
+configuration. If you want to use seeded mock data in the database, set POPULATE_SEED_DATA to 1 in docker-compose.yml.
 
 Finally, run
 
@@ -25,8 +25,8 @@ Finally, run
 . ./run-locally.sh
 ```
 
-This local development includes hot reloading on the front-end and the back-end.
-Frontend responds at: http://localhost:3000/
+This local development includes hot reloading on the back-end.
+Backend responds at: http://localhost:5000/
 
 ---
 

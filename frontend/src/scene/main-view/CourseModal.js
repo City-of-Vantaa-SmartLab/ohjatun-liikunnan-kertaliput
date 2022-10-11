@@ -13,6 +13,7 @@ import posed from 'react-pose';
 import { getErrorDetail } from './CourseUtil';
 import { Link } from 'react-router-dom';
 import BalanceView from '../balance';
+import PaymentProvidersView from '../payment-providers';
 
 const CourseContent = styled(Content)`
     width: 100%;
@@ -371,6 +372,8 @@ class CourseModal extends React.Component {
         showConfirm: false,
         showReserve: false,
         showSaldo: false,
+        showPaymentProviders: false,
+        paymentProviders: null,
         reservedCourse: null,
         showRefreshModal: false,
         reservationInProgress: false,
@@ -400,6 +403,14 @@ class CourseModal extends React.Component {
             showConfirm: false,
             showReserve: false,
             showSaldo: false,
+        });
+    };
+
+    clearPayment = () => {
+        this.clear();
+        this.setState({
+            showPaymentProviders: false,
+            paymentProviders: null,
         });
     };
 
@@ -450,6 +461,14 @@ class CourseModal extends React.Component {
         this.props.courseStore.reserveCourse(null);
     };
 
+    initiatePayment = async (paymentProviders) => {
+        console.log('Payment initiated from course modal.');
+        this.setState({
+            paymentProviders: await paymentProviders,
+            showPaymentProviders: true,
+        });
+    };
+
     render() {
         const seletectedDate = this.props.courseStore.filters.date;
         const course = this.props.courseStore.courseInFocus;
@@ -490,7 +509,17 @@ class CourseModal extends React.Component {
                     />
                 )}
                 {this.state.showSaldo && (
-                    <BalanceView isShown={true} onClear={this.clear} />
+                    <BalanceView
+                        isShown={true}
+                        onClear={this.clear}
+                        initiatePayment={this.initiatePayment}
+                    />
+                )}
+                {this.state.showPaymentProviders && (
+                    <PaymentProvidersView
+                        providers={this.state.paymentProviders}
+                        onClear={this.clearPayment}
+                    />
                 )}
                 {this.state.showReserve && (
                     <ReservationModal

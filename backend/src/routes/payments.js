@@ -8,14 +8,6 @@ const sequalize = require('../sequalize_pg');
 const i18n = require('../i18n').i18n();
 const stringInterpolator = require('interpolate');
 
-const BamboraReturnCodes = {
-    SUCCESS: '0',
-};
-
-const PaymentProcessStatus = {
-    PROCESSED: '1'
-};
-
 const addBalance = async (req, res) => {
     try {
         const amount = +req.query.amount;
@@ -32,12 +24,20 @@ const addBalance = async (req, res) => {
             username: dbUser.username,
         };
 
-        const url = await services.payments.getPaymentRedirectUrl(paymentObj);
-        res.status(301).redirect(url);
+        // This corresponds to Paytrail API docs "Initiate new payment (POST /payments)"
+        const paymentProviders = await services.payments.getPaymentProviders(paymentObj);
+        if (!paymentProviders) {
+            throw new Error(`Could not get payment providers.`);
+        } else {
+            console.log("make-payment response");
+            res.status(200).json({
+                providers: paymentProviders
+            });
+        }
     } catch (err) {
         res
             .status(500)
-            .json(`Failed to get payment redirect url. Error: ${err.message}`);
+            .json(`Failed to initiate payment. Error: ${err.message}`);
     }
 };
 
@@ -69,144 +69,71 @@ const getPaymentDetails = async (req, res) => {
     }
 };
 
-const paymentNotify = async (req, res) => {
-    try {
-        const returnCode = req.query.RETURN_CODE;
-        const settled = req.query.SETTLED;
-        if (returnCode === BamboraReturnCodes.SUCCESS && settled === PaymentProcessStatus.PROCESSED ) {
-            const orderNumber = req.query.ORDER_NUMBER;
-            const payment = await db.payments.getPendingPaymentByOrderNumber(
-                orderNumber
-            );
-            if (!payment) {
-                console.error(
-                    `Cant' update payment status for the payment: ${
-                        orderNumber
-                        }`
-                );
-                return res.status(200).json('');
-            }
-
-            if (payment.payment_status === 1) {
-                console.log(
-                    `Received payment-notify for the payment: ${
-                        payment.order_number
-                        } but it has been processed`
-                );
-                return res.status(200).json('');
-            }
-
-            const dbUser = await db.users.getUserById(payment.userId);
-            const newBalance = payment.amount + dbUser.balance;
-            await sequalize.transaction(async (transaction) => {
-                await db.payments.updatePaymentStatus(
-                    orderNumber,
-                    settled,
-                    transaction
-                );
-
-                await db.reservations.updateUserBalance(
-                    dbUser.id,
-                    newBalance,
-                    transaction
-                );
-            });
-            const message = stringInterpolator(
-                i18n.payment.paymentNotifySuccess,
-                {
-                    "balance": newBalance,
-                }
-            );
-
-            await services.sms.sendMessageToUser(
-                dbUser,
-                message
-            );
-            return res.status(200).json('');
-        } else {
-            console.error(
-                `Payment has not been processed with return code: ${
-                    returnCode
-                } and settled: ${settled}`
-            );
-            res.status(400)
-        }
-    } catch (err) {
-        console.error(
-            `Payment failed with error code: ${
-                err.message
-                }. Please try again later`
-        );
-        return res.status(500);
+// Check query string for technical validity.
+// Return true if everything OK.
+const checkQueryValidity = (query) => {
+    if (!query['checkout-status']) {
+        console.error('Query is missing checkout-status.');
+        return false;
     }
-};
+    if (!query['checkout-stamp']) {
+        console.error('Query is missing checkout-stamp.');
+        return false;
+    }
+    const signature = services.payments.calculateCheckoutParamsHmac(query, '');
+    if (signature != query['signature']) {
+        console.error(`Query signature doesn't match computed.`);
+        return false;
+    }
+    return true;
+}
 
 const paymentReturn = async (req, res) => {
     try {
-        const response = req.query.RETURN_CODE;
-        if (response === BamboraReturnCodes.SUCCESS) {
-            const orderNumber = req.query.ORDER_NUMBER;
-            const payment = await db.payments.getPaymentByOrderNumber(
-                orderNumber
-            );
-            if (!payment) {
-                console.error(
-                    `Payment details not available in the system. Payment Order: ${
-                        payment.order_number
-                    }`
-                );
-                return res.redirect(`/app/payment-complete?status=1`);
-            }
+        console.log((new Date).toLocaleString() + ": payment-return called");
 
-            if (payment.payment_status === 1) {
-                console.error(
-                    `This payment was already processed!. Payment Order: ${
-                        payment.order_number
-                    }`
-                );
-                return res.redirect(`/app/payment-complete?status=2`);
-            }
+        if (!checkQueryValidity(req.query)) {
+            console.error('Query failed validity check.');
+            return res.redirect(`/app/payment-complete?status=3`);
+        }
 
+        const checkoutStatus = req.query['checkout-status'];
+        const orderNumber = req.query['checkout-stamp'];
+        console.log('Payment checkout status', checkoutStatus, 'order number', orderNumber);
+
+        const payment = await db.payments.getPaymentByOrderNumber(orderNumber);
+        if (!payment) {
+            console.error(`Payment details not available in the system. Payment order: ${payment.order_number}`);
+            return res.redirect(`/app/payment-complete?status=1`);
+        }
+
+        if (payment.payment_status === 1) {
+            console.error(`This payment was already processed. Payment order: ${payment.order_number}`);
+            return res.redirect(`/app/payment-complete?status=2`);
+        }
+
+        if (checkoutStatus === 'ok') {
             const dbUser = await db.users.getUserById(payment.userId);
             const newBalance = payment.amount + dbUser.balance;
             await sequalize.transaction(async (transaction) => {
-                await db.payments.updatePaymentStatus(
-                    orderNumber,
-                    req.query.SETTLED,
-                    transaction
-                );
-
-                await db.reservations.updateUserBalance(
-                    dbUser.id,
-                    newBalance,
-                    transaction
-                );
+                await db.payments.updatePaymentStatus(orderNumber, 1, transaction);
+                await db.reservations.updateUserBalance(dbUser.id, newBalance, transaction);
             });
-            const balance = await db.reservations.getUserBalance(dbUser.id);
             res.redirect(
-                `/app/payment-complete?orderNumber=${orderNumber}&amount=${
-                    payment.amount
-                }&balance=${newBalance}&status=0`
+                `/app/payment-complete?orderNumber=${orderNumber}&amount=${payment.amount}&balance=${newBalance}&status=0`
             );
         } else {
-            console.error(
-                `Payment failed with error code: ${response}. Please try again later`
-            );
+            console.error(`Payment failed with status: ${checkoutStatus}.`);
             return res.redirect(`/app/payment-complete?status=3`);
         }
     } catch (err) {
-        console.error(
-            `Payment failed with error code: ${
-                err.message
-            }. Please try again later`
-        );
+        console.error(`Payment failed with error message: ${err.message}.`);
         return res.redirect(`/app/payment-complete?status=4`);
     }
 };
 
 router.get('/add-balance', auth.requireAuth, addBalance);
 router.get('/get-payment-details', auth.requireAuth, getPaymentDetails);
-router.get('/payment-notify', paymentNotify);
 router.get('/payment-return', paymentReturn);
 
 module.exports = router;

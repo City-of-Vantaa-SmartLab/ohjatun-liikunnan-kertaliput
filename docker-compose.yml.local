@@ -23,23 +23,33 @@ services:
       - ./frontend/build:/backend/public
     depends_on:
       - frontend
+      - postgres-dev-db
     environment:
-      APP_BASE_URL:
-      DB_HOST:
-      DB_NAME:
-      DB_PASSWORD:
-      DB_USERNAME:
-      FLOOR_GYM_PRICE_AFTER_4:
-      FLOOR_GYM_PRICE_BEFORE_4:
+      APP_BASE_URL: http://localhost:5000
+      DB_HOST: postgres-dev-db
+      DB_NAME: vantaa_pwa
+      DB_PASSWORD: password
+      DB_USERNAME: postgres
+      FLOOR_GYM_PRICE_AFTER_4: 4.5
+      FLOOR_GYM_PRICE_BEFORE_4: 3.0
       GRYNOS_COURSE_API_URL:
       GRYNOS_COURSE_DETAILS_API_URL:
-      GRYNOS_COURSES_UPDATE_INTERVAL:
+      GRYNOS_COURSES_UPDATE_INTERVAL: 3600000
       MERCHANT_ID:
       MERCHANT_KEY:
-      POOL_WATER_PRICE_AFTER_4:
-      POOL_WATER_PRICE_BEFORE_4:
+      POOL_WATER_PRICE_AFTER_4: 3.0
+      POOL_WATER_PRICE_BEFORE_4: 2.0
       POPULATE_SEED_DATA: 0
       PORT: 80
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
+
+  postgres-dev-db:
+    image: postgres:10.3
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vantaa_pwa

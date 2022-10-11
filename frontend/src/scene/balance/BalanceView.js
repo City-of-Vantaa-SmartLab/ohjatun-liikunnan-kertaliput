@@ -94,7 +94,8 @@ class BalanceView extends Component {
     onConfirm = (e) => {
         e.preventDefault();
         if (this.state.formIncorrect) return;
-        this.props.userStore.requestAddBalance(this.state.amount);
+        const providers = this.props.userStore.requestAddBalance(this.state.amount);
+        this.props.initiatePayment(providers);
     };
 
     render() {

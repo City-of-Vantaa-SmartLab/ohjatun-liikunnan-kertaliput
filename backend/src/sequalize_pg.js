@@ -3,13 +3,13 @@ let connectionString;
 if (process.env.DATABASE_URL) {
     connectionString = process.env.DATABASE_URL;
 } else if (
-    process.env.USERNAME &&
-    process.env.PASSWORD &&
-    process.env.HOST &&
-    process.env.DATABASE
+    process.env.DB_USERNAME &&
+    process.env.DB_PASSWORD &&
+    process.env.DB_HOST &&
+    process.env.DB_NAME
 ) {
-    const { USERNAME, PASSWORD, HOST, DATABASE } = process.env;
-    connectionString = `postgres://${USERNAME}:${PASSWORD}@${HOST}:5432/${DATABASE}`;
+    const { DB_USERNAME, DB_PASSWORD, DB_HOST, DB_NAME } = process.env;
+    connectionString = `postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}`;
 } else {
     connectionString = `postgres://postgres:password@localhost:5432/postgres`;
 }

@@ -100,7 +100,13 @@ class userStore {
     }
     async requestAddBalance(amount) {
         try {
-            await requestAddBalanceApi(amount);
+            const providersResponse = await requestAddBalanceApi(amount);
+            if (providersResponse.providers) {
+                console.log("Got payment providers, count: " + providersResponse.providers.length);
+                return providersResponse.providers;
+            } else {
+            }
+            throw new Error("Did not get an array of payment providers.");
         } catch (error) {
             console.error(error);
         }
