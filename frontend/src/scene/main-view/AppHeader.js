@@ -94,12 +94,11 @@ class AppHeader extends React.Component {
                     onClear={this.clear}
                     initiatePayment={this.initiatePayment}
                 />
-                {this.state.showPaymentProviders && (
-                    <PaymentProvidersView
-                        providers={this.state.paymentProviders}
-                        onClear={this.clearPayment}
-                    />
-                )}
+                <PaymentProvidersView
+                    show={this.state.showPaymentProviders}
+                    onClear={this.clearPayment}
+                    providers={this.state.paymentProviders}
+                />
             </AppHeaderWrapper>
         );
     }

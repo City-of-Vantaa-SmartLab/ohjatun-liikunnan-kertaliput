@@ -83,7 +83,7 @@ class WeeklyCalendar extends React.Component {
     };
     render() {
         const today = new Date();
-        const seletectedDate = this.props.courseStore.filters.date;
+        const selectedDate = this.props.courseStore.filters.date;
         const locale = getLocale(this.props.i18nStore.language);
         return (
             <div>
@@ -91,7 +91,7 @@ class WeeklyCalendar extends React.Component {
                     {this.state.viewableDateRange.map((date, index) => (
                         <DateColumn
                             key={dateFns.format(date, 'x')}
-                            selected={dateFns.isSameDay(date, seletectedDate)}
+                            selected={dateFns.isSameDay(date, selectedDate)}
                             past={dateFns.isBefore(date, today)}
                             onClick={this.setDate(date)}
                         >
@@ -105,7 +105,7 @@ class WeeklyCalendar extends React.Component {
                     ))}
                 </WeekTable>
                 <DateFlag>
-                    {dateFns.format(seletectedDate, 'DD. MMMM YYYY', {
+                    {dateFns.format(selectedDate, 'DD. MMMM YYYY', {
                         locale,
                     })}
                 </DateFlag>

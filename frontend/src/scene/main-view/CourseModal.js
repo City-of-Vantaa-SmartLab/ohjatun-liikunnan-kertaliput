@@ -171,7 +171,7 @@ const ErrorMessageTag = styled(ErrorMessageAnimation)`
 
 const MainModal = ({
     course,
-    seletectedDate,
+    selectedDate,
     onConfirm,
     onAddSaldo,
     clear,
@@ -191,7 +191,7 @@ const MainModal = ({
                         <li>
                             <DateLogo />
 
-                            {dateFns.format(seletectedDate, 'dddd DD.MM.YYYY', {
+                            {dateFns.format(selectedDate, 'dddd DD.MM.YYYY', {
                                 locale: getLocale(),
                             })}
                         </li>
@@ -224,7 +224,7 @@ const MainModal = ({
                     <ErrorMessageTag color={errorDetail.colorCode}>
                         {errorDetail.longMessage}
                     </ErrorMessageTag>
-                    {!course.reasons ||
+                    {!course.reasons || // Reason is "openTime" probably.
                     (course.reasons[0] !== 'auth' &&
                         course.reasons[0] !== 'resource') ? (
                         <Button
@@ -262,7 +262,7 @@ const MainModal = ({
     </Modal>
 );
 
-const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
+const ConfirmationModal = ({ course, selectedDate, reserve, clear }) => (
     <Modal show={course} onClear={clear}>
         {course && (
             <Fragment>
@@ -279,7 +279,7 @@ const ConfirmationModal = ({ course, seletectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <DateLogo />
-                            {dateFns.format(seletectedDate, 'dd DD.MM.YYYY', {
+                            {dateFns.format(selectedDate, 'dd DD.MM.YYYY', {
                                 locale: getLocale(),
                             })}
                         </li>
@@ -330,12 +330,7 @@ const RefreshModal = ({ showModal, refreshApp }) => (
     </Modal>
 );
 
-const ReservationModal = ({
-    course,
-    seletectedDate,
-    reservationError,
-    clear,
-}) => (
+const ReservationModal = ({ course, reservationError, clear }) => (
     <Modal show={course} onClear={clear}>
         {reservationError ? (
             <Fragment>
@@ -470,7 +465,7 @@ class CourseModal extends React.Component {
     };
 
     render() {
-        const seletectedDate = this.props.courseStore.filters.date;
+        const selectedDate = this.props.courseStore.filters.date;
         const course = this.props.courseStore.courseInFocus;
         const i18nContent = this.props.i18nStore.content;
         const errorDetail =
@@ -483,7 +478,7 @@ class CourseModal extends React.Component {
                 {this.state.showDetails && (
                     <MainModal
                         course={course}
-                        seletectedDate={seletectedDate}
+                        selectedDate={selectedDate}
                         onConfirm={this.onConfirm}
                         onAddSaldo={this.onAddSaldo}
                         clear={this.clear}
@@ -503,7 +498,7 @@ class CourseModal extends React.Component {
                 {this.state.showConfirm && (
                     <ConfirmationModal
                         course={course}
-                        seletectedDate={seletectedDate}
+                        selectedDate={selectedDate}
                         reserve={this.reserve}
                         clear={this.clear}
                     />
@@ -517,14 +512,15 @@ class CourseModal extends React.Component {
                 )}
                 {this.state.showPaymentProviders && (
                     <PaymentProvidersView
-                        providers={this.state.paymentProviders}
+                        show={true}
                         onClear={this.clearPayment}
+                        providers={this.state.paymentProviders}
                     />
                 )}
                 {this.state.showReserve && (
                     <ReservationModal
                         course={this.state.reservedCourse}
-                        seletectedDate={seletectedDate}
+                        selectedDate={selectedDate}
                         reservationError={this.state.reservationError}
                         clear={composeFunction(
                             this.clear,

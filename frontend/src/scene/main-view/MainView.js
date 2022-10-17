@@ -5,7 +5,6 @@ import ClassCard from './ClassCard';
 import AppHeader from './AppHeader';
 import CourseModal from './CourseModal';
 import PaymentView from '../payment';
-import PendingPayment from './PendingPayment'
 import { connect } from 'utils';
 
 const Wrapper = styled('div')`
@@ -22,7 +21,6 @@ class MainView extends React.Component {
                 <FilterGroup />
                 <ClassCard />
                 <CourseModal />
-                <PendingPayment />
                 <PaymentView />
             </Wrapper>
         );

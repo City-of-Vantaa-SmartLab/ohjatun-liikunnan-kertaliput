@@ -29,7 +29,6 @@ class userStore {
     token = null;
     balance = 0;
     reservedCourses = null;
-    pendingPayment = null;
 
     constructor(rootStore) {
         this.rootStore = rootStore;
@@ -80,7 +79,6 @@ class userStore {
         this.username = userData.username;
         this.balance = userData.balance;
         this.phoneNumber = userData.phoneNumber;
-        this.pendingPayment = userData.pendingPayment;
         this.authenticationFailed = false;
     }
     resetCredentials() {
@@ -102,11 +100,14 @@ class userStore {
         try {
             const providersResponse = await requestAddBalanceApi(amount);
             if (providersResponse.providers) {
-                console.log("Got payment providers, count: " + providersResponse.providers.length);
+                console.log(
+                    'Got payment providers, count: ' +
+                        providersResponse.providers.length
+                );
                 return providersResponse.providers;
             } else {
             }
-            throw new Error("Did not get an array of payment providers.");
+            throw new Error('Did not get an array of payment providers.');
         } catch (error) {
             console.error(error);
         }
@@ -178,7 +179,6 @@ export default decorate(userStore, {
     phoneNumber: observable,
     balance: observable,
     pinCode: observable,
-    pendingPayment: observable,
     reservedCourses: observable,
     checkAuthenticationStatusOnStart: action,
     setPhoneNumber: action,

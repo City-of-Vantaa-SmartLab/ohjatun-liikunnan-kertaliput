@@ -21,13 +21,13 @@ const Content = styled(ModalContent)`
     }
 
     .provider-button > img {
-        width: 100px;
-        height: auto;
+        width: 130px;
+        height: 50px;
     }
 
     form {
         float: left;
-        margin: 10px;
+        margin: 5px 10px;
     }
 `;
 
@@ -58,15 +58,16 @@ class PaymentProvidersView extends Component {
         };
 
         return (
-            <Modal show={this.props.providers}>
+            <Modal show={this.props.show} onClear={this.props.onClear}>
                 <Content>
                     <Title>
                         {i18nContent.paymentConfirmationForm.selectProvider}
                     </Title>
                     <div>
-                        {ReactHtmlParser(
-                            createPaymentProvidersList(this.props.providers)
-                        )}
+                        {!!this.props.providers &&
+                            ReactHtmlParser(
+                                createPaymentProvidersList(this.props.providers)
+                            )}
                     </div>
                 </Content>
             </Modal>
