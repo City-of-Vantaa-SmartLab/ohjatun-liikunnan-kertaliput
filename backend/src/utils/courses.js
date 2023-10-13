@@ -20,16 +20,23 @@ module.exports = {
 
     getCoursePrice: (courseTypeID, startDate) => {
         const date = formatToTimeZone(startDate, format, { timeZone: 'Europe/Helsinki' });
-        const startingTime = dateFns.getHours(date);
+        const startingHour = dateFns.getHours(date);
+        const startingMinute = dateFns.getMinutes(date);
         const isWeekend = dateFns.isWeekend(date);
+
+        const isHigherPriceTier =
+            (startingHour == 16 && startingMinute > 15) ||
+            (startingHour > 16) ||
+            isWeekend;
+
         if (courseTypeID === POOL_ID || courseTypeID === WATER_ID) {
-            if (startingTime >= 16 || isWeekend) {
+            if (isHigherPriceTier) {
                 return POOL_WATER_PRICE_AFTER_4;
             } else {
                 return POOL_WATER_PRICE_BEFORE_4;
             }
         } else if (courseTypeID === FLOOR_ID || courseTypeID === GYM_ID) {
-            if (startingTime >= 16 || isWeekend) {
+            if (isHigherPriceTier) {
                 return FLOOR_GYM_PRICE_AFTER_4;
             } else {
                 return FLOOR_GYM_PRICE_BEFORE_4;
