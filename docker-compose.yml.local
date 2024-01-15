@@ -46,7 +46,7 @@ services:
       TELIA_USER:
 
   postgres-dev-db:
-    image: postgres:10.3
+    image: postgres:16
     ports:
       - 5432:5432
     environment:
