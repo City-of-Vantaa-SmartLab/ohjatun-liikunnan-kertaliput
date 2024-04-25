@@ -54,7 +54,7 @@ export const pipeable = (obj) => {
 };
 
 export const validatePhoneNumber = (phoneNumberString) =>
-    /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(
+    /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4,5})$/.test(
         phoneNumberString
     );
 
