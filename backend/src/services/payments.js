@@ -13,6 +13,7 @@ const MERCHANT_KEY = process.env.MERCHANT_KEY || 'SAIPPUAKAUPPIAS';
 const PAYMENT_RETURN_URL = removeLastSlash(process.env.APP_BASE_URL) + '/api/payments/payment-return';
 const PAYMENT_POST_URL = process.env.PAYMENT_POST_URL || 'https://services.paytrail.com/payments';
 const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE || 10;
+const PAYMENT_CODE = process.env.PAYMENT_CODE;
 
 const calculateCheckoutParamsHmac = (params, body) => {
     const hmacPayload = Object.keys(params)
@@ -46,7 +47,9 @@ const getAxiosConfig = async (paymentObj, timestamp) => {
                 "unitPrice": paymentObj.amount * 100,
                 "units": 1,
                 "vatPercentage": VAT_PERCENTAGE,
-                "productCode": 'Liikuntalippusaldolataus'
+                "productCode": PAYMENT_CODE,
+                "description": `Liikuntalippusaldolataus|${PAYMENT_CODE}`,
+                "reference": PAYMENT_CODE
             }
         ],
         'customer': {

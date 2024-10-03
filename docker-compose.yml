@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
   frontend:
     build: ./frontend
@@ -36,6 +34,7 @@ services:
       GRYNOS_COURSES_UPDATE_INTERVAL:
       MERCHANT_ID:
       MERCHANT_KEY:
+      PAYMENT_CODE:
       POOL_WATER_PRICE_AFTER_4:
       POOL_WATER_PRICE_BEFORE_4:
       POPULATE_SEED_DATA: 0
