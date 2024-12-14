@@ -30,17 +30,23 @@ const mapCourseFromGrynos = (course) => ({
 });
 
 const mapCourseDetailsFromGrynos = async (course) => {
-    const courseDetails = await axios(courseDetailUrl + course.code);
-    return {
-        ...course,
-        description: courseDetails.data.descriptionInternet,
-        single_payment_count: courseDetails.data.singlePaymentCount,
-        company_name: courseDetails.data.companyName,
-        course_type_id: courseDetails.data.courseTypeID,
-        course_type_name: courseDetails.data.courseTypeName,
-        teacher: courseDetails.data.teacher,
-        location: courseDetails.data.location
-    };
+    try {
+        const courseDetails = await axios(courseDetailUrl + course.code);
+        return {
+            ...course,
+            description: courseDetails.data.descriptionInternet,
+            single_payment_count: courseDetails.data.singlePaymentCount,
+            company_name: courseDetails.data.companyName,
+            course_type_id: courseDetails.data.courseTypeID,
+            course_type_name: courseDetails.data.courseTypeName,
+            teacher: courseDetails.data.teacher,
+            location: courseDetails.data.location
+        };
+    }
+    catch (e) {
+        console.error(`${(new Date).toISOString()} error fetching course details for ${course.code}: ${e.message}`);
+        throw e;
+    }
 };
 
 const fetchCoursesFromGrynos = async () => {
@@ -64,9 +70,13 @@ const clearDatabase = async () => {
 };
 
 const fetchAndSaveCoursesToDb = async () => {
-    console.log('Executing fetchAndSaveCoursesToDb');
-    const courses = await fetchCoursesFromGrynos();
-    return await updateCoursesToDb(courses);
+    console.log((new Date).toISOString() + ' Executing fetchAndSaveCoursesToDb');
+    try {
+        const courses = await fetchCoursesFromGrynos();
+        return await updateCoursesToDb(courses);
+    } catch (e) {
+        console.error((new Date).toISOString() + " " + e.message);
+    }
 }
 const updateCoursesToDb = async (courses) => {
     try {
@@ -156,7 +166,7 @@ const handleCancellations = async (course, existingTeachingSessions, newTeaching
 const cancelReservations = async (reservations) => {
     try {
         for (let reservation of reservations) {
-            console.log('Executing cancel reservation for reservation', reservation.dataValues.id);
+            console.log((new Date).toISOString() + ' Executing cancel reservation for reservation', reservation.dataValues.id);
             await db.reservations.cancelReservation(reservation.dataValues.id);
             const [message, dbUser] = await Promise.all([services.sms.buildCancellationMessage(reservation.dataValues), db.users.getUserById(reservation.dataValues.userId)]);
             const response = await services.sms.sendMessageToUser(
