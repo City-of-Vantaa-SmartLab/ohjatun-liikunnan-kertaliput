@@ -13,7 +13,7 @@ const auth = require('./auth');
 const port = process.env.PORT || 3000;
 const grynosUpdateInterval =
     process.env.GRYNOS_COURSES_UPDATE_INTERVAL || 3600000;
-const populateSeedData = process.env.POPULATE_SEED_DATA === '1';
+const populateSeedData = process.env.USE_MOCK_DATA === '1';
 const resetDatabase = process.env.DROP_DATABASE_SCHEMA === 'true';
 setInterval(fetchAndSaveCoursesToDb, grynosUpdateInterval);
 
