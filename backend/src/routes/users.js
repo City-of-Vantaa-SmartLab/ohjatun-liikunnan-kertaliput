@@ -93,6 +93,15 @@ const createUser = async (req, res) => {
                 pin,
             }
         );
+
+        if (typeof process.env.TELIA_USERNAME === 'undefined') {
+            console.log(`New user created with phone number ${createdUser.phoneNumber} and PIN ${pin}`);
+             return res
+                .status(201)
+                .json(
+                    'Successfully created the account. Your login PIN is in console log.'
+                );
+        }
         const response = await services.sms.sendMessageToUser(
             createdUser,
             message
@@ -179,6 +188,15 @@ const resetPin = async (req, res) => {
                         pin,
                     }
                 );
+                if (typeof process.env.TELIA_USERNAME === 'undefined') {
+                    console.log(`PIN reset for user with phone number ${user.phoneNumber}. New PIN is ${pin}`);
+                    return  res
+                        .status(201)
+                        .json(
+                            'Successfully Reset the PIN. Your new PIN is in console log.'
+                        );
+                }
+
                 const response = await services.sms.sendMessageToUser(
                     user,
                     message

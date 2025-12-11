@@ -168,6 +168,10 @@ const cancelReservations = async (reservations) => {
         for (let reservation of reservations) {
             console.log((new Date).toISOString() + ' Executing cancel reservation for reservation', reservation.dataValues.id);
             await db.reservations.cancelReservation(reservation.dataValues.id);
+            if (typeof process.env.TELIA_USERNAME === 'undefined') {
+                console.log(`Reservation cancelled for user ID ${reservation.dataValues.userId} on reservation ID ${reservation.dataValues.id}`);
+                continue;
+            }
             const [message, dbUser] = await Promise.all([services.sms.buildCancellationMessage(reservation.dataValues), db.users.getUserById(reservation.dataValues.userId)]);
             const response = await services.sms.sendMessageToUser(
                 dbUser,

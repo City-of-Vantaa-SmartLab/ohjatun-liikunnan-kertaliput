@@ -110,7 +110,11 @@ const createReservation = async (req, res) => {
                 const message = `${i18n.reservations.confirmationMessage} ${
                     course.name
                 }.\n${startDate}\n${event.dataValues.teachingplace}`;
-
+                
+                if (typeof process.env.TELIA_USERNAME === 'undefined') {
+                    console.log(`Reservation created for user ${dbUser.username} for event ID ${reservationObj.eventId}.`);
+                    return res.status(201).json(reservationObj);
+                }
                 const response = await services.sms.sendMessageToUser(
                     dbUser,
                     message
