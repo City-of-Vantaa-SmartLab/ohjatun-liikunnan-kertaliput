@@ -43,6 +43,7 @@ services:
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
+      DEFAULT_SALDO:
 
   postgres-dev-db:
     image: postgres:16

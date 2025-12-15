@@ -1,4 +1,4 @@
-const randtoken = require('rand-token');
+const crypto = require('crypto');
 const db = require('../src/db');
 const Sequelize = require('sequelize');
 const utils = require('../src/utils');
@@ -8,7 +8,7 @@ describe('Users API testing.', async () => {
     beforeAll(async () => {
         return await sequelize.sync();
     });
-    let token = randtoken.generate(16);
+    let token = crypto.randomBytes(16).toString('hex');
     let user = {
         username: 'test user',
         phoneNumber: '+358123412345',

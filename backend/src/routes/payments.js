@@ -6,7 +6,6 @@ const auth = require('../auth');
 const utils = require('../utils');
 const sequalize = require('../sequalize_pg');
 const i18n = require('../i18n').i18n();
-const stringInterpolator = require('interpolate');
 
 const addBalance = async (req, res) => {
     try {

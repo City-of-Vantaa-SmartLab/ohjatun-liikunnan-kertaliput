@@ -4,11 +4,10 @@ const router = express.Router();
 const models = require('../models');
 const db = require('../db');
 const utils = require('../utils');
-const randtoken = require('rand-token');
+const crypto = require('crypto');
 const dateFns = require('date-fns');
 const services = require('../services');
 const i18n = require('../i18n').i18n();
-const stringInterpolator = require('interpolate');
 const getUser = async (req, res) => {
     try {
         const phoneNumber = req.query.phoneNumber;
@@ -82,18 +81,13 @@ const createUser = async (req, res) => {
         if (dbUser) {
             return res.status(409).json('PhoneNumber already exists!.');
         }
-        const token = randtoken.generate(16);
+        const token = crypto.randomBytes(16).toString('hex');
         user.token = token;
-        const pin = randtoken.generate(4, '0123456789');
+        const pin = crypto.randomInt(1000, 10000).toString();
         user.pin = pin;
         const createdUser = await db.users.createUser(user);
-        const message = stringInterpolator(
-            i18n.users.register.confirmationSms,
-            {
-                pin,
-            }
-        );
-
+        const message = i18n.users.register.confirmationSms
+            .replace('{pin}', pin);
         if (typeof process.env.TELIA_USERNAME === 'undefined') {
             console.log(`New user created with phone number ${createdUser.phoneNumber} and PIN ${pin}`);
              return res
@@ -179,15 +173,11 @@ const resetPin = async (req, res) => {
         } else {
             const user = await db.users.getUser(phoneNumber);
             if (user) {
-                const pin = randtoken.generate(4, '0123456789');
+                const pin = crypto.randomInt(1000, 10000).toString();
                 user.pin = pin;
                 await db.users.updateUser(user, phoneNumber);
-                const message = stringInterpolator(
-                    i18n.users.resetPin.confirmationSms,
-                    {
-                        pin,
-                    }
-                );
+                const message = i18n.users.resetPin.confirmationSms
+                    .replace('{pin}', pin);
                 if (typeof process.env.TELIA_USERNAME === 'undefined') {
                     console.log(`PIN reset for user with phone number ${user.phoneNumber}. New PIN is ${pin}`);
                     return  res
