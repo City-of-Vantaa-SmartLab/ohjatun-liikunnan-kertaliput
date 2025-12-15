@@ -1,7 +1,6 @@
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const express = require('express');
-const bodyParser = require('body-parser');
 const db = require('./sequalize_pg');
 require('dotenv').config();
 const loadMockCoursesToDatabase = require('./seed/db-seed')
@@ -19,8 +18,8 @@ setInterval(fetchAndSaveCoursesToDb, grynosUpdateInterval);
 
 const server = express();
 
-server.use(bodyParser.json());
-server.use(bodyParser.urlencoded({ extended: false }));
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
 
 server.use(cookieParser(auth.secret));
 server.use(auth.resolveUser);
