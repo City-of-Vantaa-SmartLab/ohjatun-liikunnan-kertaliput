@@ -1,7 +1,6 @@
 const auth = require('../auth');
 const express = require('express');
 const router = express.Router();
-const models = require('../models');
 const db = require('../db');
 const utils = require('../utils');
 const crypto = require('crypto');
