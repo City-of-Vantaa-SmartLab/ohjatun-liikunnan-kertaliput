@@ -39,7 +39,7 @@ server.get('/reports', (req, res) => {
 server.get('/reports/:year', (req, res) => {
     res.redirect(`/api/reports/${req.params.year}`)
 });
-server.get('/app/**', (req, res) => {
+server.get('/app/*splat', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
