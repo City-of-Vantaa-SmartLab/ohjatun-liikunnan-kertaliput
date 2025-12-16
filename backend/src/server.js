@@ -44,13 +44,46 @@ server.get('/app/*splat', (req, res) => {
 });
 
 const startServer = () => {
+    const dataSource = populateSeedData ? 'seed data' : 'Grynos API';
     const dbPopulation = populateSeedData ? loadMockCoursesToDatabase() : fetchAndSaveCoursesToDb();
-    dbPopulation.then(() => {
+    
+    dbPopulation.catch(error => {
+        console.log(`Failed to load initial course data from ${dataSource}:`, error.message);
+        const retryMessage = populateSeedData 
+            ? "Seed data will not be retried automatically."
+            : `Grynos API will be retried in ${grynosUpdateInterval/1000} seconds.`;
+        console.log(`Starting server anyway. ${retryMessage}`);
+    }).finally(() => {
         console.log("Starting server.");
         server.listen(port, () =>
             console.log(`Server deployed at ${new Date()} and running on ${port}`)
         );
-    }).catch(error => console.log('Error starting server', error));
+    });
 }
 
-resetDatabase ? clearDatabase().then(() => startServer()) : startServer();
+const waitForDatabaseAndStart = async () => {
+    const maxRetries = 10;
+    const retryDelay = 2000;
+    
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            await db.authenticate();
+            console.log('Database connection established successfully.');
+            const models = require('./models'); // Ensure models are loaded
+            await db.sync(); // Create tables if they don't exist
+            console.log('Database tables synchronized.');
+            startServer();
+            return;
+        } catch (error) {
+            console.log(`Database connection attempt ${i + 1}/${maxRetries} failed:`, error.message);
+            if (i < maxRetries - 1) {
+                console.log(`Retrying in ${retryDelay/1000} seconds...`);
+                await new Promise(resolve => setTimeout(resolve, retryDelay));
+            }
+        }
+    }
+    console.error('Failed to connect to database after multiple attempts. Exiting.');
+    process.exit(1);
+}
+
+resetDatabase ? clearDatabase().then(() => waitForDatabaseAndStart()) : waitForDatabaseAndStart();
