@@ -1,4 +1,4 @@
-FROM node:12.22.12
+FROM node:25
 WORKDIR /backend
 ADD . /backend
 RUN npm install
