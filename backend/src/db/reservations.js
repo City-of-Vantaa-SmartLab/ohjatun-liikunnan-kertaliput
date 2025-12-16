@@ -52,7 +52,7 @@ const getAllReservations = async () => {
 };
 // TODO: Can't we join tables and find from that table here?
 const getReservationById = async (id) => {
-    const reservation = await models.reservations.find({
+    const reservation = await models.reservations.findOne({
         include: [
             {
                 model: models.courses,
@@ -97,7 +97,7 @@ const getReservationCount = (eventId) => {
 };
 
 const getReservationForEvent = (eventId, userId) => {
-    return models.reservations.find({
+    return models.reservations.findOne({
         where: { eventId, userId },
     });
 };
@@ -127,8 +127,6 @@ const cancelReservation = async (reservationId) => {
                 },
                 {
                     where: { id: reservationId },
-                },
-                {
                     transaction,
                 }
             )
@@ -137,7 +135,7 @@ const cancelReservation = async (reservationId) => {
                 const userId = reservation.userId;
                 const balance =
                     (await getUserBalance(userId)) + reservation.ticketPrice;
-                updateUserBalance(userId, balance, transaction);
+                await updateUserBalance(userId, balance, transaction);
             });
     });
 };
@@ -145,7 +143,7 @@ const cancelReservation = async (reservationId) => {
 const createReservation = async (reservation) => {
     return db.transaction(async (transaction) => {
         return await models.reservations
-            .create(reservation, transaction)
+            .create(reservation, { transaction })
             .then(async (createReservation) => {
                 const userId = createReservation.userId;
                 const balance =
@@ -164,8 +162,6 @@ const updateUserBalance = (userId, balance, transaction) => {
         },
         {
             where: { id: userId },
-        },
-        {
             transaction,
         }
     );
@@ -173,7 +169,7 @@ const updateUserBalance = (userId, balance, transaction) => {
 
 const getUserBalance = (userId) => {
     return models.users
-        .find({
+        .findOne({
             attributes: ['balance'],
             where: { id: userId },
         })

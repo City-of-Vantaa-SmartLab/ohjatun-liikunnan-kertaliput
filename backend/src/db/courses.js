@@ -110,7 +110,7 @@ const getAllCourses = () => {
     });
 };
 const getCourseById = (id) => {
-    return models.courses.find({
+    return models.courses.findOne({
         attributes: [
             'id',
             'name',

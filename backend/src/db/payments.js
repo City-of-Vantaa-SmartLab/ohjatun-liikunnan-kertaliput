@@ -12,11 +12,11 @@ const createPayment = (paymentObj) => {
 };
 
 const getPaymentByOrderNumber = (orderNumber) => {
-    return models.payments.find({ where: { order_number: orderNumber } });
+    return models.payments.findOne({ where: { order_number: orderNumber } });
 };
 
 const getPendingPaymentByOrderNumber = (orderNumber) => {
-    return models.payments.find({
+    return models.payments.findOne({
         where: {
             order_number: orderNumber,
             payment_status: PaymentStatus.PENDING
