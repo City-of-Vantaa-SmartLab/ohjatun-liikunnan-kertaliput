@@ -1,8 +1,9 @@
 const models = require('../models');
-const datefns = require('date-fns');
+const { compareDesc, format } = require('date-fns');
 const Sequelize = require('sequelize');
 const reservations = require('./reservations');
 const utils = require('../utils');
+const i18n = require('../i18n').i18n();
 const Op = Sequelize.Op;
 
 const getCourses = (startDate, endDate) => {
@@ -207,7 +208,7 @@ const reduceCoursesByDate = async courses => {
     }));
 
     const reducedCourses = updatedCourses.reduce((obj, course) => {
-        const teachingSessions = course.teachingSession.sort((a, b) => datefns.compareDesc(a.startDate, b.startDate));
+        const teachingSessions = course.teachingSession.sort((a, b) => compareDesc(a.startDate, b.startDate));
         for (let teachingSession of teachingSessions) {
             if (teachingSession) {
                 const courseToAdd = {
@@ -217,7 +218,7 @@ const reduceCoursesByDate = async courses => {
                     courseToAdd.course_type_id,
                     teachingSession.startDate.toString()
                 );
-                const date = datefns.format(teachingSession.startDate.toString(), 'MM-DD-YYYY');
+                const date = format(teachingSession.startDate, i18n.dateFormats.courseDate);
                 obj[date] = obj[date] || [];
                 delete courseToAdd.teachingSession;
                 courseToAdd.eventId = teachingSession.eventId;

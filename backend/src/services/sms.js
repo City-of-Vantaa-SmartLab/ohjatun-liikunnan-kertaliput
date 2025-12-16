@@ -1,9 +1,7 @@
 const axios = require('axios');
 const i18n = require('../i18n').i18n();
 const db = require('../db');
-const datefns = require('date-fns');
-const { formatToTimeZone } = require('date-fns-timezone');
-const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)';
+const { formatInTimeZone } = require('date-fns-tz');
 
 const teliaEndPoint = 'https://ws.mkv.telia.fi/restsms/lekabrest/send';
 const teliaUsername = process.env.TELIA_USERNAME;
@@ -11,8 +9,7 @@ const teliaPassword = process.env.TELIA_PASSWORD;
 const teliaUser = process.env.TELIA_USER;
 
 const formatDate = (date) => {
-    const formattedDate = formatToTimeZone(date, format, { timeZone: 'Europe/Helsinki' });
-    return datefns.format(formattedDate, i18n.reservations.dateFormat);
+    return formatInTimeZone(date, 'Europe/Helsinki', i18n.dateFormats.display);
 };
 
 const sendMessageToUser = async (user, message) => {

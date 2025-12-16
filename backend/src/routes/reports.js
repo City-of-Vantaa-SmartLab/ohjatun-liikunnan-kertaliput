@@ -3,10 +3,8 @@ const db = require('../db');
 const router = express.Router();
 const utils = require('../utils');
 
-const datefns = require('date-fns');
+const { formatInTimeZone } = require('date-fns-tz');
 const i18n = require('../i18n').i18n();
-const { formatToTimeZone } = require('date-fns-timezone');
-const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)';
 
 const { Parser } = require('json2csv');
 
@@ -71,8 +69,7 @@ const formatCost = (value) => {
 }
 
 const formatDate = (date) => {
-    date = formatToTimeZone(date, format, { timeZone: 'Europe/Helsinki' });
-    return datefns.format(date, i18n.reservations.dateFormat);
+    return formatInTimeZone(date, 'Europe/Helsinki', i18n.dateFormats.display);
 };
 
 router.get('/', getReportForCurrentYear)

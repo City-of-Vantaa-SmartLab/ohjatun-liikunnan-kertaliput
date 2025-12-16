@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const datefns = require('date-fns');
+const { format, addWeeks } = require('date-fns');
 const utils = require('../utils');
+const i18n = require('../i18n').i18n();
 
 const getCourses = async (req, res) => {
     try {
-        const timestampToDate = (date) =>
-            datefns.parse(Number(date), 'MM-DD-YYYY');
-        const toFormattedDate = (date) => datefns.format(date);
+        const timestampToDate = (timestamp) => new Date(Number(timestamp));
+        const toFormattedDate = (date) => format(date, i18n.dateFormats.isoDate);
 
         // Default start and end date for the last week
         const startDate = toFormattedDate(
@@ -19,7 +19,7 @@ const getCourses = async (req, res) => {
         const endDate = toFormattedDate(
             req.query.endDate
                 ? timestampToDate(req.query.endDate)
-                : datefns.addWeeks(new Date(), 1)
+                : addWeeks(new Date(), 1)
         );
 
         const courses = await db.courses.getCourses(startDate, endDate);

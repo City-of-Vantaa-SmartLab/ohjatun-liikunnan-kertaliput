@@ -7,9 +7,9 @@ const POOL_WATER_PRICE_AFTER_4 = process.env.POOL_WATER_PRICE_AFTER_4 || 3.5; //
 const FLOOR_GYM_PRICE_BEFORE_4 = process.env.FLOOR_GYM_PRICE_BEFORE_4 || 3.5;
 const FLOOR_GYM_PRICE_AFTER_4 = process.env.FLOOR_GYM_PRICE_AFTER_4 || 5.0; // Also weekend price.
 const DEFAULT_PRICE = process.env.DEFAULT_PRICE || 3.5;
-const dateFns = require('date-fns');
-const { formatToTimeZone } = require('date-fns-timezone');
-const format = 'YYYY-MM-DD HH:mm:ss.SSS [GMT]Z (z)'
+const { getHours, getMinutes, isWeekend } = require('date-fns');
+const { formatInTimeZone } = require('date-fns-tz');
+const i18n = require('../i18n').i18n();
 
 module.exports = {
     validateCourseId: (courseId) => {
@@ -19,15 +19,16 @@ module.exports = {
     },
 
     getCoursePrice: (courseTypeID, startDate) => {
-        const date = formatToTimeZone(startDate, format, { timeZone: 'Europe/Helsinki' });
-        const startingHour = dateFns.getHours(date);
-        const startingMinute = dateFns.getMinutes(date);
-        const isWeekend = dateFns.isWeekend(date);
+        const date = formatInTimeZone(new Date(startDate), 'Europe/Helsinki', i18n.dateFormats.isoTimestamp);
+        const parsedDate = new Date(date);
+        const startingHour = getHours(parsedDate);
+        const startingMinute = getMinutes(parsedDate);
+        const isWeekendDay = isWeekend(parsedDate);
 
         const isHigherPriceTier =
             (startingHour == 16 && startingMinute > 15) ||
             (startingHour > 16) ||
-            isWeekend;
+            isWeekendDay;
 
         if (courseTypeID === POOL_ID || courseTypeID === WATER_ID) {
             if (isHigherPriceTier) {

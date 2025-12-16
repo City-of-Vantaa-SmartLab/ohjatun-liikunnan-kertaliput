@@ -5,7 +5,6 @@ const models = require('../models');
 const db = require('../db');
 const utils = require('../utils');
 const crypto = require('crypto');
-const dateFns = require('date-fns');
 const services = require('../services');
 const i18n = require('../i18n').i18n();
 const getUser = async (req, res) => {
