@@ -1,4 +1,4 @@
-import { decorate, observable, action, autorun, computed } from 'mobx';
+import { makeObservable, observable, action, autorun, computed } from 'mobx';
 import {
     toStringFromObject,
     processPhoneNumber,
@@ -32,6 +32,24 @@ class userStore {
 
     constructor(rootStore) {
         this.rootStore = rootStore;
+        makeObservable(this, {
+            isAuthenticating: observable,
+            isAuthenticated: computed,
+            authenticationFailed: observable,
+            phoneNumberIncorrect: computed,
+            token: observable,
+            phoneNumber: observable,
+            balance: observable,
+            pinCode: observable,
+            reservedCourses: observable,
+            checkAuthenticationStatusOnStart: action,
+            setPhoneNumber: action,
+            setInputCode: action,
+            setCredentials: action,
+            setBalance: action,
+            resetCredentials: action,
+            logout: action.bound,
+        });
         this.checkAuthenticationStatusOnStart();
     }
 
@@ -170,21 +188,4 @@ class userStore {
     });
 }
 
-export default decorate(userStore, {
-    isAuthenticating: observable,
-    isAuthenticated: computed,
-    authenticationFailed: observable,
-    phoneNumberIncorrect: computed,
-    token: observable,
-    phoneNumber: observable,
-    balance: observable,
-    pinCode: observable,
-    reservedCourses: observable,
-    checkAuthenticationStatusOnStart: action,
-    setPhoneNumber: action,
-    setInputCode: action,
-    setCredentials: action,
-    setBalance: action,
-    resetCredentials: action,
-    logout: action.bound,
-});
+export default userStore;

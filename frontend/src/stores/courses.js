@@ -1,4 +1,4 @@
-import { decorate, observable, computed, action } from 'mobx';
+import { makeObservable, observable, computed, action } from 'mobx';
 import mockCourse from './course-mock.json';
 import dateFns from 'date-fns';
 import { fetchCourses, reserveTicket } from '../apis';
@@ -60,6 +60,16 @@ class courseStore {
 
     constructor(rootStore) {
         this.rootStore = rootStore;
+        makeObservable(this, {
+            courseList: observable.deep,
+            courseIdList: computed,
+            isFetchingCourses: observable,
+            courseInFocus: observable,
+            filters: observable,
+            useMockCourse: observable,
+            checkAvailability: action,
+            reserveCourse: action,
+        });
         const checkEvery5Sec = () => {
             // schedule this checking every 5 seconds
             // when browser is idle, to avoid hagging resources for UI
@@ -200,14 +210,4 @@ class courseStore {
     });
 }
 
-export default decorate(courseStore, {
-    courseList: observable.deep,
-    courseIdList: computed,
-    isFetchingCourses: observable,
-    fetchCourse: action.bound,
-    courseInFocus: observable,
-    filters: observable,
-    useMockCourse: observable,
-    checkAvailability: action,
-    reserveCourse: action,
-});
+export default courseStore;

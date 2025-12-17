@@ -1,9 +1,17 @@
 import content from './content.json';
-import { observable, computed, decorate } from 'mobx';
+import { observable, computed, makeObservable } from 'mobx';
 
 // this is a store of worded content, for internationalization
 class I18NStore {
     language = 'fi';
+
+    constructor() {
+        makeObservable(this, {
+            language: observable,
+            content: computed,
+        });
+    }
+
     get content() {
         switch (this.language.toLowerCase()) {
             case 'sv':
@@ -15,10 +23,5 @@ class I18NStore {
         }
     }
 }
-
-decorate(I18NStore, {
-    language: observable,
-    content: computed,
-});
 
 export default I18NStore;
