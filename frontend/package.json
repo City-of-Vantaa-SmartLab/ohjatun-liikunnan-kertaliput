@@ -2,7 +2,6 @@
     "name": "jumppaliput",
     "version": "0.1.0",
     "private": true,
-    "proxy": "http://backend",
     "dependencies": {
         "@emotion/react": "^11.13.5",
         "@emotion/styled": "^11.13.5",
@@ -13,22 +12,22 @@
         "react-dom": "^18.3.1",
         "react-pose": "^1.5.2",
         "react-router-dom": "^4.2.2",
-        "react-scripts": "^2.1.8",
         "utils": "file:src/utils"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "export PUBLIC_URL=\"/app\" && react-scripts build",
-        "test": "react-scripts test --env=jsdom",
-        "eject": "react-scripts eject",
+        "start": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
         "format": "./node_modules/.bin/prettier --write",
         "lint": "./node_modules/.bin/eslint src",
         "precommit": "lint-staged"
     },
     "devDependencies": {
+        "@vitejs/plugin-react": "^4.3.4",
         "husky": "^0.14.3",
         "lint-staged": "^7.3.0",
-        "prettier": "^1.11.1"
+        "prettier": "^1.11.1",
+        "vite": "^5.4.11"
     },
     "lint-staged": {
         "*.{js,json,css,md}": [
