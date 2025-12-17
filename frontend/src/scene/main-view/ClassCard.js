@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import dateFns from 'date-fns';
 import { connect } from 'utils';
 import Button from '../../components/button';

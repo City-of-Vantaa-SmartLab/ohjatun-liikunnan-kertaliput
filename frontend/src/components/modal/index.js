@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import posed, { PoseGroup } from 'react-pose';
 import { tween, chain, delay } from 'popmotion';
 import { createPortal } from 'react-dom';

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import posed from 'react-pose';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { connect } from 'utils';
 
 const WrapperBase = posed.div({

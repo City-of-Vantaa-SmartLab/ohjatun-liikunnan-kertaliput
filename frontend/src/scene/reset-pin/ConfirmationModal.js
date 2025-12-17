@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Modal, { Content, Title } from '../../components/modal';
 import Button from '../../components/button';
 import { Link } from 'react-router-dom';

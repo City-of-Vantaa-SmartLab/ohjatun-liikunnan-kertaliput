@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '../../components/button';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { connect } from 'utils';
 import { Link, Redirect } from 'react-router-dom';
 import BalanceView from '../balance';
