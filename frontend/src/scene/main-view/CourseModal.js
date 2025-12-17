@@ -374,22 +374,7 @@ class CourseModal extends React.Component {
         reservationInProgress: false,
     };
 
-    componentDidMount() {
-        setInterval(this.checkForUpdates, 5000);
-    }
-
-    checkForUpdates = () => {
-        let updateAvailable = window['updateAvailable'];
-        console.log('New version available: ' + updateAvailable);
-
-        // TODO: a working update process. The old one just reloads the page from cache, only manual Ctrl+F5 actually worked.
-        if (updateAvailable) {
-            console.log(
-                'Uusi versio saatavilla, päivitä sivu painamalla Ctrl+F5.'
-            );
-            //this.setState({ showRefreshModal: true });
-        }
-    };
+    componentDidMount() {}
 
     clear = () => {
         this.props.courseStore.selectCourse(null);
@@ -443,13 +428,6 @@ class CourseModal extends React.Component {
                 reservationInProgress: false,
             });
         }
-    };
-
-    refreshApp = () => {
-        window['updateAvailable'] = false;
-        this.setState({ showReserve: false });
-        // TODO/fixme: this doesn't reload a new version. Reload uses old cache.
-        window.location.reload();
     };
 
     removeFocusesCourse = () => {
