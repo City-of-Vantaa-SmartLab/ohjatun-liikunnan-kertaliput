@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import BaseModal, {
     Title,
     Content as ModalContent,
@@ -94,7 +94,9 @@ class BalanceView extends Component {
     onConfirm = (e) => {
         e.preventDefault();
         if (this.state.formIncorrect) return;
-        const providers = this.props.userStore.requestAddBalance(this.state.amount);
+        const providers = this.props.userStore.requestAddBalance(
+            this.state.amount
+        );
         this.props.initiatePayment(providers);
     };
 
@@ -114,12 +116,11 @@ class BalanceView extends Component {
                     <BalanceInfoArea pose={'show'}>
                         <Title>{i18nContent.sectionTitle}</Title>
                         <span>{Number(balance).toLocaleString('fi')} €</span>
-                        {!formShown &&
-                            !this.props.isShown && (
-                                <Button onClick={this.state.showForm}>
-                                    {i18nContent.topUp}
-                                </Button>
-                            )}
+                        {!formShown && !this.props.isShown && (
+                            <Button onClick={this.state.showForm}>
+                                {i18nContent.topUp}
+                            </Button>
+                        )}
                     </BalanceInfoArea>
                     <PoseGroup animateOnMount>
                         {(formShown || this.props.isShown) && (

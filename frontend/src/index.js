@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { ThemeProvider } from 'emotion-theming';
+import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from '@emotion/react';
 import stores from './stores';
 import { Provider } from 'mobx-react';
 import { BrowserRouter } from 'react-router-dom';
@@ -34,6 +34,9 @@ const Root = () => (
         </Provider>
     </BrowserRouter>
 );
-ReactDOM.render(<Root />, document.getElementById('root'));
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Root />);
+
 register();
 checkForUpdates();

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Modal, { Title, Content as ModalContent } from '../../components/modal';
 import Button from '../../components/button';
 import { connect } from 'utils';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import posed, { PoseGroup } from 'react-pose';
 import Button from '../../components/button';
 import { connect } from 'utils';

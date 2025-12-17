@@ -5,7 +5,7 @@ import MainView from './scene/main-view';
 import DevTool from './scene/dev-tool';
 import CookieBanner from './scene/cookie-banner';
 import AppLoader from './scene/app-loader';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 const AppContainer = styled('section')`
     margin: 0;
