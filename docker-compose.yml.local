@@ -4,7 +4,7 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
-    command: npm run build
+    command: npm run start # Dev mode
     ports:
       - 3000:3000
     environment:
