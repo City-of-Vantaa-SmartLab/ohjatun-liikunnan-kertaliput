@@ -2,7 +2,7 @@ import stringInterpolator from 'interpolate';
 import dateFns from 'date-fns';
 
 export const getErrorDetail = (course, errorMessages) => {
-    if (!course || !course.reasons) return;
+    if (!course || !course.reasons || course.reasons.length === 0) return;
     const type = course.reasons[0];
     const {
         openTime,
