@@ -22,7 +22,7 @@ const theme = {
 };
 const { i18nStore, userStore, courseStore } = stores;
 const Root = () => (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Provider
             i18nStore={i18nStore}
             userStore={userStore}
