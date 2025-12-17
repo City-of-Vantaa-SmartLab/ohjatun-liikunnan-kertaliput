@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 import Modal, { Title, Content as ModalContent } from '../../components/modal';
 import { connect } from 'utils';
 import { withRouter } from 'react-router-dom';
-import ReactHtmlParser from 'react-html-parser';
 
 const Content = styled(ModalContent)`
     width: 100%;
@@ -63,12 +62,17 @@ class PaymentProvidersView extends Component {
                     <Title>
                         {i18nContent.paymentConfirmationForm.selectProvider}
                     </Title>
-                    <div>
-                        {!!this.props.providers &&
-                            ReactHtmlParser(
-                                createPaymentProvidersList(this.props.providers)
-                            )}
-                    </div>
+                    {/* TODO: Refactor to use JSX components instead of dangerouslySetInnerHTML for better security and maintainability.
+                        Map over providers array to create <form> elements with proper React components. */}
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: this.props.providers
+                                ? createPaymentProvidersList(
+                                      this.props.providers
+                                  )
+                                : '',
+                        }}
+                    />
                 </Content>
             </Modal>
         );

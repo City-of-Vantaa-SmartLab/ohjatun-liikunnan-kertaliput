@@ -3,7 +3,6 @@ import styled from 'react-emotion';
 import Modal, { Content, Title } from '../../components/modal';
 import Button from '../../components/button';
 import { Link } from 'react-router-dom';
-import stringInterpolator from 'interpolate';
 
 const SmallModal = styled(Modal)`
     height: auto;
@@ -32,12 +31,9 @@ export default class ConfirmationModal extends React.Component {
                     </CustomTitle>
                     <Content>
                         <p>
-                            {stringInterpolator(
-                                i18nContent.registrationForm
-                                    .congratulationMessage,
-                                {
-                                    phoneNumber,
-                                }
+                            {i18nContent.registrationForm.congratulationMessage.replace(
+                                '{phoneNumber}',
+                                phoneNumber
                             )}
                         </p>
                         <p>{i18nContent.registrationForm.promptPinCode}</p>
