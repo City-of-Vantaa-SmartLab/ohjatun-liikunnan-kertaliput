@@ -29,7 +29,7 @@ const Wrapper = styled(WrapperBase)`
 class DevTool extends React.Component {
     render() {
         const show = this.props.courseStore.useMockCourse;
-        if (process.env.NODE_ENV === 'development') {
+        if (import.meta.env.DEV) {
             return ReactDOM.createPortal(
                 <Wrapper pose={show ? 'enter' : 'exit'}>
                     <span>You are using mock data</span>
