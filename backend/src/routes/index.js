@@ -8,7 +8,7 @@ router.use('/reservations', require('./reservations'));
 router.use('/payments', require('./payments'));
 router.use('/reports', require('./reports'));
 
-router.get('*', (req, res) => {
+router.get('/{*splat}', (req, res) => {
     res.sendStatus(404);
 });
 

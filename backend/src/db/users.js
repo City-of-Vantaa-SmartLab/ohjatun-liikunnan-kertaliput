@@ -7,23 +7,23 @@ const createUser = async (user) => {
 };
 
 const getUser = (phoneNumber) =>
-    models.users.find({
+    models.users.findOne({
         where: { phoneNumber },
     });
 
 const getUserById = (id) =>
-    models.users.find({
+    models.users.findOne({
         where: { id },
     });
 
 const getUserByPhoneAndPin = (phoneNumber, pin) => {
-    return models.users.find({
+    return models.users.findOne({
         where: { phoneNumber, pin },
     });
 };
 
 const getUserByToken = (token) => {
-    return models.users.find({
+    return models.users.findOne({
         where: { token },
     });
 };

@@ -3,14 +3,6 @@
 
 [Original Invision prototype](https://projects.invisionapp.com/share/2QGQG18TXD4#/screens)
 
-# Bambora documentation
-
-[Test documentation](https://payform.bambora.com/docs/web_payments/?page=testing)
-
-[Web payments](https://payform.bambora.com/docs/web_payments/)
-
-[Support](payform@bambora.com)
-
 
 # Grynos
 

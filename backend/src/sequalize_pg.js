@@ -13,10 +13,14 @@ if (process.env.DATABASE_URL) {
 } else {
     connectionString = `postgres://postgres:password@localhost:5432/postgres`;
 }
-const Op = Sequelize.Op;
 const sequelize = new Sequelize(connectionString, {
-    operatorsAliases: Op,
     logging: false,
+    pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    }
 });
 
 module.exports = sequelize;

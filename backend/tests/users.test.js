@@ -1,14 +1,14 @@
-const randtoken = require('rand-token');
+const crypto = require('crypto');
 const db = require('../src/db');
 const Sequelize = require('sequelize');
 const utils = require('../src/utils');
 const sequelize = require('../src/sequalize_pg');
 
-describe('Users API testing.', async () => {
+describe('Users API testing.', () => {
     beforeAll(async () => {
         return await sequelize.sync();
     });
-    let token = randtoken.generate(16);
+    let token = crypto.randomBytes(16).toString('hex');
     let user = {
         username: 'test user',
         phoneNumber: '+358123412345',
@@ -77,7 +77,7 @@ describe('Users API testing.', async () => {
     });
 
     test('check saldo update is working properly', async () => {
-        const number = '+358' + randtoken.generate(9, '0123456789');
+        const number = '+358' + crypto.randomInt(100000000, 1000000000).toString();
         user.phoneNumber = number;
         await db.users.createUser(user);
         let dbuser = await db.users.getUserByToken(token);

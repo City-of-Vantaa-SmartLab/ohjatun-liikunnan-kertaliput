@@ -38,11 +38,12 @@ services:
       PAYMENT_CODE:
       POOL_WATER_PRICE_AFTER_4: 3.0
       POOL_WATER_PRICE_BEFORE_4: 2.0
-      POPULATE_SEED_DATA: 0
+      USE_MOCK_DATA: 0
       PORT: 80
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
+      DEFAULT_SALDO:
 
   postgres-dev-db:
     image: postgres:16

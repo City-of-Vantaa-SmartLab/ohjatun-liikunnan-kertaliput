@@ -1,6 +1,6 @@
 {
     "name": "backend",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "",
     "main": "src/server.js",
     "scripts": {
@@ -17,25 +17,19 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "axios": "^0.27.2",
-        "body-parser": "^1.18.2",
-        "cookie-parser": "^1.4.6",
-        "crypto": "^1.0.1",
-        "date-fns": "^1.29.0",
-        "date-fns-timezone": "^0.1.4",
-        "dotenv": "^5.0.1",
-        "express": "^4.16.3",
-        "interpolate": "^0.1.0",
-        "json2csv": "^4.5.4",
-        "mysql2": "^1.7.0",
-        "pg": "^7.4.1",
-        "rand-token": "^0.4.0",
-        "sequelize": "^4.44.4",
-        "sequelize-cli": "^6.4.1"
+        "@json2csv/plainjs": "^7.0.6",
+        "axios": "^1.13.2",
+        "cookie-parser": "^1.4.7",
+        "date-fns": "^4.1.0",
+        "date-fns-tz": "^3.2.0",
+        "dotenv": "^17.2.3",
+        "express": "^5.2.1",
+        "pg": "^8.16.3",
+        "sequelize": "^6.37.7"
     },
     "devDependencies": {
-        "jest": "^28.1.0",
-        "nodemon": "^2.0.16"
+        "jest": "^30.2.0",
+        "nodemon": "^3.1.11"
     },
     "jest": {
         "testEnvironment": "node",

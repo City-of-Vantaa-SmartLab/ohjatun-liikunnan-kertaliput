@@ -4,13 +4,14 @@ const db = require('../db');
 const sequalize = require('../sequalize_pg');
 
 const removeLastSlash = (url) => {
+    if (!url) return '';
     return (url[url.length - 1] === '/') ? url.substring(0, url.length - 1) : url
 }
 
 // Default values are Paytrail test credentials.
 const MERCHANT_ID = process.env.MERCHANT_ID || '375917';
 const MERCHANT_KEY = process.env.MERCHANT_KEY || 'SAIPPUAKAUPPIAS';
-const PAYMENT_RETURN_URL = removeLastSlash(process.env.APP_BASE_URL) + '/api/payments/payment-return';
+const PAYMENT_RETURN_URL = removeLastSlash(process.env.APP_BASE_URL || '') + '/api/payments/payment-return';
 const PAYMENT_POST_URL = process.env.PAYMENT_POST_URL || 'https://services.paytrail.com/payments';
 const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE || 14;
 const PAYMENT_CODE = process.env.PAYMENT_CODE;

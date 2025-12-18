@@ -1,4 +1,4 @@
-const datefns = require('date-fns');
+const { setHours, addDays } = require('date-fns');
 const POOL_ID = process.env.POOL_ID || 488;
 const GYM_ID = process.env.GYM_ID || 82;
 const updateCourses = [
@@ -31,8 +31,8 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 1,
-                start: +datefns.setHours(new Date(), 15),
-                end: +datefns.setHours(new Date(), 17),
+                start: +setHours(new Date(), 15),
+                end: +setHours(new Date(), 17),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -40,8 +40,8 @@ const updateCourses = [
             },
             {
                 id: 2,
-                start: +datefns.setHours(new Date(), 15),
-                end: +datefns.setHours(new Date(), 17),
+                start: +setHours(new Date(), 15),
+                end: +setHours(new Date(), 17),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -78,11 +78,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554746,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 1),
+                start: +setHours(
+                    addDays(new Date(), 1),
                     17
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 1), 20),
+                end: +setHours(addDays(new Date(), 1), 20),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -119,11 +119,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554749,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 2),
+                start: +setHours(
+                    addDays(new Date(), 2),
                     14
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 2), 16),
+                end: +setHours(addDays(new Date(), 2), 16),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -160,11 +160,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554752,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 3),
+                start: +setHours(
+                    addDays(new Date(), 3),
                     16
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 3), 18),
+                end: +setHours(addDays(new Date(), 3), 18),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -201,11 +201,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554755,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 4),
+                start: +setHours(
+                    addDays(new Date(), 4),
                     12
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 4), 14),
+                end: +setHours(addDays(new Date(), 4), 14),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -242,11 +242,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554758,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 5),
+                start: +setHours(
+                    addDays(new Date(), 5),
                     17
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 5), 19),
+                end: +setHours(addDays(new Date(), 5), 19),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -283,11 +283,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554764,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 6),
+                start: +setHours(
+                    addDays(new Date(), 6),
                     18
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 6), 20),
+                end: +setHours(addDays(new Date(), 6), 20),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: '',
@@ -324,11 +324,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554767,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 7),
+                start: +setHours(
+                    addDays(new Date(), 7),
                     12
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 7), 14),
+                end: +setHours(addDays(new Date(), 7), 14),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -365,11 +365,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554770,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 1),
+                start: +setHours(
+                    addDays(new Date(), 1),
                     14
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 1), 16),
+                end: +setHours(addDays(new Date(), 1), 16),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -406,11 +406,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554773,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 2),
+                start: +setHours(
+                    addDays(new Date(), 2),
                     10
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 2), 12),
+                end: +setHours(addDays(new Date(), 2), 12),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -447,8 +447,8 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554776,
-                start: +datefns.setHours(datefns.addDays(new Date(), 3), 9),
-                end: +datefns.setHours(datefns.addDays(new Date(), 3), 11),
+                start: +setHours(addDays(new Date(), 3), 9),
+                end: +setHours(addDays(new Date(), 3), 11),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -485,11 +485,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554761,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 4),
+                start: +setHours(
+                    addDays(new Date(), 4),
                     11
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 4), 13),
+                end: +setHours(addDays(new Date(), 4), 13),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: '',
@@ -526,11 +526,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554779,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 5),
+                start: +setHours(
+                    addDays(new Date(), 5),
                     15
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 5), 17),
+                end: +setHours(addDays(new Date(), 5), 17),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -567,11 +567,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554782,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 6),
+                start: +setHours(
+                    addDays(new Date(), 6),
                     17
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 6), 19),
+                end: +setHours(addDays(new Date(), 6), 19),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -608,11 +608,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554785,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 7),
+                start: +setHours(
+                    addDays(new Date(), 7),
                     18
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 7), 20),
+                end: +setHours(addDays(new Date(), 7), 20),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -649,11 +649,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554788,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 1),
+                start: +setHours(
+                    addDays(new Date(), 1),
                     17
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 1), 19),
+                end: +setHours(addDays(new Date(), 1), 19),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -690,8 +690,8 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554791,
-                start: +datefns.setHours(datefns.addDays(new Date(), 2), 9),
-                end: +datefns.setHours(datefns.addDays(new Date(), 2), 11),
+                start: +setHours(addDays(new Date(), 2), 9),
+                end: +setHours(addDays(new Date(), 2), 11),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -728,11 +728,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554794,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 3),
+                start: +setHours(
+                    addDays(new Date(), 3),
                     10
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 3), 12),
+                end: +setHours(addDays(new Date(), 3), 12),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -769,11 +769,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554797,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 4),
+                start: +setHours(
+                    addDays(new Date(), 4),
                     10
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 4), 11),
+                end: +setHours(addDays(new Date(), 4), 11),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -810,11 +810,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554800,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 5),
+                start: +setHours(
+                    addDays(new Date(), 5),
                     13
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 5), 14),
+                end: +setHours(addDays(new Date(), 5), 14),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -851,11 +851,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554803,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 6),
+                start: +setHours(
+                    addDays(new Date(), 6),
                     17
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 6), 19),
+                end: +setHours(addDays(new Date(), 6), 19),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -892,11 +892,11 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554806,
-                start: +datefns.setHours(
-                    datefns.addDays(new Date(), 7),
+                start: +setHours(
+                    addDays(new Date(), 7),
                     17
                 ),
-                end: +datefns.setHours(datefns.addDays(new Date(), 7), 19),
+                end: +setHours(addDays(new Date(), 7), 19),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -933,8 +933,8 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554809,
-                start: +datefns.setHours(new Date(), 4),
-                end: +datefns.setHours(new Date(), 6),
+                start: +setHours(new Date(), 4),
+                end: +setHours(new Date(), 6),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,
@@ -971,8 +971,8 @@ const updateCourses = [
         teachingSession: [
             {
                 id: 2554812,
-                start: +datefns.setHours(new Date(), 17),
-                end: +datefns.setHours(new Date(), 19),
+                start: +setHours(new Date(), 17),
+                end: +setHours(new Date(), 19),
                 teachingplace: 'Tikkurila, Vantaan opistotalo, 170 Luokka',
                 address: null,
                 description: null,

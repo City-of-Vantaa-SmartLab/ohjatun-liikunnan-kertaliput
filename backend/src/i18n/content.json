@@ -1,8 +1,13 @@
 {
     "finnish": {
+        "dateFormats": {
+            "display": "dd.MM.yyyy HH:mm",
+            "courseDate": "MM-dd-yyyy",
+            "isoDate": "yyyy-MM-dd",
+            "isoTimestamp": "yyyy-MM-dd HH:mm:ss.SSSxxx"
+        },
         "reservations": {
             "confirmationMessage": "Olet varannut onnistuneesti paikan tunnille",
-            "dateFormat": "DD.MM.YYYY HH:mm",
             "errorMessages": {
                 "eventExists": "You have already made a reservation for the same event!. Try for another event."
             },
