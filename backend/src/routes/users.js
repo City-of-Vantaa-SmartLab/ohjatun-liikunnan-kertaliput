@@ -86,7 +86,7 @@ const createUser = async (req, res) => {
         const createdUser = await db.users.createUser(user);
         const message = i18n.users.register.confirmationSms
             .replace('{pin}', pin);
-        if (typeof process.env.TELIA_USERNAME === 'undefined') {
+        if (!process.env.TELIA_USERNAME) {
             console.log(`New user created with phone number ${createdUser.phoneNumber} and PIN ${pin}`);
              return res
                 .status(201)
@@ -176,7 +176,7 @@ const resetPin = async (req, res) => {
                 await db.users.updateUser(user, phoneNumber);
                 const message = i18n.users.resetPin.confirmationSms
                     .replace('{pin}', pin);
-                if (typeof process.env.TELIA_USERNAME === 'undefined') {
+                if (!process.env.TELIA_USERNAME) {
                     console.log(`PIN reset for user with phone number ${user.phoneNumber}. New PIN is ${pin}`);
                     return  res
                         .status(201)

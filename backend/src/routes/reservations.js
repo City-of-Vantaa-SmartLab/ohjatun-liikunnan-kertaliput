@@ -108,7 +108,7 @@ const createReservation = async (req, res) => {
                     course.name
                 }.\n${startDate}\n${event.dataValues.teachingplace}`;
                 
-                if (typeof process.env.TELIA_USERNAME === 'undefined') {
+                if (!process.env.TELIA_USERNAME) {
                     console.log(`Reservation created for user ${dbUser.username} for event ID ${reservationObj.eventId}.`);
                     return res.status(201).json(reservationObj);
                 }
