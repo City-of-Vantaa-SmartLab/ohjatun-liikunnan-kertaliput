@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import styled from '@emotion/styled';
 import Modal, { Title, Content as ModalContent } from '../../components/modal';
-import { connect } from 'utils';
-import { withRouter } from 'react-router-dom';
+import { connect, withRouter } from 'utils';
 
 const Content = styled(ModalContent)`
     width: 100%;

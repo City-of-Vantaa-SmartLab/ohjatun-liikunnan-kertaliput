@@ -66,3 +66,5 @@ export const validateUsername = (username) => {
 export const composeFunction = (...funcList) => (args) => {
     funcList.forEach((func) => func(args));
 };
+
+export { withRouter } from './withRouter';
