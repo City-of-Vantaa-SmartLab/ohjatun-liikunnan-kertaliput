@@ -1,4 +1,4 @@
-import dateFns from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 export const getErrorDetail = (course, errorMessages) => {
     if (!course || !course.reasons || course.reasons.length === 0) return;
@@ -24,12 +24,9 @@ export const getErrorDetail = (course, errorMessages) => {
             longMessage: openTime.longMessage
                 .replace(
                     '{date}',
-                    dateFns.format(
-                        dateFns.subDays(course.startDate, 3),
-                        'DD.MM'
-                    )
+                    format(subDays(course.startDate, 3), 'DD.MM')
                 )
-                .replace('{time}', dateFns.format(course.startDate, 'HH:mm')),
+                .replace('{time}', format(course.startDate, 'HH:mm')),
             shortMessage: openTime.shortMessage,
             colorCode: 'errorReservationTime',
             type,
