@@ -1,4 +1,4 @@
-import dateFns from 'date-fns';
+import { addDays } from 'date-fns';
 import { isClosedYet, isOpenYet } from './courses.js';
 
 test('function to calculate close status is correct', () => {
@@ -9,7 +9,7 @@ test('function to calculate close status is correct', () => {
 
     let now = Date.now();
     let thens = [
-        dateFns.addDays(now, 2),
+        addDays(now, 2),
         dateFns.subDays(now, 1),
         dateFns.addHours(now, 1),
         dateFns.subHours(now, 4),
@@ -30,10 +30,10 @@ test('function to calculate open status is correct', () => {
 
     let now = new Date();
     let thens = [
-        dateFns.addDays(now, 2),
+        addDays(now, 2),
         dateFns.subDays(now, 1),
         dateFns.addHours(now, 2),
-        dateFns.addDays(now, 14),
+        addDays(now, 14),
     ];
 
     expect(testFunc(thens[0])).toBe(true);

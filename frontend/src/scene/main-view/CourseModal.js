@@ -8,7 +8,7 @@ import ClockLogo from '../../common/ClockLogo';
 import TeacherLogo from '../../common/TeacherLogo';
 import EuroLogo from '../../common/EuroLogo';
 import Button from '../../components/button';
-import dateFns from 'date-fns';
+import { format } from 'date-fns';
 import posed from 'react-pose';
 import { getErrorDetail } from './CourseUtil';
 import { Link } from 'react-router-dom';
@@ -191,14 +191,14 @@ const MainModal = ({
                         <li>
                             <DateLogo />
 
-                            {dateFns.format(selectedDate, 'dddd DD.MM.YYYY', {
+                            {format(selectedDate, 'dddd DD.MM.YYYY', {
                                 locale: getLocale(),
                             })}
                         </li>
                         <li>
                             <ClockLogo />
-                            {dateFns.format(course.startDate, 'HH:mm')} -
-                            {dateFns.format(course.endDate, 'HH:mm')}
+                            {format(course.startDate, 'HH:mm')} -
+                            {format(course.endDate, 'HH:mm')}
                         </li>
                         <li>
                             <TeacherLogo />
@@ -279,14 +279,14 @@ const ConfirmationModal = ({ course, selectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <DateLogo />
-                            {dateFns.format(selectedDate, 'dd DD.MM.YYYY', {
+                            {format(selectedDate, 'dd DD.MM.YYYY', {
                                 locale: getLocale(),
                             })}
                         </li>
                         <li>
                             <ClockLogo />
-                            {dateFns.format(course.startDate, 'HH:mm')} -
-                            {dateFns.format(course.endDate, 'HH:mm')}
+                            {format(course.startDate, 'HH:mm')} -
+                            {format(course.endDate, 'HH:mm')}
                         </li>
                         <li>
                             <TeacherLogo />

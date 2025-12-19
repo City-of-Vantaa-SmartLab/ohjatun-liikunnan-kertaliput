@@ -1,6 +1,6 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 import mockCourse from './course-mock.json';
-import dateFns from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { fetchCourses, reserveTicket } from '../apis';
 
 export const isOpenYet = (courseItem) => {
@@ -139,7 +139,7 @@ class courseStore {
     }
 
     async fetchCourses(startDate = Date.now()) {
-        const endDate = dateFns.addDays(startDate, 14).getTime();
+        const endDate = addDays(startDate, 14).getTime();
         this.isFetchingCourses = true;
 
         try {
@@ -160,7 +160,7 @@ class courseStore {
     getCourses() {
         if (this.isFetchingCouses) return [];
         if (this.filters.date) {
-            const key = dateFns.format(this.filters.date, 'MM-DD-YYYY');
+            const key = format(this.filters.date, 'MM-DD-YYYY');
             const filtered = this.courseList[key];
             return filtered || [];
         }

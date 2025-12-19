@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import dateFns from 'date-fns';
+import { addDays, format, isSameDay, isBefore } from 'date-fns';
 import { connect, getLocale } from 'utils';
 
 const WeekTable = styled('div')`
@@ -74,7 +74,7 @@ const dates = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
 
 class WeeklyCalendar extends React.Component {
     state = {
-        viewableDateRange: dates.map((i) => dateFns.addDays(new Date(), i)),
+        viewableDateRange: dates.map((i) => addDays(new Date(), i)),
     };
     setDate = (date) => (e) => {
         this.props.courseStore.setFilters({
@@ -90,22 +90,22 @@ class WeeklyCalendar extends React.Component {
                 <WeekTable>
                     {this.state.viewableDateRange.map((date, index) => (
                         <DateColumn
-                            key={dateFns.format(date, 'x')}
-                            selected={dateFns.isSameDay(date, selectedDate)}
-                            past={dateFns.isBefore(date, today)}
+                            key={format(date, 'x')}
+                            selected={isSameDay(date, selectedDate)}
+                            past={isBefore(date, today)}
                             onClick={this.setDate(date)}
                         >
                             <span>
-                                {dateFns.format(date, 'dd', {
+                                {format(date, 'dd', {
                                     locale,
                                 })}
                             </span>
-                            <span>{dateFns.format(date, 'DD')}</span>
+                            <span>{format(date, 'DD')}</span>
                         </DateColumn>
                     ))}
                 </WeekTable>
                 <DateFlag>
-                    {dateFns.format(selectedDate, 'DD. MMMM YYYY', {
+                    {format(selectedDate, 'DD. MMMM YYYY', {
                         locale,
                     })}
                 </DateFlag>
