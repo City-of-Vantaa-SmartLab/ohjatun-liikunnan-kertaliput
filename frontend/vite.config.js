@@ -3,21 +3,33 @@ import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  base: '/app/',
-  build: {
-    outDir: 'build',
-  },
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://backend',
-        changeOrigin: true,
-      },
+    plugins: [react()],
+    base: '/app/',
+    build: {
+        outDir: 'build',
     },
-  },
-  preview: {
-    port: 3000,
-  },
+    esbuild: {
+        loader: 'jsx',
+        include: /src\/.*\.js$/,
+        exclude: [],
+    },
+    optimizeDeps: {
+        esbuildOptions: {
+            loader: {
+                '.js': 'jsx',
+            },
+        },
+    },
+    server: {
+        port: 3000,
+        proxy: {
+            '/api': {
+                target: 'http://backend',
+                changeOrigin: true,
+            },
+        },
+    },
+    preview: {
+        port: 3000,
+    },
 });
