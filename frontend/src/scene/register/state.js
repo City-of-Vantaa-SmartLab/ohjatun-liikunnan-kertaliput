@@ -1,4 +1,4 @@
-import { observable, decorate, computed, action } from 'mobx';
+import { observable, computed, action, makeObservable } from 'mobx';
 import {
     validateUsername,
     validatePhoneNumber,
@@ -20,6 +20,23 @@ class RegisterFormState {
 
     constructor(userStore) {
         this.userStore = userStore;
+        makeObservable(this, {
+            username: observable,
+            phoneNumber: observable,
+            submitError: observable,
+            submitting: observable,
+            agreedToTermsOfService: observable,
+            termsOfServiceShown: observable,
+            phoneNumberAlreadyExists: observable,
+            submitSuccess: observable,
+            formIsValid: computed,
+            setPhoneNumber: action.bound,
+            setUsername: action.bound,
+            submitData: action.bound,
+            checkAgreeToTermAndService: action.bound,
+            showTermsOfService: action.bound,
+            hideTermsOfService: action.bound,
+        });
     }
 
     get formIsValid() {
@@ -68,20 +85,4 @@ class RegisterFormState {
     };
 }
 
-export default decorate(RegisterFormState, {
-    username: observable,
-    phoneNumber: observable,
-    submitError: observable,
-    submitting: observable,
-    agreedToTermsOfService: observable,
-    termsOfServiceShown: observable,
-    phoneNumberAlreadyExists: observable,
-    submitSuccess: observable,
-    formIsValid: computed,
-    setPhoneNumber: action.bound,
-    setUsername: action.bound,
-    submitData: action.bound,
-    checkAgreeToTermAndService: action.bound,
-    showTermsOfService: action.bound,
-    hideTermsOfService: action.bound,
-});
+export default RegisterFormState;

@@ -1,4 +1,4 @@
-import { observable, decorate, computed, action } from 'mobx';
+import { observable, computed, action, makeObservable } from 'mobx';
 import { validatePhoneNumber, processPhoneNumber } from 'utils';
 import { resetPin } from '../../apis';
 
@@ -10,6 +10,15 @@ class ResetPinFormState {
 
     constructor(userStore) {
         this.userStore = userStore;
+        makeObservable(this, {
+            phoneNumber: observable,
+            submitError: observable,
+            submitting: observable,
+            submitSuccess: observable,
+            formIsValid: computed,
+            setPhoneNumber: action.bound,
+            resetPin: action.bound,
+        });
     }
 
     get formIsValid() {
@@ -37,12 +46,4 @@ class ResetPinFormState {
     };
 }
 
-export default decorate(ResetPinFormState, {
-    phoneNumber: observable,
-    submitError: observable,
-    submitting: observable,
-    submitSuccess: observable,
-    formIsValid: computed,
-    setPhoneNumber: action.bound,
-    resetPin: action.bound,
-});
+export default ResetPinFormState;
