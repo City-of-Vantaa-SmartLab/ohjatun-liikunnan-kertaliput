@@ -59,13 +59,11 @@ class LoginForm extends React.Component {
         }
     };
     onPinCodeInputsChange = (key) => (e) => {
-        const setResult = this.props.userStore.setInputCode(
-            key,
-            e.target.value
-        );
+        // Get only the last digit entered
+        const value = e.target.value.slice(-1);
+        const setResult = this.props.userStore.setInputCode(key, value);
         if (setResult && key !== 3) {
-            if (key === 3) this[`input0`].focus();
-            else this[`input${key + 1}`].focus();
+            this[`input${key + 1}`].focus();
         }
     };
     render() {
@@ -100,7 +98,10 @@ class LoginForm extends React.Component {
                                     (this['input' + key] = instance)
                                 }
                                 key={key}
-                                type="number"
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]"
+                                maxLength="1"
                                 onKeyUp={this.onPinCodeInputsKeyUp(key)}
                                 onChange={this.onPinCodeInputsChange(key)}
                                 value={this.props.userStore.pinCode[key]}

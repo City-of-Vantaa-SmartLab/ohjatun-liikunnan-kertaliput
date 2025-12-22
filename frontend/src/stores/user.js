@@ -44,6 +44,7 @@ class userStore {
             isAuthenticated: computed,
             authenticationFailed: observable,
             phoneNumberIncorrect: computed,
+            freezePinCode: computed,
             token: observable,
             phoneNumber: observable,
             balance: observable,
@@ -59,7 +60,73 @@ class userStore {
             resetCredentials: action,
             logout: action.bound,
         });
+
+        // Setup autoruns AFTER makeObservable
+        this.setupReactions();
         this.checkAuthenticationStatusOnStart();
+    }
+
+    setupReactions() {
+        // reactions that do SIDE EFFECTS
+        this.authenticateReaction = autorun(async () => {
+            if (this.freezePinCode) {
+                runInAction(() => {
+                    this.isAuthenticating = true;
+                });
+                try {
+                    const userData = await login({
+                        pin: toStringFromObject(this.pinCode),
+                        phoneNumber: processPhoneNumber(this.phoneNumber),
+                    });
+                    this.setCredentials(userData);
+                } catch (err) {
+                    runInAction(() => {
+                        this.authenticationFailed = true;
+                    });
+                    console.error(err);
+                }
+            }
+        });
+
+        this.fetchUserReservedCoursesOnAuth = autorun(async () => {
+            if (this.isAuthenticated) {
+                try {
+                    const reservedCourses = await fetchReservedCourses();
+                    runInAction(() => {
+                        this.reservedCourses = reservedCourses;
+                    });
+                } catch (error) {
+                    console.error(
+                        'Cannot fetch reserved courses for this user',
+                        error
+                    );
+                }
+            }
+        });
+
+        this.authenticationFailedReaction = autorun(() => {
+            if (this.authenticationFailed) {
+                runInAction(() => {
+                    this.isAuthenticating = false;
+                });
+                // this effect is delay after 1 seconds
+                window.setTimeout(() => {
+                    runInAction(() => {
+                        this.authenticationFailed = false;
+                        this.pinCode = DEFAULT_PIN;
+                    });
+                }, 1000);
+            }
+        });
+
+        this.authenticationSuccessfulReaction = autorun(() => {
+            if (!this.isAuthenticated) return;
+
+            runInAction(() => {
+                this.isAuthenticating = false;
+                this.authenticationFailed = false;
+            });
+        });
     }
 
     checkAuthenticationStatusOnStart = async () => {
@@ -88,16 +155,12 @@ class userStore {
     }
 
     setInputCode = (position, value) => {
-        // sets inputCode
-        // pin code array only have 4 digits
-        if (
-            this.freezePinCode ||
-            position < 0 ||
-            position > 3 ||
-            value > 10 ||
-            isNaN(value)
-        )
-            return false;
+        // Validate position and prevent changes when PIN is complete
+        if (this.freezePinCode || position < 0 || position > 3) return false;
+
+        // Allow empty string (for backspace) or single digit 0-9
+        if (value !== '' && !/^[0-9]$/.test(value)) return false;
+
         this.pinCode[position] = value;
         return true;
     };
@@ -148,65 +211,6 @@ class userStore {
             console.error('Cannot logout', error);
         }
     }
-    // reactions that do SIDE EFFECTS
-    authenticateReaction = autorun(async () => {
-        if (this.freezePinCode) {
-            runInAction(() => {
-                this.isAuthenticating = true;
-            });
-            try {
-                const userData = await login({
-                    pin: toStringFromObject(this.pinCode),
-                    phoneNumber: processPhoneNumber(this.phoneNumber),
-                });
-                this.setCredentials(userData);
-            } catch (err) {
-                runInAction(() => {
-                    this.authenticationFailed = true;
-                });
-                console.error(err);
-            }
-        }
-    });
-    fetchUserReservedCoursesOnAuth = autorun(async () => {
-        if (this.isAuthenticated) {
-            try {
-                const reservedCourses = await fetchReservedCourses();
-                runInAction(() => {
-                    this.reservedCourses = reservedCourses;
-                });
-            } catch (error) {
-                console.error(
-                    'Cannot fetch reserved courses for this user',
-                    error
-                );
-            }
-        }
-    });
-    authenticationFailedReaction = autorun(() => {
-        if (this.authenticationFailed) {
-            runInAction(() => {
-                this.isAuthenticating = false;
-            });
-            // this effect is delay after 1 seconds
-            window.setTimeout(() => {
-                runInAction(() => {
-                    this.authenticationFailed = false;
-                    this.pinCodeIsSet = false;
-                    this.pinCode = DEFAULT_PIN;
-                });
-            }, 1000);
-        }
-    });
-    authenticationSuccessfulReaction = autorun(() => {
-        if (!this.isAuthenticated) return;
-        console.log('Logged in successful');
-
-        runInAction(() => {
-            this.isAuthenticating = false;
-            this.authenticationFailed = false;
-        });
-    });
 }
 
 export default userStore;
