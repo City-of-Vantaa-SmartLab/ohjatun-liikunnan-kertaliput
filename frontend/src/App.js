@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import SignIn from './scene/sign-in';
 import MainView from './scene/main-view';
 import DevTool from './scene/dev-tool';
@@ -21,14 +21,14 @@ class App extends React.Component {
         return (
             <AppContainer>
                 <AppLoader />
-                <Switch>
-                    <Route exact path="/main" component={MainView} />
-                    <Route path="/payment-complete" component={MainView} />
-                    <Route path="/" component={SignIn} />
-                    <Route exact path="/login" component={SignIn} />
-                    <Route exact path="/register" component={SignIn} />
-                    <Route exact path="/reset-pin" component={SignIn} />
-                </Switch>
+                <Routes>
+                    <Route path="/main" element={<MainView />} />
+                    <Route path="/payment-complete" element={<MainView />} />
+                    <Route path="/" element={<SignIn />} />
+                    <Route path="/login" element={<SignIn />} />
+                    <Route path="/register" element={<SignIn />} />
+                    <Route path="/reset-pin" element={<SignIn />} />
+                </Routes>
                 <DevTool />
                 <CookieBanner />
             </AppContainer>
