@@ -1,4 +1,11 @@
-import { makeObservable, observable, action, autorun, computed } from 'mobx';
+import {
+    makeObservable,
+    observable,
+    action,
+    autorun,
+    computed,
+    runInAction,
+} from 'mobx';
 import {
     toStringFromObject,
     processPhoneNumber,
@@ -47,6 +54,8 @@ class userStore {
             setInputCode: action,
             setCredentials: action,
             setBalance: action,
+            addBalance: action,
+            requestAddBalance: action,
             resetCredentials: action,
             logout: action.bound,
         });
@@ -142,7 +151,9 @@ class userStore {
     // reactions that do SIDE EFFECTS
     authenticateReaction = autorun(async () => {
         if (this.freezePinCode) {
-            this.isAuthenticating = true;
+            runInAction(() => {
+                this.isAuthenticating = true;
+            });
             try {
                 const userData = await login({
                     pin: toStringFromObject(this.pinCode),
@@ -150,7 +161,9 @@ class userStore {
                 });
                 this.setCredentials(userData);
             } catch (err) {
-                this.authenticationFailed = true;
+                runInAction(() => {
+                    this.authenticationFailed = true;
+                });
                 console.error(err);
             }
         }
@@ -159,7 +172,9 @@ class userStore {
         if (this.isAuthenticated) {
             try {
                 const reservedCourses = await fetchReservedCourses();
-                this.reservedCourses = reservedCourses;
+                runInAction(() => {
+                    this.reservedCourses = reservedCourses;
+                });
             } catch (error) {
                 console.error(
                     'Cannot fetch reserved courses for this user',
@@ -170,12 +185,16 @@ class userStore {
     });
     authenticationFailedReaction = autorun(() => {
         if (this.authenticationFailed) {
-            this.isAuthenticating = false;
+            runInAction(() => {
+                this.isAuthenticating = false;
+            });
             // this effect is delay after 1 seconds
             window.setTimeout(() => {
-                this.authenticationFailed = false;
-                this.pinCodeIsSet = false;
-                this.pinCode = DEFAULT_PIN;
+                runInAction(() => {
+                    this.authenticationFailed = false;
+                    this.pinCodeIsSet = false;
+                    this.pinCode = DEFAULT_PIN;
+                });
             }, 1000);
         }
     });
@@ -183,8 +202,10 @@ class userStore {
         if (!this.isAuthenticated) return;
         console.log('Logged in successful');
 
-        this.isAuthenticating = false;
-        this.authenticationFailed = false;
+        runInAction(() => {
+            this.isAuthenticating = false;
+            this.authenticationFailed = false;
+        });
     });
 }
 
