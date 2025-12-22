@@ -1,26 +1,11 @@
 import React, { Component } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
-import posed, { PoseGroup } from 'react-pose';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../components/button';
 import { connect } from 'utils';
 
-const ItemAnimation = posed.div({
-    enter: {
-        y: '0%',
-        opacity: 1,
-    },
-    exit: {
-        y: '200%',
-        opacity: 0,
-    },
-    preEnter: {
-        opacity: 0,
-        y: '200%',
-    },
-});
-
-const BannerWrapper = styled(ItemAnimation)`
+const BannerWrapper = styled(motion.div)`
     display: flex;
     position: fixed;
     bottom: 0;
@@ -65,9 +50,15 @@ class CookieBanner extends Component {
     render() {
         const i18nContent = this.props.i18nStore.content;
         return createPortal(
-            <PoseGroup animateOnMount preEnterPose="preEnter">
+            <AnimatePresence>
                 {this.state.show && (
-                    <BannerWrapper key="1">
+                    <BannerWrapper
+                        key="cookie-banner"
+                        initial={{ y: '200%', opacity: 0 }}
+                        animate={{ y: '0%', opacity: 1 }}
+                        exit={{ y: '200%', opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <div>
                             <span>{i18nContent.cookieBanner.message}</span>
                         </div>
@@ -76,7 +67,7 @@ class CookieBanner extends Component {
                         </Button>
                     </BannerWrapper>
                 )}
-            </PoseGroup>,
+            </AnimatePresence>,
             document.querySelector('body')
         );
     }
