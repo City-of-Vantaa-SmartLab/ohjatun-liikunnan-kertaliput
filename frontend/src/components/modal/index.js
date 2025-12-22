@@ -4,7 +4,9 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '../../common/CloseIcon';
 
-const Wrapper = styled(motion.div)`
+const Wrapper = styled(motion.div, {
+    shouldForwardProp: (prop) => prop !== 'block',
+})`
     position: absolute;
     width: 100%;
     min-width: 100%;
