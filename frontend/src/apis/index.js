@@ -26,10 +26,22 @@ const myFetch = async (url, config = {}) => {
         try {
             return await response.json();
         } catch (error) {
-            console.log('Not a json :)');
+            // Empty response body (e.g., logout endpoints)
+            return;
         }
     } else {
-        throw new FetchException(response.status, await response.json());
+        let errorData;
+        try {
+            errorData = await response.json();
+        } catch (error) {
+            // Failed to parse error response
+            errorData = {
+                message: `HTTP ${response.status}: ${response.statusText}`,
+            };
+        }
+        const errorMessage =
+            errorData.message || errorData.error || 'Request failed';
+        throw new FetchException(response.status, errorMessage);
     }
 };
 
