@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import { connect } from 'utils';
-import { autorun } from 'mobx';
+import { reaction } from 'mobx';
 import { Link } from 'react-router-dom';
 
 const PinCodeInput = styled(Input)`
@@ -23,13 +23,27 @@ class LoginForm extends React.Component {
     };
 
     componentDidMount() {
-        autorun(() => {
-            if (this.props.userStore.authenticationFailed && this.input0) {
-                this.setState({ hasEverFailed: true }, () =>
-                    this.input0.focus()
-                );
+        // Extract store reference to avoid accessing props in reactive context
+        const { userStore } = this.props;
+
+        // Use reaction to track observable changes
+        this.disposeReaction = reaction(
+            () => userStore.authenticationFailed,
+            (authenticationFailed) => {
+                if (authenticationFailed && this.input0) {
+                    this.setState({ hasEverFailed: true }, () =>
+                        this.input0.focus()
+                    );
+                }
             }
-        });
+        );
+    }
+
+    componentWillUnmount() {
+        // Clean up the reaction when component unmounts
+        if (this.disposeReaction) {
+            this.disposeReaction();
+        }
     }
     onTelephoneInputChange = (e) => {
         this.props.userStore.setPhoneNumber(e.target.value);
