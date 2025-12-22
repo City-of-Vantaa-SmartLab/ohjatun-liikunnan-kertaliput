@@ -96,7 +96,7 @@ class LoginForm extends React.Component {
                     <div>
                         {pinArr.map((key) => (
                             <PinCodeInput
-                                innerRef={(instance) =>
+                                ref={(instance) =>
                                     (this['input' + key] = instance)
                                 }
                                 key={key}
