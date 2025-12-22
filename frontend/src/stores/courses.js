@@ -68,6 +68,9 @@ class courseStore {
             filters: observable,
             useMockCourse: observable,
             checkAvailability: action,
+            fetchCourses: action,
+            setFilters: action,
+            selectCourse: action,
             reserveCourse: action,
         });
         const checkEvery5Sec = () => {
