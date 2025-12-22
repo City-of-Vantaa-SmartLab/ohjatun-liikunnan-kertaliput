@@ -1,4 +1,10 @@
-import { observable, computed, action, makeObservable } from 'mobx';
+import {
+    observable,
+    computed,
+    action,
+    makeObservable,
+    runInAction,
+} from 'mobx';
 import {
     validateUsername,
     validatePhoneNumber,
@@ -67,20 +73,24 @@ class RegisterFormState {
                 username: this.username,
                 phoneNumber: processPhoneNumber(this.phoneNumber),
             });
-            this.userStore.setCredentials({
-                phoneNumber: this.phoneNumber,
-                username: this.username,
+            runInAction(() => {
+                this.userStore.setCredentials({
+                    phoneNumber: this.phoneNumber,
+                    username: this.username,
+                });
+                this.submitSuccess = true;
+                this.submitError = false;
+                this.submitting = false;
             });
-            this.submitSuccess = true;
-            this.submitError = false;
-            this.submitting = false;
         } catch (error) {
             console.error(error);
-            this.submitError = 'validation';
-            this.submitting = false;
-            if (error.code === '409') {
-                this.submitError = 'alreadyExist';
-            }
+            runInAction(() => {
+                this.submitError = 'validation';
+                this.submitting = false;
+                if (error.code === '409') {
+                    this.submitError = 'alreadyExist';
+                }
+            });
         }
     };
 }
