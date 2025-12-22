@@ -48,7 +48,7 @@ const TimeArea = styled('div')`
         margin-bottom: 1rem;
     }
 
-    & > span:first-child {
+    & > span:first-of-type {
         font-weight: bold;
     }
 `;
@@ -243,7 +243,7 @@ class ClassCard extends React.Component {
                 {courses.length > 0 ? (
                     courses.map((el, i) => (
                         <Card
-                            key={el.id || i}
+                            key={el.eventId || `course-${i}`}
                             id={i}
                             course={el}
                             buttonLabel={buttonLabel}
