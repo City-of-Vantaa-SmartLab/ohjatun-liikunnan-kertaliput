@@ -90,7 +90,7 @@ class WeeklyCalendar extends React.Component {
                 <WeekTable>
                     {this.state.viewableDateRange.map((date, index) => (
                         <DateColumn
-                            key={format(date, 'x')}
+                            key={date.getTime()}
                             selected={isSameDay(date, selectedDate)}
                             past={isBefore(date, today)}
                             onClick={this.setDate(date)}
@@ -100,12 +100,12 @@ class WeeklyCalendar extends React.Component {
                                     locale,
                                 })}
                             </span>
-                            <span>{format(date, 'DD')}</span>
+                            <span>{format(date, 'dd')}</span>
                         </DateColumn>
                     ))}
                 </WeekTable>
                 <DateFlag>
-                    {format(selectedDate, 'DD. MMMM YYYY', {
+                    {format(selectedDate, 'dd. MMMM yyyy', {
                         locale,
                     })}
                 </DateFlag>

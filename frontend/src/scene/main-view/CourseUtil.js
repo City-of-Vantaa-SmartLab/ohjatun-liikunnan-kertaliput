@@ -24,7 +24,7 @@ export const getErrorDetail = (course, errorMessages) => {
             longMessage: openTime.longMessage
                 .replace(
                     '{date}',
-                    format(subDays(course.startDate, 3), 'DD.MM')
+                    format(subDays(course.startDate, 3), 'dd.MM')
                 )
                 .replace('{time}', format(course.startDate, 'HH:mm')),
             shortMessage: openTime.shortMessage,

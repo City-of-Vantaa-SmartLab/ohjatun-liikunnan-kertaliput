@@ -4,7 +4,7 @@ const models = require('../src/models');
 const mockData = require('./testdata');
 const coursesToUpdate = require('../src/seed/mockDataForUpdate').updateCourses;
 const updateCoursesToDb = require('../src/grynos').updateCoursesToDb;
-const datefns = require('date-fns');
+const { setHours, addDays } = require('date-fns');
 
 describe('getCourses API call', () => {
     beforeAll(async () => {
@@ -12,8 +12,8 @@ describe('getCourses API call', () => {
     });
 
     test('should load course data', async () => {
-        const startRange = datefns.setHours(new Date(), 0);
-        const endRange = datefns.setHours(datefns.addDays(new Date(), 8), 23);
+        const startRange = setHours(new Date(), 0);
+        const endRange = setHours(addDays(new Date(), 8), 23);
         let courses = await db.courses.getCourses(startRange, endRange);
         courses = courses.sort((a, b) => a.id - b.id);
         expect(courses).not.toBeNull();
