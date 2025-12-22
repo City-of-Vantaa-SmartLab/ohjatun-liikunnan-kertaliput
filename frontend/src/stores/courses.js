@@ -1,4 +1,10 @@
-import { makeObservable, observable, computed, action } from 'mobx';
+import {
+    makeObservable,
+    observable,
+    computed,
+    action,
+    runInAction,
+} from 'mobx';
 import mockCourse from './course-mock.json';
 import { addDays, format, differenceInHours } from 'date-fns';
 import { fetchCourses, reserveTicket } from '../apis';
@@ -147,17 +153,23 @@ class courseStore {
 
         try {
             const data = await fetchCourses({ startDate, endDate });
-            this.useMockCourse = false;
-            this.courseList = data;
+            runInAction(() => {
+                this.useMockCourse = false;
+                this.courseList = data;
+            });
             // as soon as the courses are available in store, we will apply check on them
             this.checkAvailability();
         } catch (error) {
             console.log(error);
-            this.courseList = mockCourse;
-            this.useMockCourse = true;
+            runInAction(() => {
+                this.courseList = mockCourse;
+                this.useMockCourse = true;
+            });
         }
 
-        this.isFetchingCourses = false;
+        runInAction(() => {
+            this.isFetchingCourses = false;
+        });
     }
 
     getCourses() {
