@@ -191,7 +191,7 @@ const MainModal = ({
                         <li>
                             <DateLogo />
 
-                            {format(selectedDate, 'dddd DD.MM.YYYY', {
+                            {format(selectedDate, 'dddd dd.MM.yyyy', {
                                 locale: getLocale(),
                             })}
                         </li>
@@ -279,7 +279,7 @@ const ConfirmationModal = ({ course, selectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <DateLogo />
-                            {format(selectedDate, 'dd DD.MM.YYYY', {
+                            {format(selectedDate, 'dd dd.MM.yyyy', {
                                 locale: getLocale(),
                             })}
                         </li>

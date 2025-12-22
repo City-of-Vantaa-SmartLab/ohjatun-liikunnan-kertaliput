@@ -1,17 +1,17 @@
 import { makeObservable, observable, computed, action } from 'mobx';
 import mockCourse from './course-mock.json';
-import { addDays, format } from 'date-fns';
+import { addDays, format, differenceInHours } from 'date-fns';
 import { fetchCourses, reserveTicket } from '../apis';
 
 export const isOpenYet = (courseItem) => {
     // within 3 days from now
-    const diff = dateFns.differenceInHours(courseItem.startDate, new Date());
+    const diff = differenceInHours(courseItem.startDate, new Date());
     return diff >= 0 && diff < 72;
 };
 
 export const isClosedYet = (courseItem) => {
     // and must not be 1 hours before starting time
-    const diff = dateFns.differenceInHours(courseItem.startDate, new Date());
+    const diff = differenceInHours(courseItem.startDate, new Date());
     return diff < 1;
 };
 
