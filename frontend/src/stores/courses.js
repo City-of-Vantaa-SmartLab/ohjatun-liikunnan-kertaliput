@@ -175,7 +175,7 @@ class courseStore {
     getCourses() {
         if (this.isFetchingCouses) return [];
         if (this.filters.date) {
-            const key = format(this.filters.date, 'MM-DD-YYYY');
+            const key = format(this.filters.date, 'MM-dd-yyyy');
             const filtered = this.courseList[key];
             return filtered || [];
         }
