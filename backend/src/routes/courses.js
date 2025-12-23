@@ -8,7 +8,12 @@ const i18n = require('../i18n').i18n();
 const getCourses = async (req, res) => {
     try {
         const timestampToDate = (timestamp) => new Date(Number(timestamp));
-        const toFormattedDate = (date) => format(date, i18n.dateFormats.isoDate);
+        const toFormattedDate = (date) => {
+            if (!date || isNaN(date.getTime())) {
+                throw new Error(`Invalid date: ${date}`);
+            }
+            return format(date, i18n.dateFormats.isoDate);
+        };
 
         // Default start and end date for the last week
         const startDate = toFormattedDate(
@@ -26,7 +31,8 @@ const getCourses = async (req, res) => {
         const response = await db.courses.reduceCoursesByDate(courses);
         res.status(200).json(response);
     } catch (err) {
-        res.status(500).json(`Failed to get courses. Error: ${err.message}`);
+        console.error('Error in getCourses:', err);
+        res.status(500).json({ error: `Failed to get courses. Error: ${err.message}` });
     }
 };
 
