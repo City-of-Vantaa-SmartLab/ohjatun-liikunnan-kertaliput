@@ -32,28 +32,7 @@ const Content = styled(ModalContent)`
 class PaymentProvidersView extends Component {
     render() {
         const i18nContent = this.props.i18nStore.content;
-        const createPaymentProvidersList = (providers) => {
-            try {
-                return providers
-                    .map(
-                        (p) =>
-                            `<form method='POST' action=${p.url}>
-                         ${p.parameters
-                             .map(
-                                 (param) =>
-                                     `<input type='hidden' name='${param.name}' value='${param.value}' />`
-                             )
-                             .join('\n')}
-                         <button class='provider-button' type='submit' aria-label='${
-                             p.name
-                         }'><img src='${p.svg}' /></button>
-                     </form>`
-                    )
-                    .join('\n');
-            } catch (e) {
-                console.error(e);
-            }
-        };
+        const { providers } = this.props;
 
         return (
             <Modal show={this.props.show} onClear={this.props.onClear}>
@@ -61,17 +40,40 @@ class PaymentProvidersView extends Component {
                     <Title>
                         {i18nContent.paymentConfirmationForm.selectProvider}
                     </Title>
-                    {/* TODO: Refactor to use JSX components instead of dangerouslySetInnerHTML for better security and maintainability.
-                        Map over providers array to create <form> elements with proper React components. */}
-                    <div
-                        dangerouslySetInnerHTML={{
-                            __html: this.props.providers
-                                ? createPaymentProvidersList(
-                                      this.props.providers
-                                  )
-                                : '',
-                        }}
-                    />
+                    <div>
+                        {providers && providers.length > 0 ? (
+                            providers.map((provider, index) => (
+                                <form
+                                    key={provider.name || index}
+                                    method="POST"
+                                    action={provider.url}
+                                >
+                                    {provider.parameters.map((param, i) => (
+                                        <input
+                                            key={i}
+                                            type="hidden"
+                                            name={param.name}
+                                            value={param.value}
+                                        />
+                                    ))}
+                                    <button
+                                        className="provider-button"
+                                        type="submit"
+                                        aria-label={provider.name}
+                                    >
+                                        <img
+                                            src={provider.svg}
+                                            alt={provider.name}
+                                        />
+                                    </button>
+                                </form>
+                            ))
+                        ) : (
+                            <p style={{ fontSize: '2rem', textAlign: 'center' }}>
+                                {i18nContent.paymentConfirmationForm.noProvidersAvailable}
+                            </p>
+                        )}
+                    </div>
                 </Content>
             </Modal>
         );
