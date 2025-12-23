@@ -56,6 +56,7 @@ class SignIn extends React.Component {
                     </Container>
                 )}
                 <SizedLogo />
+                <h4 style={{ color: 'white' }}>v2</h4>
             </StyledWrapper>
         );
     }
