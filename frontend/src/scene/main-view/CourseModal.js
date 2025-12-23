@@ -233,7 +233,7 @@ const MainModal = ({
                     ) : (
                         [
                             course.reasons[0] === 'auth' ? (
-                                <Button alternative bold>
+                                <Button key="auth-button" alternative bold>
                                     <LinkContent onClick={clear} to="/login">
                                         {content.appHeader.login}
                                     </LinkContent>
@@ -241,6 +241,7 @@ const MainModal = ({
                             ) : (
                                 course.reasons[0] === 'resource' && (
                                     <Button
+                                        key="resource-button"
                                         alternative
                                         bold
                                         onClick={onAddSaldo}

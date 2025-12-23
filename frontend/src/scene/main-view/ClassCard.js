@@ -13,7 +13,7 @@ const ScrollContainer = styled('div')`
 const CardWrapper = styled('div')`
     width: 100%;
     background-color: ${(props) =>
-        props.blur ? props.theme[props.errorColorCode] : 'white'};;
+        props.blur ? props.theme[props.errorColorCode] : 'white'};
     margin-top: 1px;
     padding: 1.5rem 0;
     color: rgba(0, 0, 0, 0.86);
@@ -23,8 +23,7 @@ const CardWrapper = styled('div')`
         props.errorColorCode &&
         `border-left: ${props.blur ? 0 : 5}px ${
             props.theme[props.errorColorCode]
-        } solid`}
-    }
+        } solid`};
     & > div {
         will-change: transform;
         transition: transform 0.5s ease;
