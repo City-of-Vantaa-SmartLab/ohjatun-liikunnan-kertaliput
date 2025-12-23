@@ -226,7 +226,7 @@ const MainModal = ({
                             alternative
                             bold
                             onClick={onConfirm}
-                            disabled={errorDetail.longMessage}
+                            disabled={!!errorDetail.longMessage}
                         >
                             Varaa
                         </Button>
