@@ -230,7 +230,7 @@ class ClassCard extends React.Component {
         // const courses = this.sortCourseByPurchasedStatusAndTime(
         //     this.props.courseStore.getCourses(Date.now())
         // );
-        const courses = this.props.courseStore.getCourses(Date.now());
+        const courses = this.props.courseStore.getCourses();
         const buttonLabel = this.props.i18nStore.content.courseCard.select;
         const errorMessages = this.props.i18nStore.content.courseCard
             .errorMessages;

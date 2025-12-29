@@ -1,27 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { format, addWeeks } = require('date-fns');
+const { format, addWeeks, startOfDay, endOfDay } = require('date-fns');
 const utils = require('../utils');
 const i18n = require('../i18n').i18n();
 
 const getCourses = async (req, res) => {
     try {
         const timestampToDate = (timestamp) => new Date(Number(timestamp));
-        const toFormattedDate = (date) => {
-            if (!date || isNaN(date.getTime())) {
-                throw new Error(`Invalid date: ${date}`);
-            }
-            return format(date, i18n.dateFormats.isoDate);
-        };
 
         // Default start and end date for the last week
-        const startDate = toFormattedDate(
+        const startDate = startOfDay(
             req.query.startDate
                 ? timestampToDate(req.query.startDate)
                 : new Date()
         );
-        const endDate = toFormattedDate(
+
+        const endDate = endOfDay(
             req.query.endDate
                 ? timestampToDate(req.query.endDate)
                 : addWeeks(new Date(), 1)
