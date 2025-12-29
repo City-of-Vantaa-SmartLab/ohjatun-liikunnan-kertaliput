@@ -1,29 +1,11 @@
-volumes:
-  frontend_build:
-
 services:
-  frontend:
-    build: ./frontend
+  liikuntaliput:
     ports:
-      - 3000:3000
-    volumes:
-      - ./frontend:/frontend
-      - /frontend/node_modules
-      - frontend_build:/frontend/build
-    entrypoint: ["/bin/sh", "-c"]
-    command: ["npm ci && npm run build"]
-
-  backend:
-    depends_on:
-      frontend:
-        condition: service_started
-    build: ./backend
-    volumes:
-      - ./backend:/backend
-      - /backend/node_modules
-      - frontend_build:/backend/public:ro
-    entrypoint: ["/bin/sh", "-c"]
-    command: ["npm ci && npm run start"]
+      - 5000:5000
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: liikuntaliput/latest
     environment:
       APP_BASE_URL:
       DB_HOST:
@@ -40,9 +22,7 @@ services:
       PAYMENT_CODE:
       POOL_WATER_PRICE_AFTER_4:
       POOL_WATER_PRICE_BEFORE_4:
-      USE_MOCK_DATA: 0
-      # Note that AWS Elastic Beanstalk omits ports mapping and expects the app to listen at the port 5000 by default.
-      PORT: 5000
+      PORT:
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
