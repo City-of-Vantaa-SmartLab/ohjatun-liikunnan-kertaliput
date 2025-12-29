@@ -10,22 +10,14 @@ services:
       - ./frontend:/frontend
       - /frontend/node_modules
       - frontend_build:/frontend/build
-    healthcheck:
-      test: ["CMD-SHELL", "[ -f /frontend/build/index.html ] || exit 1"]
-      interval: 10s
-      timeout: 3s
-      retries: 5
-      start_period: 5s
     entrypoint: ["/bin/sh", "-c"]
     command: ["npm ci && npm run build"]
 
   backend:
     depends_on:
       frontend:
-        condition: service_healthy
+        condition: service_started
     build: ./backend
-    ports:
-      - 5000:80
     volumes:
       - ./backend:/backend
       - /backend/node_modules
@@ -49,7 +41,8 @@ services:
       POOL_WATER_PRICE_AFTER_4:
       POOL_WATER_PRICE_BEFORE_4:
       USE_MOCK_DATA: 0
-      PORT: 80
+      # Note that AWS Elastic Beanstalk omits ports mapping and expects the app to listen at the port 5000 by default.
+      PORT: 5000
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
