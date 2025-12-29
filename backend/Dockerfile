@@ -1,4 +1,6 @@
-FROM node:24
+FROM node:24.11.0-alpine
 WORKDIR /backend
-ADD . /backend
-RUN npm install
+COPY package*.json ./
+RUN npm i
+COPY . .
+CMD ["npm", "run", "dev"]

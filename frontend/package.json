@@ -16,16 +16,11 @@
     "utils": "file:src/utils"
   },
   "scripts": {
-    "start": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "format": "./node_modules/.bin/prettier --write",
-    "lint": "./node_modules/.bin/eslint src",
-    "prepare": "husky"
+    "dev": "vite",
+    "build": "vite build"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.2",
-    "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "vite": "^7.2.6"
