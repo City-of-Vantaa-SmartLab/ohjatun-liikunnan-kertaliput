@@ -1,5 +1,4 @@
-import stringInterpolator from 'interpolate';
-import dateFns from 'date-fns';
+import { format, subDays } from 'date-fns';
 
 export const getErrorDetail = (course, errorMessages) => {
     if (!course || !course.reasons || course.reasons.length === 0) return;
@@ -22,23 +21,22 @@ export const getErrorDetail = (course, errorMessages) => {
         };
     if (type === 'openTime')
         return {
-            longMessage: stringInterpolator(openTime.longMessage, {
-                date: dateFns.format(
-                    dateFns.subDays(course.startDate, 3),
-                    'DD.MM'
-                ),
-                time: dateFns.format(course.startDate, 'HH:mm'),
-            }),
+            longMessage: openTime.longMessage
+                .replace(
+                    '{date}',
+                    format(subDays(course.startDate, 3), 'dd.MM')
+                )
+                .replace('{time}', format(course.startDate, 'HH:mm')),
             shortMessage: openTime.shortMessage,
             colorCode: 'errorReservationTime',
             type,
         };
     if (type === 'closingTime')
         return {
-            longMessage: stringInterpolator(closeTime.longMessage, {
-                numberOfFreeSeats:
-                    course.single_payment_count - course.reservedCount,
-            }),
+            longMessage: closeTime.longMessage.replace(
+                '{numberOfFreeSeats}',
+                course.single_payment_count - course.reservedCount
+            ),
             shortMessage: closeTime.shortMessage,
             colorCode: 'errorReservationTime',
             type,

@@ -1,34 +1,15 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Logo from '../../common/Logo';
 import LoginForm from './LoginForm';
 import AppBrand from './AppBrand';
 import RegisterForm from '../register';
 import ResetPinForm from '../reset-pin';
-import { withRouter } from 'react-router-dom';
-import posed, { PoseGroup } from 'react-pose';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { connect } from 'utils';
-import { spring } from 'popmotion';
 
-const AnimatableContainer = posed.div({
-    preEnter: {
-        x: '-150%',
-        transition: (props) =>
-            spring({ ...props, stiffness: 200, damping: 50 }),
-    },
-    enter: {
-        x: '0',
-        transition: (props) =>
-            spring({ ...props, stiffness: 200, damping: 50 }),
-    },
-    exit: {
-        x: '150%',
-        transition: (props) =>
-            spring({ ...props, stiffness: 200, damping: 50 }),
-    },
-});
-const Container = styled(AnimatableContainer)`
+import { withRouter } from '../../utils/withRouter';
+const Container = styled.div`
     margin: none;
     padding: none;
     display: inherit;
@@ -56,27 +37,26 @@ class SignIn extends React.Component {
         const location = this.props.location.pathname;
         // this view is forbidden for authenticated user
         if (this.props.userStore.isAuthenticated) {
-            return <Redirect to="/main" />;
+            return <Navigate to="/main" replace />;
         }
         return (
             <StyledWrapper>
                 <AppBrand />
-                <PoseGroup preEnterPose="preEnter">
-                    {location === '/register' ? (
-                        <Container key="register">
-                            <RegisterForm />
-                        </Container>
-                    ) : location === '/reset-pin' ? (
-                        <Container key="resetpin">
-                            <ResetPinForm />
-                        </Container>
-                    ) : (
-                        <Container key="LoginForm">
-                            <LoginForm />
-                        </Container>
-                    )}
-                </PoseGroup>
+                {location === '/register' ? (
+                    <Container key="register">
+                        <RegisterForm />
+                    </Container>
+                ) : location === '/reset-pin' ? (
+                    <Container key="resetpin">
+                        <ResetPinForm />
+                    </Container>
+                ) : (
+                    <Container key="LoginForm">
+                        <LoginForm />
+                    </Container>
+                )}
                 <SizedLogo />
+                <h4 style={{ color: 'white' }}>v2</h4>
             </StyledWrapper>
         );
     }

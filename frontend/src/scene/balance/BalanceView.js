@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { motion, AnimatePresence } from 'framer-motion';
 import BaseModal, {
     Title,
     Content as ModalContent,
@@ -10,7 +11,6 @@ import {
     Input,
     InputField as DefaultInputField,
 } from '../../components/form';
-import posed, { PoseGroup } from 'react-pose';
 import { connect, composeFunction } from 'utils';
 import BalanceViewState from './state';
 
@@ -41,28 +41,10 @@ const Content = styled(ModalContent)`
     }
 `;
 
-const BalanceInfoAreaAnimation = posed.div({
-    show: {
-        top: true,
-    },
-});
-const BalanceInfoArea = styled(BalanceInfoAreaAnimation)`
+const BalanceInfoArea = styled('div')`
     align-self: center;
 `;
-const FormWarpper = posed.div({
-    preEnter: {
-        y: 300,
-        opacity: 0,
-    },
-    enter: {
-        y: 0,
-        opacity: 1,
-    },
-    exit: {
-        y: 280,
-        opacity: 0,
-    },
-});
+const FormWarpper = styled(motion.div)``;
 const Form = styled(DefaultForm)`
     display: flex;
     flex-direction: column;
@@ -94,7 +76,9 @@ class BalanceView extends Component {
     onConfirm = (e) => {
         e.preventDefault();
         if (this.state.formIncorrect) return;
-        const providers = this.props.userStore.requestAddBalance(this.state.amount);
+        const providers = this.props.userStore.requestAddBalance(
+            this.state.amount
+        );
         this.props.initiatePayment(providers);
     };
 
@@ -111,19 +95,24 @@ class BalanceView extends Component {
                 }}
             >
                 <Content>
-                    <BalanceInfoArea pose={'show'}>
+                    <BalanceInfoArea>
                         <Title>{i18nContent.sectionTitle}</Title>
                         <span>{Number(balance).toLocaleString('fi')} €</span>
-                        {!formShown &&
-                            !this.props.isShown && (
-                                <Button onClick={this.state.showForm}>
-                                    {i18nContent.topUp}
-                                </Button>
-                            )}
+                        {!formShown && !this.props.isShown && (
+                            <Button onClick={this.state.showForm}>
+                                {i18nContent.topUp}
+                            </Button>
+                        )}
                     </BalanceInfoArea>
-                    <PoseGroup animateOnMount>
+                    <AnimatePresence>
                         {(formShown || this.props.isShown) && (
-                            <FormWarpper key="1">
+                            <FormWarpper
+                                key="balance-form"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 20 }}
+                                transition={{ duration: 0.3 }}
+                            >
                                 <Form
                                     onSubmit={(e) => {
                                         e.preventDefault();
@@ -159,7 +148,7 @@ class BalanceView extends Component {
                                 </SubmitButton>
                             </FormWarpper>
                         )}
-                    </PoseGroup>
+                    </AnimatePresence>
                 </Content>
             </Modal>
         );

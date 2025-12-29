@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import Button from '../../components/button';
 import { connect } from 'utils';
@@ -47,9 +47,7 @@ const TermsAndConditionBox = styled('div')`
         transform: translateY(${(props) => (props.checked ? 0 : 0.7)}rem);
         ${(props) =>
             props.checked &&
-            `text-shadow: 0 0 12px ${
-                props.theme.complementary
-            }; border-color: transparent;`} &:hover {
+            `text-shadow: 0 0 12px ${props.theme.complementary}; border-color: transparent;`} &:hover {
             border-color: ${(props) => props.theme.complementary};
         }
     }

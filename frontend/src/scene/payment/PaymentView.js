@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Modal, { Title, Content as ModalContent } from '../../components/modal';
 import Button from '../../components/button';
-import { connect } from 'utils';
+import { connect, withRouter } from 'utils';
 import PaymentState from './state';
-import { withRouter, Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 const Content = styled(ModalContent)`
     width: 100%;
@@ -40,7 +40,7 @@ class PaymentView extends Component {
     };
     render() {
         if (this.state.requestToClose) {
-            return <Redirect to="/main" />;
+            return <Navigate to="/main" replace />;
         }
         const show = this.props.location.pathname === '/payment-complete';
         const i18nContent = this.props.i18nStore.content;

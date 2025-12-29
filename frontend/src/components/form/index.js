@@ -1,4 +1,5 @@
-import styled, { keyframes } from 'react-emotion';
+import styled from '@emotion/styled';
+import { keyframes, css } from '@emotion/react';
 
 const shake = keyframes`
     10%, 90% {
@@ -41,16 +42,16 @@ export const InputField = styled('div')`
     }
     ${(props) =>
         props.error &&
-        `
-        input {
-            animation: ${shake} 1s ease 1;
-            background-color: ${props.theme.error} !important;
-            text-shadow: 0 0 1px white;
-        }
-        label {
-            color: ${props.theme.error} !important;
-        }
-    `};
+        css`
+            input {
+                animation: ${shake} 1s ease 1;
+                background-color: ${props.theme.error} !important;
+                text-shadow: 0 0 1px white;
+            }
+            label {
+                color: ${props.theme.error} !important;
+            }
+        `};
 `;
 
 export const Input = styled('input')`

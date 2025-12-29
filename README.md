@@ -3,32 +3,34 @@
 ## Architecture
 
 This project is simple client-server application built with
+* Frontend: React.js & MobX
+* Backend: Node.js & Express.js
+* Database: PostgreSQL
 
--   Frontend: React.js & MobX
--   Backend: Node.js & Express.js
--   Database: PostgreSQL
+Requires Node.js v24.
 
 It integrates to Grynos to get the information about current courses available in Vantaa.
 
----
-
 ## Running locally
 
-Log in to AWS account `vantaa-pwa` and navigate to Elastic Beanstalk on `eu-west-1` region.
-Go to Environments > `jumppaliput-vantaa-dev` > Configuration, and click the Edit button of the Software
-category. Populate the environment variables inside `docker-compose.yml` with values from the environment
-configuration. If you want to use seeded mock data in the database, set USE_MOCK_DATA to 1 in docker-compose.yml.
+With Docker:
 
-Finally, run
+1. `chmod +x run-locally.sh`
+2. `./run-locally.sh`
 
-```
-. ./run-locally.sh
-```
+Without Docker:
 
-This local development includes hot reloading on the back-end.
-Backend responds at: http://localhost:5000/
+1. `cd backend && npm run dev`
+2. `cd frontend && npm run dev`
 
----
+Backend runs at: http://localhost:5000/
+Frontend with Vite proxy runs at: http://localhost:3000/
+
+### Backend API
+
+* List of all available [courses](http://localhost:5000/api/courses)
+* List of all available [events](http://localhost:5000/api/events)
+* List of all available [users](http://localhost:5000/api/users)
 
 ## Deployment
 
@@ -85,10 +87,10 @@ See (API)[documentation/README.md]
 See the file backend/src/utils/courses.js
 There are the following environment variables:
 
-    const POOL_WATER_PRICE_BEFORE_4 = process.env.POOL_WATER_PRICE_BEFORE_4 || 2.0;
-    const POOL_WATER_PRICE_AFTER_4 = process.env.POOL_WATER_PRICE_AFTER_4 || 3.0;
-    const FLOOR_GYM_PRICE_BEFORE_4 = process.env.FLOOR_GYM_PRICE_BEFORE_4 || 3.0;
-    const FLOOR_GYM_PRICE_AFTER_4 = process.env.FLOOR_GYM_PRICE_AFTER_4 || 4.5;
-    const DEFAULT_PRICE = process.env.DEFAULT_PRICE || 3.0;
+    POOL_WATER_PRICE_BEFORE_4
+    POOL_WATER_PRICE_AFTER_4
+    FLOOR_GYM_PRICE_BEFORE_4
+    FLOOR_GYM_PRICE_AFTER_4
+    DEFAULT_PRICE
 
 Update the new price to AWS environment configuration.

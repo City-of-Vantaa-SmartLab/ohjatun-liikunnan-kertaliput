@@ -1,37 +1,12 @@
 import React from 'react';
-import styled from 'react-emotion';
-import posed, { PoseGroup } from 'react-pose';
-import { tween, chain, delay } from 'popmotion';
+import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import CloseIcon from '../../common/CloseIcon';
 
-const ModalAnimatable = posed.div({
-    enter: {
-        scale: 1,
-        opacity: 1,
-        delayChildren: 100,
-        staggerChildren: 100,
-        y: '0%',
-    },
-    exit: {
-        y: '30%',
-        scale: 0,
-        opacity: 0,
-        delay: 300,
-        staggerChildren: 100,
-    },
-});
-const CloseButton = posed.span({
-    enter: {
-        y: 0,
-        scale: 1,
-    },
-    exit: {
-        y: -20,
-        scale: 0,
-    },
-});
-const Wrapper = styled('div')`
+const Wrapper = styled(motion.div, {
+    shouldForwardProp: (prop) => prop !== 'block',
+})`
     position: absolute;
     width: 100%;
     min-width: 100%;
@@ -49,7 +24,7 @@ const Wrapper = styled('div')`
         !props.block && 'pointer-events: none; background-color: transparent'};
 `;
 
-const ModalWrapper = styled(ModalAnimatable)`
+const ModalWrapper = styled(motion.div)`
     width: 80%;
     height: 70%;
     margin: auto;
@@ -68,7 +43,6 @@ const ModalWrapper = styled(ModalAnimatable)`
     }
 
     & > span {
-        transform: scale(0);
         position: fixed;
         right: 1rem;
         top: 1rem;
@@ -91,18 +65,7 @@ const ModalWrapper = styled(ModalAnimatable)`
     }
 `;
 
-const ModalContentAnimatable = posed.div({
-    enter: {
-        y: 0,
-        opacity: 1,
-    },
-    exit: {
-        y: 20,
-        opacity: 0,
-    },
-});
-
-export const Content = styled(ModalContentAnimatable)`
+export const Content = styled('div')`
     margin: 0 0 2rem 0;
 `;
 export const Title = styled('h4')`
@@ -110,56 +73,36 @@ export const Title = styled('h4')`
     font-size: 3rem;
 `;
 
-class Blur extends React.Component {
-    target = document.querySelector('#root');
-    isFireFox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    componentDidMount() {
-        if (this.isFireFox) {
-            return;
-        }
-        this.animation = chain(
-            delay(300),
-            tween({ from: 0, to: 8, duration: 100 })
-        )
-            .pipe((v) => v + 'px')
-            .start((v) => (this.target.style.filter = `blur(${v})`));
-    }
-    render() {
-        return null;
-    }
-    // remove the blur effect to root
-    componentWillUnmount() {
-        if (this.isFireFox) {
-            return;
-        }
-        if (this.animation) this.animation.stop();
-        tween({ from: 8, to: 0, duration: 100 })
-            .pipe((v) => v + 'px')
-            .start((v) => (this.target.style.filter = `blur(${v})`));
-    }
-}
-
 export default class Modal extends React.Component {
     render() {
         return createPortal(
-            <Wrapper block={this.props.show}>
-                <PoseGroup animateOnMount>
-                    {this.props.show && (
+            <AnimatePresence>
+                {this.props.show && (
+                    <Wrapper
+                        block={this.props.show}
+                        initial={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
+                        animate={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+                        exit={{ backgroundColor: 'rgba(0, 0, 0, 0)' }}
+                        transition={{ duration: 0.3 }}
+                    >
                         <ModalWrapper
                             key="modal"
                             className={this.props.className}
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.8, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
                         >
                             {!this.props.hideCloseButton && (
-                                <CloseButton onClick={this.props.onClear}>
+                                <span onClick={this.props.onClear}>
                                     <CloseIcon />
-                                </CloseButton>
+                                </span>
                             )}
                             {this.props.children}
-                            <Blur />
                         </ModalWrapper>
-                    )}
-                </PoseGroup>
-            </Wrapper>,
+                    </Wrapper>
+                )}
+            </AnimatePresence>,
             document.querySelector('body')
         );
     }

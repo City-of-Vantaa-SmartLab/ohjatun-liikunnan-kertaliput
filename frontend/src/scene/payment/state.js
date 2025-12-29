@@ -1,9 +1,18 @@
-import { observable, decorate, action } from 'mobx';
+import { observable, action, makeObservable } from 'mobx';
 import qs from 'qs';
 
 class PaymentFormState {
     requestToClose = false;
     paymentFailed = true;
+
+    constructor(userStore) {
+        this.userStore = userStore;
+        makeObservable(this, {
+            requestToClose: observable,
+            paymentFailed: observable,
+            validateRequest: action.bound,
+        });
+    }
 
     validateRequest(request) {
         if (request && request.length > 0) {
@@ -14,13 +23,6 @@ class PaymentFormState {
             }
         }
     }
-    constructor(userStore) {
-        this.userStore = userStore;
-    }
 }
 
-export default decorate(PaymentFormState, {
-    requestToClose: observable,
-    paymentFailed: observable,
-    validateRequest: action.bound,
-});
+export default PaymentFormState;

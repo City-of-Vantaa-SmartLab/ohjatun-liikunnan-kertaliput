@@ -1,13 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { ThemeProvider } from 'emotion-theming';
+import ReactDOM from 'react-dom/client';
+import { ThemeProvider } from '@emotion/react';
 import stores from './stores';
 import { Provider } from 'mobx-react';
 import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
 import App from './App';
-import { register, checkForUpdates } from './registerServiceWorker';
 
 const theme = {
     signInBackground: 'rgb(60, 143, 222)',
@@ -22,7 +21,7 @@ const theme = {
 };
 const { i18nStore, userStore, courseStore } = stores;
 const Root = () => (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Provider
             i18nStore={i18nStore}
             userStore={userStore}
@@ -34,6 +33,6 @@ const Root = () => (
         </Provider>
     </BrowserRouter>
 );
-ReactDOM.render(<Root />, document.getElementById('root'));
-register();
-checkForUpdates();
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<Root />);

@@ -1,63 +1,19 @@
 import React from 'react';
-import styled from 'react-emotion';
-import dateFns from 'date-fns';
+import styled from '@emotion/styled';
+import { format, compareAsc } from 'date-fns';
 import { connect } from 'utils';
 import Button from '../../components/button';
 import NotFoundIcon from '../../common/NotFoundIcon';
-import posed, { PoseGroup } from 'react-pose';
 import { getErrorDetail } from './CourseUtil';
-// posed components
-const ItemAnimation = posed.div({
-    enter: {
-        y: '0%',
-        opacity: 1,
-    },
-    exit: {
-        y: '100%',
-        opacity: 0,
-    },
-    preEnter: {
-        opacity: 0,
-        y: '-100%',
-    },
-});
-
-const ErrorMessageAnimation = posed.h4({
-    hidden: {
-        y: -10,
-        x: 50,
-        opacity: 0,
-    },
-    shown: {
-        y: -10,
-        x: 0,
-        opacity: 1,
-    },
-});
-const EmptyStateContainerAnimation = posed.div({
-    enter: {
-        scale: 1,
-        opacity: 1,
-    },
-    exit: {
-        scale: 0.3,
-        opacity: 0,
-    },
-    preEnter: {
-        scale: 0,
-        y: '-5%',
-    },
-});
-
 // styled components
 const ScrollContainer = styled('div')`
     overflow: scroll;
     flex-basis: 100%;
 `;
-const CardWrapper = styled(ItemAnimation)`
+const CardWrapper = styled('div')`
     width: 100%;
     background-color: ${(props) =>
-        props.blur ? props.theme[props.errorColorCode] : 'white'};;
+        props.blur ? props.theme[props.errorColorCode] : 'white'};
     margin-top: 1px;
     padding: 1.5rem 0;
     color: rgba(0, 0, 0, 0.86);
@@ -67,8 +23,7 @@ const CardWrapper = styled(ItemAnimation)`
         props.errorColorCode &&
         `border-left: ${props.blur ? 0 : 5}px ${
             props.theme[props.errorColorCode]
-        } solid`}
-    }
+        } solid`};
     & > div {
         will-change: transform;
         transition: transform 0.5s ease;
@@ -92,7 +47,7 @@ const TimeArea = styled('div')`
         margin-bottom: 1rem;
     }
 
-    & > span:first-child {
+    & > span:first-of-type {
         font-weight: bold;
     }
 `;
@@ -134,7 +89,7 @@ const PriceTag = styled('span')`
     font-weight: bold;
 `;
 
-const EmptyStateContainer = styled(EmptyStateContainerAnimation)`
+const EmptyStateContainer = styled('div')`
     width: 100%;
     height: 100%;
     display: flex;
@@ -151,7 +106,7 @@ const EmptyStateContainer = styled(EmptyStateContainerAnimation)`
     }
 `;
 
-const ErrorMessageTag = styled(ErrorMessageAnimation)`
+const ErrorMessageTag = styled('h4')`
     color: ${(props) => props.theme[props.color]};
     font-size: 2.3rem;
     font-weight: bold;
@@ -181,8 +136,8 @@ const Card = class extends React.Component {
             <CardWrapper {...rest} errorColorCode={errorDetail.colorCode || ''}>
                 <div>
                     <TimeArea>
-                        <span>{dateFns.format(course.startDate, 'HH.mm')}</span>
-                        <span>{dateFns.format(course.endDate, 'HH.mm')}</span>
+                        <span>{format(course.startDate, 'HH.mm')}</span>
+                        <span>{format(course.endDate, 'HH.mm')}</span>
                     </TimeArea>
                     <CourseArea>
                         <strong>{course.name}</strong>
@@ -255,7 +210,7 @@ class ClassCard extends React.Component {
         //     };
         const sortByDateTime = (A, B) => {
             // should be listed in a chronological order
-            return dateFns.compareAsc(A.startDate, B.startDate);
+            return compareAsc(A.startDate, B.startDate);
         };
         const sortCombiner = (...sorterFuncs) => (A, B) =>
             sorterFuncs.reduce((accumulator, currentFunc) => {
@@ -284,26 +239,24 @@ class ClassCard extends React.Component {
 
         return (
             <ScrollContainer>
-                <PoseGroup preEnterPose="preEnter">
-                    {courses.length > 0 ? (
-                        courses.map((el, i) => (
-                            <Card
-                                key={el.id || i}
-                                id={i}
-                                course={el}
-                                buttonLabel={buttonLabel}
-                                onButtonClick={this.selectCourse(el)}
-                                errorMessages={errorMessages}
-                                courseStore={this.props.courseStore}
-                            />
-                        ))
-                    ) : (
-                        <EmptyStateContainer key={'emptyState'}>
-                            <NotFoundIcon />
-                            <ItemAnimation>{noCourseContent}</ItemAnimation>
-                        </EmptyStateContainer>
-                    )}
-                </PoseGroup>
+                {courses.length > 0 ? (
+                    courses.map((el, i) => (
+                        <Card
+                            key={el.eventId || `course-${i}`}
+                            id={i}
+                            course={el}
+                            buttonLabel={buttonLabel}
+                            onButtonClick={this.selectCourse(el)}
+                            errorMessages={errorMessages}
+                            courseStore={this.props.courseStore}
+                        />
+                    ))
+                ) : (
+                    <EmptyStateContainer key={'emptyState'}>
+                        <NotFoundIcon />
+                        <div>{noCourseContent}</div>
+                    </EmptyStateContainer>
+                )}
             </ScrollContainer>
         );
     }

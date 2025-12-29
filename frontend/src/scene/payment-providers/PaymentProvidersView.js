@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import Modal, { Title, Content as ModalContent } from '../../components/modal';
-import { connect } from 'utils';
-import { withRouter } from 'react-router-dom';
-import ReactHtmlParser from 'react-html-parser';
+import { connect, withRouter } from 'utils';
 
 const Content = styled(ModalContent)`
     width: 100%;
@@ -34,28 +32,7 @@ const Content = styled(ModalContent)`
 class PaymentProvidersView extends Component {
     render() {
         const i18nContent = this.props.i18nStore.content;
-        const createPaymentProvidersList = (providers) => {
-            try {
-                return providers
-                    .map(
-                        (p) =>
-                            `<form method='POST' action=${p.url}>
-                         ${p.parameters
-                             .map(
-                                 (param) =>
-                                     `<input type='hidden' name='${param.name}' value='${param.value}' />`
-                             )
-                             .join('\n')}
-                         <button class='provider-button' type='submit' aria-label='${
-                             p.name
-                         }'><img src='${p.svg}' /></button>
-                     </form>`
-                    )
-                    .join('\n');
-            } catch (e) {
-                console.error(e);
-            }
-        };
+        const { providers } = this.props;
 
         return (
             <Modal show={this.props.show} onClear={this.props.onClear}>
@@ -64,10 +41,38 @@ class PaymentProvidersView extends Component {
                         {i18nContent.paymentConfirmationForm.selectProvider}
                     </Title>
                     <div>
-                        {!!this.props.providers &&
-                            ReactHtmlParser(
-                                createPaymentProvidersList(this.props.providers)
-                            )}
+                        {providers && providers.length > 0 ? (
+                            providers.map((provider, index) => (
+                                <form
+                                    key={provider.name || index}
+                                    method="POST"
+                                    action={provider.url}
+                                >
+                                    {provider.parameters.map((param, i) => (
+                                        <input
+                                            key={i}
+                                            type="hidden"
+                                            name={param.name}
+                                            value={param.value}
+                                        />
+                                    ))}
+                                    <button
+                                        className="provider-button"
+                                        type="submit"
+                                        aria-label={provider.name}
+                                    >
+                                        <img
+                                            src={provider.svg}
+                                            alt={provider.name}
+                                        />
+                                    </button>
+                                </form>
+                            ))
+                        ) : (
+                            <p style={{ fontSize: '2rem', textAlign: 'center' }}>
+                                {i18nContent.paymentConfirmationForm.noProvidersAvailable}
+                            </p>
+                        )}
                     </div>
                 </Content>
             </Modal>

@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import { connect } from 'utils';
 import { Link } from 'react-router-dom';

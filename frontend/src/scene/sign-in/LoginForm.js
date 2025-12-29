@@ -1,8 +1,8 @@
 import React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { Form, InputField, Input, FormLink } from '../../components/form';
 import { connect } from 'utils';
-import { autorun } from 'mobx';
+import { reaction } from 'mobx';
 import { Link } from 'react-router-dom';
 
 const PinCodeInput = styled(Input)`
@@ -23,13 +23,27 @@ class LoginForm extends React.Component {
     };
 
     componentDidMount() {
-        autorun(() => {
-            if (this.props.userStore.authenticationFailed && this.input0) {
-                this.setState({ hasEverFailed: true }, () =>
-                    this.input0.focus()
-                );
+        // Extract store reference to avoid accessing props in reactive context
+        const { userStore } = this.props;
+
+        // Use reaction to track observable changes
+        this.disposeReaction = reaction(
+            () => userStore.authenticationFailed,
+            (authenticationFailed) => {
+                if (authenticationFailed && this.input0) {
+                    this.setState({ hasEverFailed: true }, () =>
+                        this.input0.focus()
+                    );
+                }
             }
-        });
+        );
+    }
+
+    componentWillUnmount() {
+        // Clean up the reaction when component unmounts
+        if (this.disposeReaction) {
+            this.disposeReaction();
+        }
     }
     onTelephoneInputChange = (e) => {
         this.props.userStore.setPhoneNumber(e.target.value);
@@ -45,13 +59,11 @@ class LoginForm extends React.Component {
         }
     };
     onPinCodeInputsChange = (key) => (e) => {
-        const setResult = this.props.userStore.setInputCode(
-            key,
-            e.target.value
-        );
+        // Get only the last digit entered
+        const value = e.target.value.slice(-1);
+        const setResult = this.props.userStore.setInputCode(key, value);
         if (setResult && key !== 3) {
-            if (key === 3) this[`input0`].focus();
-            else this[`input${key + 1}`].focus();
+            this[`input${key + 1}`].focus();
         }
     };
     render() {
@@ -82,11 +94,14 @@ class LoginForm extends React.Component {
                     <div>
                         {pinArr.map((key) => (
                             <PinCodeInput
-                                innerRef={(instance) =>
+                                ref={(instance) =>
                                     (this['input' + key] = instance)
                                 }
                                 key={key}
-                                type="number"
+                                type="text"
+                                inputMode="numeric"
+                                pattern="[0-9]"
+                                maxLength="1"
                                 onKeyUp={this.onPinCodeInputsKeyUp(key)}
                                 onChange={this.onPinCodeInputsChange(key)}
                                 value={this.props.userStore.pinCode[key]}

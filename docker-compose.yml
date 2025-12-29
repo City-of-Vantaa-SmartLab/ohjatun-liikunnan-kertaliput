@@ -1,26 +1,37 @@
+volumes:
+  frontend_build:
+
 services:
   frontend:
     build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run build
     ports:
       - 3000:3000
-    environment:
-      DANGEROUSLY_DISABLE_HOST_CHECK: 'true'
+    volumes:
+      - ./frontend:/frontend
+      - /frontend/node_modules
+      - frontend_build:/frontend/build
+    healthcheck:
+      test: ["CMD-SHELL", "[ -f /frontend/build/index.html ] || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["npm ci && npm run build"]
 
   backend:
+    depends_on:
+      frontend:
+        condition: service_healthy
     build: ./backend
     ports:
       - 5000:80
-    command: npm run start
     volumes:
       - ./backend:/backend
       - /backend/node_modules
-      - ./frontend/build:/backend/public
-    depends_on:
-      - frontend
+      - frontend_build:/backend/public:ro
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["npm ci && npm run start"]
     environment:
       APP_BASE_URL:
       DB_HOST:
@@ -42,3 +53,4 @@ services:
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
+      VAT_PERCENTAGE:

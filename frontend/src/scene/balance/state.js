@@ -1,9 +1,22 @@
-import { observable, computed, decorate, action } from 'mobx';
+import { observable, computed, action, makeObservable } from 'mobx';
 
 class BalanceViewState {
     amount = 0;
     formShown = false;
     askValidate = false;
+
+    constructor() {
+        makeObservable(this, {
+            amount: observable,
+            formShown: observable,
+            askValidate: observable,
+            formIncorrect: computed,
+            showForm: action.bound,
+            hideForm: action.bound,
+            setAmount: action.bound,
+            startValidate: action.bound,
+        });
+    }
 
     get formIncorrect() {
         return (
@@ -27,13 +40,4 @@ class BalanceViewState {
     }
 }
 
-export default decorate(BalanceViewState, {
-    amount: observable,
-    formShown: observable,
-    askValidate: observable,
-    formIncorrect: computed,
-    showForm: action.bound,
-    hideForm: action.bound,
-    setAmount: action.bound,
-    startValidate: action.bound,
-});
+export default BalanceViewState;

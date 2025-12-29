@@ -1,49 +1,45 @@
+# Use canonical Dockerfiles for Docker Compose V2 to run containers.
+
 services:
   frontend:
     build: ./frontend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-    command: npm run build
     ports:
       - 3000:3000
-    environment:
-      DANGEROUSLY_DISABLE_HOST_CHECK: 'true'
+    volumes:
+      - ./frontend/src:/frontend/src
 
   backend:
+    depends_on:
+      postgres-dev-db:
+        condition: service_started
     build: ./backend
     ports:
       - 5000:80
-    command: npm run start
     volumes:
-      - ./backend:/backend
-      - /backend/node_modules
+      - ./backend/src:/backend/src
       - ./frontend/build:/backend/public
-    depends_on:
-      - frontend
-      - postgres-dev-db
     environment:
       APP_BASE_URL: http://localhost:5000
       DB_HOST: postgres-dev-db
       DB_NAME: vantaa_pwa
       DB_PASSWORD: password
       DB_USERNAME: postgres
-      FLOOR_GYM_PRICE_AFTER_4: 4.5
-      FLOOR_GYM_PRICE_BEFORE_4: 3.0
+      FLOOR_GYM_PRICE_AFTER_4: 6
+      FLOOR_GYM_PRICE_BEFORE_4: 4
       GRYNOS_COURSE_API_URL:
       GRYNOS_COURSE_DETAILS_API_URL:
       GRYNOS_COURSES_UPDATE_INTERVAL: 3600000
       MERCHANT_ID:
       MERCHANT_KEY:
       PAYMENT_CODE:
-      POOL_WATER_PRICE_AFTER_4: 3.0
-      POOL_WATER_PRICE_BEFORE_4: 2.0
-      USE_MOCK_DATA: 0
+      POOL_WATER_PRICE_AFTER_4: 4
+      POOL_WATER_PRICE_BEFORE_4: 3
+      USE_MOCK_DATA: 1
       PORT: 80
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
-      DEFAULT_SALDO:
+      VAT_PERCENTAGE:
 
   postgres-dev-db:
     image: postgres:16

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
+import { motion, AnimatePresence } from 'framer-motion';
 import { connect, getLocale, composeFunction } from 'utils';
 import Modal, { Content, Title } from '../../components/modal';
 import LocationIcon from '../../common/LocationIcon';
@@ -8,8 +9,7 @@ import ClockLogo from '../../common/ClockLogo';
 import TeacherLogo from '../../common/TeacherLogo';
 import EuroLogo from '../../common/EuroLogo';
 import Button from '../../components/button';
-import dateFns from 'date-fns';
-import posed from 'react-pose';
+import { format } from 'date-fns';
 import { getErrorDetail } from './CourseUtil';
 import { Link } from 'react-router-dom';
 import BalanceView from '../balance';
@@ -146,27 +146,12 @@ const ReservationFailedContent = styled(Content)`
     }
 `;
 
-const ErrorMessageAnimation = posed.h4({
-    hidden: {
-        y: -10,
-        x: 50,
-        opacity: 0,
-    },
-    shown: {
-        y: -10,
-        x: 0,
-        opacity: 1,
-    },
-});
-
-const ErrorMessageTag = styled(ErrorMessageAnimation)`
+const ErrorMessageTag = styled(motion.h4)`
     color: ${(props) => props.theme[props.color]};
     font-size: 2.3rem;
     font-weight: bold;
     margin: 0;
-    key="3"
-    color={errorDetail.colorCode}
-    margin-Top : 1rem
+    margin-top: 1rem;
 `;
 
 const MainModal = ({
@@ -191,14 +176,14 @@ const MainModal = ({
                         <li>
                             <DateLogo />
 
-                            {dateFns.format(selectedDate, 'dddd DD.MM.YYYY', {
+                            {format(selectedDate, 'dddd dd.MM.yyyy', {
                                 locale: getLocale(),
                             })}
                         </li>
                         <li>
                             <ClockLogo />
-                            {dateFns.format(course.startDate, 'HH:mm')} -
-                            {dateFns.format(course.endDate, 'HH:mm')}
+                            {format(course.startDate, 'HH:mm')} -
+                            {format(course.endDate, 'HH:mm')}
                         </li>
                         <li>
                             <TeacherLogo />
@@ -221,9 +206,19 @@ const MainModal = ({
                         </span>
                     </div>
 
-                    <ErrorMessageTag color={errorDetail.colorCode}>
-                        {errorDetail.longMessage}
-                    </ErrorMessageTag>
+                    <AnimatePresence>
+                        {errorDetail.longMessage && (
+                            <ErrorMessageTag
+                                color={errorDetail.colorCode}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.3 }}
+                            >
+                                {errorDetail.longMessage}
+                            </ErrorMessageTag>
+                        )}
+                    </AnimatePresence>
                     {!course.reasons || // Reason is "openTime" probably.
                     (course.reasons[0] !== 'auth' &&
                         course.reasons[0] !== 'resource') ? (
@@ -231,14 +226,14 @@ const MainModal = ({
                             alternative
                             bold
                             onClick={onConfirm}
-                            disabled={errorDetail.longMessage}
+                            disabled={!!errorDetail.longMessage}
                         >
                             Varaa
                         </Button>
                     ) : (
                         [
                             course.reasons[0] === 'auth' ? (
-                                <Button alternative bold>
+                                <Button key="auth-button" alternative bold>
                                     <LinkContent onClick={clear} to="/login">
                                         {content.appHeader.login}
                                     </LinkContent>
@@ -246,6 +241,7 @@ const MainModal = ({
                             ) : (
                                 course.reasons[0] === 'resource' && (
                                     <Button
+                                        key="resource-button"
                                         alternative
                                         bold
                                         onClick={onAddSaldo}
@@ -279,14 +275,14 @@ const ConfirmationModal = ({ course, selectedDate, reserve, clear }) => (
                         </li>
                         <li>
                             <DateLogo />
-                            {dateFns.format(selectedDate, 'dd DD.MM.YYYY', {
+                            {format(selectedDate, 'dd dd.MM.yyyy', {
                                 locale: getLocale(),
                             })}
                         </li>
                         <li>
                             <ClockLogo />
-                            {dateFns.format(course.startDate, 'HH:mm')} -
-                            {dateFns.format(course.endDate, 'HH:mm')}
+                            {format(course.startDate, 'HH:mm')} -
+                            {format(course.endDate, 'HH:mm')}
                         </li>
                         <li>
                             <TeacherLogo />
@@ -374,22 +370,7 @@ class CourseModal extends React.Component {
         reservationInProgress: false,
     };
 
-    componentDidMount() {
-        setInterval(this.checkForUpdates, 5000);
-    }
-
-    checkForUpdates = () => {
-        let updateAvailable = window['updateAvailable'];
-        console.log('New version available: ' + updateAvailable);
-
-        // TODO: a working update process. The old one just reloads the page from cache, only manual Ctrl+F5 actually worked.
-        if (updateAvailable) {
-            console.log(
-                'Uusi versio saatavilla, päivitä sivu painamalla Ctrl+F5.'
-            );
-            //this.setState({ showRefreshModal: true });
-        }
-    };
+    componentDidMount() {}
 
     clear = () => {
         this.props.courseStore.selectCourse(null);
@@ -443,13 +424,6 @@ class CourseModal extends React.Component {
                 reservationInProgress: false,
             });
         }
-    };
-
-    refreshApp = () => {
-        window['updateAvailable'] = false;
-        this.setState({ showReserve: false });
-        // TODO/fixme: this doesn't reload a new version. Reload uses old cache.
-        window.location.reload();
     };
 
     removeFocusesCourse = () => {

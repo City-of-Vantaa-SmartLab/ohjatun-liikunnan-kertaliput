@@ -1,8 +1,8 @@
 import React from 'react';
 import Button from '../../components/button';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 import { connect } from 'utils';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import BalanceView from '../balance';
 import PaymentProvidersView from '../payment-providers';
 
@@ -64,7 +64,7 @@ class AppHeader extends React.Component {
         const content = this.props.i18nStore.content.appHeader;
         const appName = this.props.i18nStore.content.global.appName;
         const { isAuthenticated, logout, balance } = this.props.userStore;
-        if (this.state.redirect) return <Redirect to="/login" />;
+        if (this.state.redirect) return <Navigate to="/login" replace />;
         return (
             <AppHeaderWrapper>
                 <LogoBar>
