@@ -1,6 +1,5 @@
 const db = require('../sequalize_pg');
 const Sequelize = require('sequelize');
-const DEFAULT_SALDO = process.env.DEFAULT_SALDO || 0;
 const model = db.define('users', {
     username: Sequelize.STRING,
     phoneNumber: {
@@ -15,7 +14,7 @@ const model = db.define('users', {
     },
     balance: {
         type: Sequelize.DOUBLE,
-        defaultValue: DEFAULT_SALDO,
+        defaultValue: 0,
     },
 });
 

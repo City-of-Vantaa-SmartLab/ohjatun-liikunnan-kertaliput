@@ -1,12 +1,12 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
     plugins: [react()],
     base: '/app/',
     build: {
         outDir: 'build',
+        chunkSizeWarningLimit: 1000
     },
     esbuild: {
         loader: 'jsx',
@@ -21,15 +21,13 @@ export default defineConfig({
         },
     },
     server: {
+        host: true,
         port: 3000,
         proxy: {
             '/api': {
-                target: process.env.VITE_API_URL,
+                target: 'http://backend:80',
                 changeOrigin: true,
             },
         },
-    },
-    preview: {
-        port: 3000,
-    },
+    }
 });

@@ -4,9 +4,6 @@
     "description": "",
     "main": "src/server.js",
     "scripts": {
-        "db:start": "docker run --rm --name pwa-database -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_USER=postgres -d postgres",
-        "db:stop": "docker kill pwa-database",
-        "db:init": "npm run db:start && npm run db:seed",
         "start": "node src/server.js",
         "dev": "./node_modules/.bin/nodemon src/server.js",
         "feeddb": "node src/seed/db-seed.js",

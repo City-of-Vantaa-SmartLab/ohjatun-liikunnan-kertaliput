@@ -1,4 +1,6 @@
-FROM node:24
-WORKDIR /app
-ADD . /app
-RUN npm install
+FROM node:24.11.0-alpine
+WORKDIR /frontend
+COPY package*.json ./
+RUN npm i
+COPY . .
+CMD ["npm", "run", "dev"]
