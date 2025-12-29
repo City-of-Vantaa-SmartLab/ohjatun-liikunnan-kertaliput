@@ -13,7 +13,7 @@ const MERCHANT_ID = process.env.MERCHANT_ID || '375917';
 const MERCHANT_KEY = process.env.MERCHANT_KEY || 'SAIPPUAKAUPPIAS';
 const PAYMENT_RETURN_URL = removeLastSlash(process.env.APP_BASE_URL || '') + '/api/payments/payment-return';
 const PAYMENT_POST_URL = process.env.PAYMENT_POST_URL || 'https://services.paytrail.com/payments';
-const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE || 14;
+const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE || 13.5;
 const PAYMENT_CODE = process.env.PAYMENT_CODE;
 
 const calculateCheckoutParamsHmac = (params, body) => {

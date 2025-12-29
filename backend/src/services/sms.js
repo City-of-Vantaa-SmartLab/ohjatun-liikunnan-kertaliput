@@ -12,19 +12,30 @@ const formatDate = (date) => {
     return formatInTimeZone(date, 'Europe/Helsinki', i18n.dateFormats.display);
 };
 
+const maskPhone = (phone) => {
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length <= 6) return digits.replace(/.(?=...)/g, 'x');
+    return digits.slice(0, 3) + 'xxx' + digits.slice(-3);
+}
+
+const maskName = (name) => {
+    if (!name) return '';
+    const s = name.trim();
+    if (s.length <= 2) return s[0] + '_'.repeat(Math.max(0, s.length - 1));
+    return s[0] + '_'.repeat(s.length - 2) + s.slice(-1);
+}
+
 const sendMessageToUser = async (user, message) => {
     try {
         const phoneNumber = user.phoneNumber;
-        console.log(
-            `Sending SMS for user ${user.username} to number ${phoneNumber}`
-        );
+        console.log(`Send SMS for ${maskName(user.username)} to ${maskPhone(phoneNumber)}`);
         const request = generateTeliaMessageRequest(phoneNumber, message);
         const response = await axios.post(teliaEndPoint, request);
         if (response && response.data.accepted[0].to === phoneNumber.slice(1)) {
             return response;
         }
     } catch (error) {
-        console.log(`Failed to send SMS to the User: ${error.message}`);
+        console.log(`Failed to send SMS: ${error.message}`);
     }
 };
 
