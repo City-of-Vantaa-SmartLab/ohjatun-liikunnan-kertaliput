@@ -13,8 +13,13 @@ const MERCHANT_ID = process.env.MERCHANT_ID || '375917';
 const MERCHANT_KEY = process.env.MERCHANT_KEY || 'SAIPPUAKAUPPIAS';
 const PAYMENT_RETURN_URL = removeLastSlash(process.env.APP_BASE_URL || '') + '/api/payments/payment-return';
 const PAYMENT_POST_URL = process.env.PAYMENT_POST_URL || 'https://services.paytrail.com/payments';
-const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE || 13.5;
-const PAYMENT_CODE = process.env.PAYMENT_CODE;
+const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE ? parseFloat(process.env.VAT_PERCENTAGE) : 13.5;
+const PAYMENT_CODE = process.env.PAYMENT_CODE || 'LIIKUNTALIPUT';
+
+console.log('Using VAT percentage: ' + VAT_PERCENTAGE);
+console.log('Using payment code: ' + PAYMENT_CODE);
+console.log('Using merchant ID: ' + MERCHANT_ID);
+console.log('Using payment return URL: ' + PAYMENT_RETURN_URL);
 
 const calculateCheckoutParamsHmac = (params, body) => {
     const hmacPayload = Object.keys(params)
