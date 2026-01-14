@@ -1,21 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-const { format, addWeeks, startOfDay, endOfDay } = require('date-fns');
+const { addWeeks, endOfDay } = require('date-fns');
 const utils = require('../utils');
-const i18n = require('../i18n').i18n();
 
 const getCourses = async (req, res) => {
     try {
         const timestampToDate = (timestamp) => new Date(Number(timestamp));
 
-        // Default start and end date for the last week
-        const startDate = startOfDay(
-            req.query.startDate
-                ? timestampToDate(req.query.startDate)
-                : new Date()
-        );
+        // Courses that have already begun will be hidden.
+        const startDate = req.query.startDate
+            ? timestampToDate(req.query.startDate)
+            : new Date();
 
+        // Show courses until the end of day.
         const endDate = endOfDay(
             req.query.endDate
                 ? timestampToDate(req.query.endDate)
@@ -31,7 +29,7 @@ const getCourses = async (req, res) => {
     }
 };
 
-const getAllCourses = async (req, res) => {
+const getAllCourses = async (_req, res) => {
     try {
         const courses = await db.courses.getAllCourses();
         const response = await db.courses.reduceCoursesByDate(courses);
