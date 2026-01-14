@@ -44,12 +44,13 @@ const isAvailable = (
     const notReserved = !hasBeenReserved(reservedCourseList || [], courseItem);
     const hasTickets = hasEnoughTickets(courseItem);
     return {
+        // NOTE: the order here defines the importance of the error messages.
         reasons: [
             !authenticationStatus && 'auth',
-            !notReserved && 'reserved',
-            !openedYet && 'openTime',
             closedYet && 'closingTime',
+            !notReserved && 'reserved',
             !hasTickets && 'noTickets',
+            !openedYet && 'openTime',
             !enoughFund && 'resource',
         ].filter((reason) => typeof reason !== 'boolean'),
     };
