@@ -6,9 +6,9 @@ const utils = require('../utils');
 const { formatInTimeZone } = require('date-fns-tz');
 const i18n = require('../i18n').i18n();
 
-const { parse } = require('@json2csv/plainjs');
+const { Parser } = require('@json2csv/plainjs');
 
-const getReportForCurrentYear = async (req, res) => {
+const getReportForCurrentYear = async (_req, res) => {
     try {
         const year = new Date().getFullYear();
         const report = await generateReportFile(year);
@@ -49,7 +49,8 @@ const generateReportFile = async (year) => {
     if (rawReport.length < 1) return undefined;
     const mappedReports = rawReport.map(entry => rawEntryToReportEntry(entry));
     const fields = ["Päivä", "Alkamisaika", "Tunnin nimi", "Hinta", "Myytyjen lippujen määrä"];
-    return parse(mappedReports, { fields, delimiter: ';' });
+    const parser = new Parser({ fields, delimiter: ';' });
+    return parser.parse(mappedReports);
 }
 
 const rawEntryToReportEntry = (entry) => {
