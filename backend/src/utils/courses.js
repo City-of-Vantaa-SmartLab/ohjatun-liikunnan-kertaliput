@@ -26,7 +26,7 @@ module.exports = {
         const isWeekendDay = isWeekend(parsedDate);
 
         const isHigherPriceTier =
-            (startingHour == 16 && startingMinute > 15) ||
+            (startingHour == 16 && startingMinute >= 15) ||
             (startingHour > 16) ||
             isWeekendDay;
 
