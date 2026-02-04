@@ -6,6 +6,7 @@ const utils = require('../utils');
 const crypto = require('crypto');
 const services = require('../services');
 const i18n = require('../i18n').i18n();
+const logger = require('../utils/logging');
 const getUser = async (req, res) => {
     try {
         const phoneNumber = req.query.phoneNumber;
@@ -75,6 +76,7 @@ const createUser = async (req, res) => {
         if (validationErrors) {
             return res.status(422).json(validationErrors);
         }
+        logger.log('Users', `Creating new user with phone number ${utils.users.maskPhone(user.phoneNumber)}`);
         const dbUser = await db.users.getUser(user.phoneNumber);
         if (dbUser) {
             return res.status(409).json('PhoneNumber already exists!.');
@@ -88,7 +90,7 @@ const createUser = async (req, res) => {
             .replace('{pin}', pin);
         if (!process.env.TELIA_USERNAME) {
             logger.log('Users', `New user created with phone number ${createdUser.phoneNumber} and PIN ${pin}`);
-             return res
+            return res
                 .status(201)
                 .json(
                     'Successfully created the account. Your login PIN is in console log.'
@@ -99,6 +101,7 @@ const createUser = async (req, res) => {
             message
         );
         if (response) {
+            logger.log('Users', 'User created successfully.');
             return res
                 .status(201)
                 .json(
@@ -107,14 +110,16 @@ const createUser = async (req, res) => {
                     }.`
                 );
         } else {
+            logger.error('Users', 'Sending SMS failed for new user.');
             return res
                 .status(500)
                 .json(`Sending SMS failed for "${user.phoneNumber}". Please try again.`);
         }
     } catch (err) {
+        logger.error('Users', `Failed to create new user. Error: ${err.message}`);
         res
             .status(500)
-            .json(`Failed to create new user. Error: ${err.message}`);
+            .json('Failed to create new user.');
     }
 };
 

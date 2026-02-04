@@ -49,6 +49,17 @@ const validateUserPhoneAndPin = (phoneNumber, pin) => {
     }
 };
 
+const maskPhone = (phone) => {
+    const digits = phone.replace(/\D/g, '');
+    if (digits.length > 10) {
+        // For numbers over 10 digits, show first 3, mask middle, show last 4
+        return digits.slice(0, 3) + 'x'.repeat(digits.length - 7) + digits.slice(-4);
+    }
+    // For 10 or fewer digits, mask all but last 4
+    const toMask = Math.max(0, digits.length - 4);
+    return 'x'.repeat(toMask) + digits.slice(-4);
+};
+
 module.exports = {
     validateUsername,
     validateUserObj,
@@ -56,4 +67,5 @@ module.exports = {
     validateUserPin,
     validateUserPhoneAndPin,
     validateUserId,
+    maskPhone,
 };

@@ -2,6 +2,7 @@ const axios = require('axios');
 const i18n = require('../i18n').i18n();
 const db = require('../db');
 const logger = require('../utils/logging');
+const utils = require('../utils');
 const { formatInTimeZone } = require('date-fns-tz');
 
 const teliaEndPoint = 'https://ws.mkv.telia.fi/restsms/lekabrest/send';
@@ -13,12 +14,6 @@ const formatDate = (date) => {
     return formatInTimeZone(date, 'Europe/Helsinki', i18n.dateFormats.display);
 };
 
-const maskPhone = (phone) => {
-    const digits = phone.replace(/\D/g, '');
-    if (digits.length <= 6) return digits.replace(/.(?=...)/g, 'x');
-    return digits.slice(0, 3) + 'xxx' + digits.slice(-3);
-}
-
 const maskName = (name) => {
     if (!name) return '';
     const s = name.trim();
@@ -29,7 +24,7 @@ const maskName = (name) => {
 const sendMessageToUser = async (user, message) => {
     try {
         const phoneNumber = user.phoneNumber;
-        logger.log('SMS', `Send SMS to ${maskName(user.username)} / ${maskPhone(phoneNumber)}`);
+        logger.log('SMS', `Send SMS to ${maskName(user.username)} / ${utils.users.maskPhone(phoneNumber)}`);
         const request = generateTeliaMessageRequest(phoneNumber, message);
         const response = await axios.post(teliaEndPoint, request);
         if (response && response.data.accepted[0].to === phoneNumber.slice(1)) {
