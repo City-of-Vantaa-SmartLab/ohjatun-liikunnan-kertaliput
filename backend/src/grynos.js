@@ -134,6 +134,18 @@ const handleCancellations = async (_course, existingTeachingSessions, newTeachin
     try {
         for (const existingSession of existingTeachingSessions) {
             const newSession = newTeachingSessions.find(item => item.id === existingSession.dataValues.eventId);
+            // A course teaching session status of -2 denotes that the teaching session has been cancelled.
+            // If a whole course is cancelled (if it hasn't started yet), then all of the teaching sessions should be handled as cancelled, no matter their status.
+            // In case of a fully cancelled course, the course's status property is -2. TODO: the status and cancellation for a whole course is not implemented.
+            // The course status property is not visible in the general courses listing API, but only in course details.
+            // The status should be interpreted as follows:
+            // Peruttu = -2
+            // Hyväksytty = 0
+            // Suunnitelma = 1
+            // Ehdotus = 10
+            // Käynnissä = 15
+            // Päättynyt = 20
+            // Keskeytetty = 100
             if (newSession && newSession.status === -2 && existingSession.dataValues.status !== newSession.status) {
                 logger.log('Grynos', 'Cancelling event: ' + existingSession.dataValues.eventId);
                 const reservations = await db.reservations.getReservationsByEventId(existingSession.dataValues.eventId);

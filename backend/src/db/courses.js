@@ -226,7 +226,6 @@ const reduceCoursesByDate = async courses => {
                 courseToAdd.endDate = teachingSession.endDate.toString();
                 courseToAdd.price = price;
                 courseToAdd.reservedCount = teachingSession.reservedCount;
-                courseToAdd.status = teachingSession.status;
                 obj[date].push(courseToAdd);
             }
         }
