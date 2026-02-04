@@ -20,7 +20,7 @@ const getReservationsByUser = async (req, res) => {
     }
 };
 
-const getAllReservations = async (req, res) => {
+const getAllReservations = async (_req, res) => {
     try {
         const reservations = await db.reservations.getAllReservations();
         res.status(200).json(reservations);
@@ -29,7 +29,7 @@ const getAllReservations = async (req, res) => {
     }
 };
 
-const getReservationCountForEvents = async (req, res) => {
+const getReservationCountForEvents = async (_req, res) => {
     try {
         const eventReservations = await db.reservations.getReservationCountForEvents();
         res.status(200).json(eventReservations);
@@ -107,12 +107,12 @@ const createReservation = async (req, res) => {
                 const message = `${i18n.reservations.confirmationMessage} ${
                     course.name
                 }.\n${startDate}\n${event.dataValues.teachingplace}`;
-                
+
                 if (!process.env.TELIA_USERNAME) {
-                    console.log(`Reservation created for user ${dbUser.username} for event ID ${reservationObj.eventId}.`);
+                    logger.log('Reservations', `Reservation created for user ${dbUser.username} for event: ${reservationObj.eventId}`);
                     return res.status(201).json(reservationObj);
                 }
-                const response = await services.sms.sendMessageToUser(
+                await services.sms.sendMessageToUser(
                     dbUser,
                     message
                 );
@@ -120,7 +120,7 @@ const createReservation = async (req, res) => {
             }
         }
     } catch (err) {
-        console.log(err);
+        logger.error('Reservations', err);
         res.status(500).json(`Failed to create reservation`);
     }
 };
@@ -135,7 +135,7 @@ const cancelReservation = async (req, res) => {
         if (validationErrors) {
             res.status(422).json(validationErrors);
         } else {
-            const [cancelled, reservation, dbUser] = await Promise.all([
+            const [_cancelled, reservation, dbUser] = await Promise.all([
                 db.reservations.cancelReservation(reservationId),
                 db.reservations.getReservationById(reservationId),
                 db.users.getUser(user.phoneNumber),
@@ -144,7 +144,7 @@ const cancelReservation = async (req, res) => {
             const message = await services.sms.buildCancellationMessage(
                 reservation
             );
-            const response = await services.sms.sendMessageToUser(
+            await services.sms.sendMessageToUser(
                 dbUser,
                 message
             );

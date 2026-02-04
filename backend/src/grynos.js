@@ -3,6 +3,7 @@ const axios = require('axios');
 const models = require('./models');
 const db = require('./db');
 const services = require('./services');
+const logger = require('./utils/logging');
 const url = process.env.GRYNOS_COURSE_API_URL;
 const courseDetailUrl = process.env.GRYNOS_COURSE_DETAILS_API_URL;
 
@@ -44,18 +45,18 @@ const mapCourseDetailsFromGrynos = async (course) => {
         };
     }
     catch (e) {
-        console.error(`${(new Date).toISOString()} error fetching course details for ${course.code}: ${e.message}`);
+        logger.error('Grynos', `Error fetching course details for ${course.code}: ${e.message}`);
         throw e;
     }
 };
 
 const fetchCoursesFromGrynos = async () => {
     if (!url) {
-      console.log("Warning: no Grynos URL set in environment.");
+      logger.error('Grynos', 'No Grynos URL set in environment.');
       return;
     }
     const response = await axios(url);
-    console.log("Courses response data.total: " + response.data.total);
+    logger.log('Grynos', 'Courses response data.total: ' + response.data.total);
     if (response.data.course) {
         return await Promise.all(
             response.data.course
@@ -70,12 +71,12 @@ const clearDatabase = async () => {
 };
 
 const fetchAndSaveCoursesToDb = async () => {
-    console.log((new Date).toISOString() + ' Executing fetchAndSaveCoursesToDb');
+    logger.log('Grynos', 'Updating course data');
     try {
         const courses = await fetchCoursesFromGrynos();
         return await updateCoursesToDb(courses);
     } catch (e) {
-        console.error((new Date).toISOString() + " " + e.message);
+        logger.error('Grynos', e.message);
     }
 }
 const updateCoursesToDb = async (courses) => {
@@ -121,65 +122,54 @@ const updateCoursesToDb = async (courses) => {
                 })
             );
         } else {
-            console.error(`No courses available from Grynos.`);
+            logger.error('Grynos', 'No courses available from Grynos.');
         }
     } catch (error) {
-        console.error(`Failed to update courses to database: ${error}`);
+        logger.error('Grynos', `Failed to update courses to database: ${error}`);
     }
 
 }
 
-const updateSinglePaymentTickets = async (dbCourse, course) => {
-    dbCourse.single_payment_count = course.single_payment_count;
-    return models.courses.update(
-        { single_payment_count: course.single_payment_count },
-        { returning: true, where: { id: course.id } }
-    ).then(function ([rowsUpdate, [updatedCourse]]) {
-        return updatedCourse;
-    }).catch(error => {
-        console.log('failed to update single payment tickets', error);
-        throw error;
-    });
-}
-
-const handleCancellations = async (course, existingTeachingSessions, newTeachingSessions) => {
+const handleCancellations = async (_course, existingTeachingSessions, newTeachingSessions) => {
     try {
-        for (let existingSession of existingTeachingSessions) {
+        for (const existingSession of existingTeachingSessions) {
             const newSession = newTeachingSessions.find(item => item.id === existingSession.dataValues.eventId);
             if (newSession && newSession.status === -2 && existingSession.dataValues.status !== newSession.status) {
-                console.log('Going to cancel reservation for event', existingSession.dataValues.eventId);
+                logger.log('Grynos', 'Cancelling event: ' + existingSession.dataValues.eventId);
                 const reservations = await db.reservations.getReservationsByEventId(existingSession.dataValues.eventId);
                 if (reservations) {
                     await cancelReservations(reservations);
                 }
-                console.log('Cancelling event', newSession.id);
                 return models.events.update(
                     { status: -2 },
                     { returning: true, where: { id: newSession.id } });
             }
         }
     } catch (error) {
-        console.log('Failed to handleCancellations', error);
+        logger.error('Grynos', 'Failed to handleCancellations', error);
     }
 };
 
 const cancelReservations = async (reservations) => {
     try {
         for (let reservation of reservations) {
-            console.log((new Date).toISOString() + ' Executing cancel reservation for reservation', reservation.dataValues.id);
+            logger.log('Grynos', 'Cancelling reservation: ' + reservation.dataValues.id);
             await db.reservations.cancelReservation(reservation.dataValues.id);
+
             if (!process.env.TELIA_USERNAME) {
-                console.log(`Reservation cancelled for user ID ${reservation.dataValues.userId} on reservation ID ${reservation.dataValues.id}`);
+                // If no SMS service available.
+                logger.log('Grynos', `Reservation cancelled for user ID ${reservation.dataValues.userId} on reservation ID ${reservation.dataValues.id}`);
                 continue;
             }
+
             const [message, dbUser] = await Promise.all([services.sms.buildCancellationMessage(reservation.dataValues), db.users.getUserById(reservation.dataValues.userId)]);
-            const response = await services.sms.sendMessageToUser(
+            await services.sms.sendMessageToUser(
                 dbUser,
                 message
             );
         }
     } catch (error) {
-        console.log('cancelling reservation failed', error);
+        logger.error('Grynos', 'Cancelling reservation failed', error);
         throw error;
     }
 }

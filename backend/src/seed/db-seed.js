@@ -1,11 +1,12 @@
 const data = require('./mockdata.js').courses;
 const sequelize = require('../sequalize_pg');
 const models = require('../models');
+const logger = require('../utils/logging');
 const mapCourseFromGrynos = require('../grynos').mapCourseFromGrynos;
 const database = require('../db');
 const loadMockCoursesToDatabase = async () => {
     try {
-        console.log('updating test courses to db');
+        logger.log('Seed', 'Updating test courses to db');
         await sequelize.sync();
         const dbCourses = await database.courses.getAllCourses();
         const dbCourseIds = dbCourses.map(course => course.id);
@@ -47,10 +48,10 @@ const loadMockCoursesToDatabase = async () => {
                 })
             );
         } else {
-            console.error(`No courses available from seed data.`);
+            logger.error('Seed', 'No courses available from seed data.');
         }
     } catch (error) {
-        console.error(`Failed to fetch course from seed data: ${error}`);
+        logger.error('Seed', `Failed to fetch course from seed data: ${error}`);
     }
 };
 

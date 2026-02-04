@@ -1,6 +1,7 @@
 const axios = require('axios');
 const crypto = require('crypto');
 const db = require('../db');
+const logger = require('../utils/logging');
 const sequalize = require('../sequalize_pg');
 
 const removeLastSlash = (url) => {
@@ -16,10 +17,10 @@ const PAYMENT_POST_URL = process.env.PAYMENT_POST_URL || 'https://services.paytr
 const VAT_PERCENTAGE = process.env.VAT_PERCENTAGE ? parseFloat(process.env.VAT_PERCENTAGE) : 13.5;
 const PAYMENT_CODE = process.env.PAYMENT_CODE || 'LIIKUNTALIPUT';
 
-console.log('Using VAT percentage: ' + VAT_PERCENTAGE);
-console.log('Using payment code: ' + PAYMENT_CODE);
-console.log('Using merchant ID: ' + MERCHANT_ID);
-console.log('Using payment return URL: ' + PAYMENT_RETURN_URL);
+logger.log('Payments', 'Using VAT percentage: ' + VAT_PERCENTAGE);
+logger.log('Payments', 'Using payment code: ' + PAYMENT_CODE);
+logger.log('Payments', 'Using merchant ID: ' + MERCHANT_ID);
+logger.log('Payments', 'Using payment return URL: ' + PAYMENT_RETURN_URL);
 
 const calculateCheckoutParamsHmac = (params, body) => {
     const hmacPayload = Object.keys(params)
@@ -76,9 +77,9 @@ const getAxiosConfig = async (paymentObj, timestamp) => {
         userId: paymentObj.userId
     };
 
-    const paymentResponse = await db.payments.createPayment(paymentEntity);
-    if (paymentResponse.id) {
-        console.log('Payment saved to database: ', paymentResponse.dataValues);
+    const paymentDbResponse = await db.payments.createPayment(paymentEntity);
+    if (paymentDbResponse.id) {
+        logger.log('Payments', 'Payment saved to database: ', paymentDbResponse.dataValues);
         const config = {
             url: PAYMENT_POST_URL,
             method: 'post',
@@ -100,7 +101,7 @@ const getPaymentProviders = async (paymentObj) => {
         const response = await axios(paymentPostConfig);
         return response.data.providers;
     } catch (error) {
-        console.error(`Failed to get payment methods: ${error.message}`);
+        logger.error('Payments', `Failed to get payment methods: ${error.message}`);
         const orderNumber = 'vantaa-order-' + timestamp.valueOf();
         await sequalize.transaction(async (transaction) => {
             await db.payments.updatePaymentStatus(orderNumber, 0, transaction);

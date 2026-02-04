@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../db');
 const { addWeeks, endOfDay } = require('date-fns');
 const utils = require('../utils');
+const logger = require('../utils/logging');
 
 const getCourses = async (req, res) => {
     try {
@@ -24,7 +25,7 @@ const getCourses = async (req, res) => {
         const response = await db.courses.reduceCoursesByDate(courses);
         res.status(200).json(response);
     } catch (err) {
-        console.error('Error in getCourses:', err);
+        logger.error('Courses', `Error in getCourses: ${err}`);
         res.status(500).json({ error: `Failed to get courses. Error: ${err.message}` });
     }
 };

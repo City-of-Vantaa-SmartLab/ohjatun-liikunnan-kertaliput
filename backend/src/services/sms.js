@@ -1,6 +1,7 @@
 const axios = require('axios');
 const i18n = require('../i18n').i18n();
 const db = require('../db');
+const logger = require('../utils/logging');
 const { formatInTimeZone } = require('date-fns-tz');
 
 const teliaEndPoint = 'https://ws.mkv.telia.fi/restsms/lekabrest/send';
@@ -28,14 +29,14 @@ const maskName = (name) => {
 const sendMessageToUser = async (user, message) => {
     try {
         const phoneNumber = user.phoneNumber;
-        console.log(`Send SMS for ${maskName(user.username)} to ${maskPhone(phoneNumber)}`);
+        logger.log('SMS', `Send SMS to ${maskName(user.username)} / ${maskPhone(phoneNumber)}`);
         const request = generateTeliaMessageRequest(phoneNumber, message);
         const response = await axios.post(teliaEndPoint, request);
         if (response && response.data.accepted[0].to === phoneNumber.slice(1)) {
             return response;
         }
     } catch (error) {
-        console.log(`Failed to send SMS: ${error.message}`);
+        logger.error('SMS', `Failed to send SMS: ${error.message}`);
     }
 };
 
