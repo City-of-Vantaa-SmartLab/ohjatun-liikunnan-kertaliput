@@ -14,7 +14,7 @@ services:
         condition: service_started
     build: ./backend
     ports:
-      - 5000:80
+      - 5000:3000
     volumes:
       - ./backend/src:/backend/src
       - ./frontend/build:/backend/public
@@ -35,14 +35,14 @@ services:
       POOL_WATER_PRICE_AFTER_4: 4
       POOL_WATER_PRICE_BEFORE_4: 3
       USE_MOCK_DATA: 1
-      PORT: 80
+      PORT:
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
       VAT_PERCENTAGE:
 
   postgres-dev-db:
-    image: postgres:16
+    image: postgres:18
     ports:
       - 5432:5432
     environment:

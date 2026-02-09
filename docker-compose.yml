@@ -1,7 +1,7 @@
 services:
   liikuntaliput:
     ports:
-      - 5000:5000
+      - 80:3000
     build:
       context: ./
       dockerfile: Dockerfile
