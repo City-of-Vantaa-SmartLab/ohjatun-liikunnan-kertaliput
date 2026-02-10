@@ -85,11 +85,19 @@ const updateCoursesToDb = async (courses) => {
         const dbCourses = await db.courses.getAllCourses();
         const dbCourseIds = dbCourses.map(course => course.id);
         if (courses) {
+            // Handle all cancellations serially first to avoid race conditions on user balance updates.
+            for (const course of courses) {
+                if (dbCourseIds.includes(course.id)) {
+                    const dbCourse = dbCourses.find(item => item.id === course.id);
+                    await handleCancellations(dbCourse, dbCourse.teachingSession, course.teachingSession);
+                }
+            }
+
+            // Then update all courses in parallel.
             return await Promise.all(
                 courses.map(async (course) => {
                     if (dbCourseIds.includes(course.id)) {
                         const dbCourse = dbCourses.find(item => item.id === course.id);
-                        await handleCancellations(dbCourse, dbCourse.teachingSession, course.teachingSession);
                         const locationId = dbCourse.location && dbCourse.location.length > 0 ? dbCourse.location[0].dataValues.id : null;
                         const updatedCourses = await dbCourse.update(course);
 
