@@ -13,9 +13,26 @@ const auth = require('./auth');
 const port = process.env.PORT || 3000;
 const grynosUpdateInterval =
     process.env.GRYNOS_COURSES_UPDATE_INTERVAL || 3600000;
+const grynosNightTimeInterval = 3600000; // 60 minutes during night
 const populateSeedData = process.env.USE_MOCK_DATA === '1';
 const resetDatabase = process.env.DROP_DATABASE_SCHEMA === 'true';
-setInterval(fetchAndSaveCoursesToDb, grynosUpdateInterval);
+
+const isNightTime = () => {
+    const hour = new Date().getHours();
+    return hour >= 23 || hour < 5;
+};
+
+const scheduleNextUpdate = () => {
+    const interval = isNightTime()
+        ? Math.max(grynosUpdateInterval, grynosNightTimeInterval)
+        : grynosUpdateInterval;
+    setTimeout(() => {
+        fetchAndSaveCoursesToDb();
+        scheduleNextUpdate();
+    }, interval);
+};
+
+scheduleNextUpdate();
 
 const server = express();
 

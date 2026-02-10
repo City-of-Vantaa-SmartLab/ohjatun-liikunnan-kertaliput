@@ -71,7 +71,10 @@ const clearDatabase = async () => {
 };
 
 const fetchAndSaveCoursesToDb = async () => {
-    logger.log('Grynos', 'Updating course data');
+    const hour = new Date().getHours();
+    const isNightTime = hour >= 23 || hour < 5;
+    const intervalNote = isNightTime ? ' (night-time interval)' : '';
+    logger.log('Grynos', `Updating course data${intervalNote}`);
     try {
         const courses = await fetchCoursesFromGrynos();
         return await updateCoursesToDb(courses);
