@@ -3,7 +3,6 @@ const cookieParser = require('cookie-parser');
 const express = require('express');
 const db = require('./sequalize_pg');
 const logger = require('./utils/logging');
-require('dotenv').config();
 const loadMockCoursesToDatabase = require('./seed/db-seed')
     .loadMockCoursesToDatabase;
 const fetchAndSaveCoursesToDb = require('./grynos').fetchAndSaveCoursesToDb;
@@ -11,10 +10,9 @@ const clearDatabase = require('./grynos').clearDatabase;
 const auth = require('./auth');
 
 const port = process.env.PORT || 3000;
-const grynosUpdateInterval =
-    process.env.GRYNOS_COURSES_UPDATE_INTERVAL || 3600000;
+const grynosUpdateInterval = process.env.GRYNOS_UPDATE_INTERVAL || 3600000;
 const grynosNightTimeInterval = 3600000; // 60 minutes during night
-const populateSeedData = process.env.USE_MOCK_DATA === '1';
+const useMockData = process.env.USE_MOCK_DATA === '1';
 const resetDatabase = process.env.DROP_DATABASE_SCHEMA === 'true';
 
 const isNightTime = () => {
@@ -62,13 +60,13 @@ server.get('/app/*splat', (_req, res) => {
 });
 
 const startServer = () => {
-    const dataSource = populateSeedData ? 'seed data' : 'Grynos API';
-    const dbPopulation = populateSeedData ? loadMockCoursesToDatabase() : fetchAndSaveCoursesToDb();
+    const dataSource = useMockData ? 'mock data' : 'Grynos API';
+    const dbPopulation = useMockData ? loadMockCoursesToDatabase() : fetchAndSaveCoursesToDb();
 
     dbPopulation.catch(error => {
         logger.log('Server', `Failed to load initial course data from ${dataSource}: ${error.message}`);
-        const retryMessage = populateSeedData
-            ? "Seed data will not be retried automatically."
+        const retryMessage = useMockData
+            ? "Mock data will not be retried."
             : `Grynos API will be retried in ${grynosUpdateInterval/1000} seconds.`;
         logger.log('Server', `Starting server anyway ${retryMessage}`);
     }).finally(() => {

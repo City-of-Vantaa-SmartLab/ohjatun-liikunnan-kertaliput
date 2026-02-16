@@ -6,7 +6,7 @@ const mapCourseFromGrynos = require('../grynos').mapCourseFromGrynos;
 const database = require('../db');
 const loadMockCoursesToDatabase = async () => {
     try {
-        logger.log('Seed', 'Updating test courses to db');
+        logger.log('Seed', 'Updating mock data to db');
         await sequelize.sync();
         const dbCourses = await database.courses.getAllCourses();
         const dbCourseIds = dbCourses.map(course => course.id);
@@ -48,10 +48,10 @@ const loadMockCoursesToDatabase = async () => {
                 })
             );
         } else {
-            logger.error('Seed', 'No courses available from seed data.');
+            logger.error('Seed', 'No courses available from mock data.');
         }
     } catch (error) {
-        logger.error('Seed', `Failed to fetch course from seed data: ${error}`);
+        logger.error('Seed', `Failed to fetch course from mock data: ${error}`);
     }
 };
 

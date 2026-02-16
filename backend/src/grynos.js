@@ -4,8 +4,9 @@ const models = require('./models');
 const db = require('./db');
 const services = require('./services');
 const logger = require('./utils/logging');
-const url = process.env.GRYNOS_COURSE_API_URL;
-const courseDetailUrl = process.env.GRYNOS_COURSE_DETAILS_API_URL;
+const courseUrl = process.env.GRYNOS_API_URL + '/course/search?sip=1&ses=1';
+const courseDetailUrl = process.env.GRYNOS_API_URL + '/course/code/';
+const apiKey = process.env.GRYNOS_API_KEY;
 
 const mapCourseFromGrynos = (course) => ({
     id: course.id,
@@ -32,7 +33,11 @@ const mapCourseFromGrynos = (course) => ({
 
 const mapCourseDetailsFromGrynos = async (course) => {
     try {
-        const courseDetails = await axios(courseDetailUrl + course.code);
+        const courseDetails = await axios(courseDetailUrl + course.code, {
+            headers: {
+                apikey: apiKey
+            }
+        });
         return {
             ...course,
             description: courseDetails.data.descriptionInternet,
@@ -51,11 +56,15 @@ const mapCourseDetailsFromGrynos = async (course) => {
 };
 
 const fetchCoursesFromGrynos = async () => {
-    if (!url) {
-      logger.error('Grynos', 'No Grynos URL set in environment.');
+    if (!courseUrl) {
+      logger.error('Grynos', 'No Grynos API URL set in environment.');
       return;
     }
-    const response = await axios(url);
+    const response = await axios(courseUrl, {
+        headers: {
+            apikey: apiKey
+        }
+    });
     logger.log('Grynos', 'Courses response data.total: ' + response.data.total);
     if (response.data.course) {
         return await Promise.all(
@@ -147,7 +156,8 @@ const handleCancellations = async (_course, existingTeachingSessions, newTeachin
             const newSession = newTeachingSessions.find(item => item.id === existingSession.dataValues.eventId);
             // A course teaching session status of -2 denotes that the teaching session has been cancelled.
             // If a whole course is cancelled (if it hasn't started yet), then all of the teaching sessions should be handled as cancelled, no matter their status.
-            // In case of a fully cancelled course, the course's status property is -2. TODO: the status and cancellation for a whole course is not implemented.
+            // In case of a fully cancelled course, the course's status property is -2.
+            // NOTE: the status and cancellation for a whole course is not implemented.
             // The course status property is not visible in the general courses listing API, but only in course details.
             // The status should be interpreted as follows:
             // Peruttu = -2

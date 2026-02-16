@@ -1,9 +1,3 @@
-
-# Prototype
-
-[Original Invision prototype](https://projects.invisionapp.com/share/2QGQG18TXD4#/screens)
-
-
 # Grynos
 
 [Production API doc](https://vlapi.grynos.com/vlilmoapix/v1/docs)
@@ -12,6 +6,8 @@
 
 ## Some useful http request examples
 
+Put the API key into request header as "apikey".
+
 API DOCUMENTATION IN FINNISH
 https://colosseum.grynos.com/ilmoapix/v1/docs
 
@@ -19,22 +15,22 @@ USER INTERFACE FOR MANIPULATING DATA
 http://colosseum.grynos.com/ilmoapix/v1/clientinfo/login
 
 ALL COURSES WITH SINGLE TICKETS
-https://colosseum.grynos.com/ilmoapix/v1/[apikey]/course/search?sip=1
+https://colosseum.grynos.com/ilmoapix/v1/course/search?sip=1
 
 ALL COURSES WITH SINGLE TICKETS WITH EVENTS
-https://colosseum.grynos.com/ilmoapix/v1/[apikey]/course/search?sip=1&ses=1
+https://colosseum.grynos.com/ilmoapix/v1/course/search?sip=1&ses=1
 
 DETAILED INFORMATION ABOUT COURSE
-https://colosseum.grynos.com/ilmoapix/v1/[apikey]/course/code/V171942
+https://colosseum.grynos.com/ilmoapix/v1/course/code/V171942
 
 COURSE TYPES
-.../v1/[apikey]/commonselection/coursetypes
+.../v1/commonselection/coursetypes
 
 JSON
-https://colosseum.grynos.com/ilmoapix/v1/[apikey]/course/code/H173590?format=json
+https://colosseum.grynos.com/ilmoapix/v1/course/code/H173590?format=json
 
 LOCATIONS
-https://colosseum.grynos.com/ilmoapix/v1/[apikey]/location/all
+https://colosseum.grynos.com/ilmoapix/v1/location/all
 
 # Telia
 
