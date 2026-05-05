@@ -13,18 +13,15 @@ It integrates to Grynos to get the information about current courses available i
 
 ## Running locally
 
-With Docker:
+With Docker: `docker-compose up`.
 
-1. `chmod +x run-locally.sh`
-2. `./run-locally.sh`
+Backend runs at [http://localhost:5000/](port 5000).
+Frontend with Vite proxy runs at [http://localhost:3000/](port 3000).
 
 Without Docker:
 
 1. `cd backend && npm run dev`
 2. `cd frontend && npm run dev`
-
-Backend runs at: http://localhost:5000/
-Frontend with Vite proxy runs at: http://localhost:3000/
 
 ### Backend API
 
@@ -34,53 +31,32 @@ Frontend with Vite proxy runs at: http://localhost:3000/
 
 ## Deployment
 
-The application runs in `vantaa-pwa` AWS account's Elastic Beanstalk in Ireland region `eu-west-1`. App
-environments can be updated using EB CLI tools:
+The application runs in `vantaa-pwa` AWS account's Elastic Beanstalk.
+App environments can be updated using EB CLI tools:
 
 Install the tools (for quick setup, follow the README in GitHub):
 
--   [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html)
--   [GitHub](https://github.com/aws/aws-elastic-beanstalk-cli-setup)
--   Remember to add EB CLI to PATH (e.g. `export PATH="/home/username/.ebcli-virtual-env/executables:$PATH"`).
+- [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html)
+- [GitHub](https://github.com/aws/aws-elastic-beanstalk-cli-setup)
+- Remember to add EB CLI to PATH (e.g. `export PATH="/home/username/.ebcli-virtual-env/executables:$PATH"`).
 
 Configure the EB CLI:
 
--   [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html)
--   Note: this process only initializes the current directory/repository on your computer. The relevant files have been added to gitignore.
+- [AWS docs](https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-configuration.html)
+- Note: this process only initializes the current directory/repository on your computer. The relevant files have been added to gitignore.
 
 1. Go to project directory root (where this file is). Type: `eb init`.
-2. Select `eu-west-1` as the location (unless something's been changed).
-3. If you haven't set up your AWS credentials yet, provide your personal Access key ID and Secret access key. These can be generated in the AWS IAM console.
-    - Be sure to use the credentials for the correct account, since they determine where the app will be deployed!
-4. Select the `liikuntaliput` as application and `liikuntaliput-dev` as the default environment. Don't continue with CodeCommit (defaults to Y).
-5. Ensure the environment is set up by typing `eb list`. You should see that the development environment is selected:
+2. Select `eu-central-1` as the location (unless something's been changed).
+3. If you haven't set up your AWS credentials yet, provide your personal Access key ID and Secret access key. You got them when receiving the AWS credentials (you should have got the following: **User name,Password,Access key ID,Secret access key,Console login link**). On Linux/OS X, the credentials will be stored in `~/.aws/config`.
+4. Select `Jumppaliput` as application. Don't continue with CodeCommit (defaults to N).
+5. Ensure the environment is set up by typing `eb list`.
 
-```
-jumppaliput-vantaa-prod
-* jumppaliput-vantaa-dev
-```
+To deploy new version, run `eb deploy <environment name>`, e.g. `eb deploy jumppaliput-test`.
+Note: only committed changes are be deployed with `eb deploy`.
 
-_Note: only committed changes are going to be deployed._
-
-### Deploy a new version to the development environment
-
--   Run `eb use jumppaliput-vantaa-dev` to switch to the development environment
--   Run `eb deploy`
--   Optionally, to see how things are progressing, run `eb events -f`
-
-### Deploy a new version to the production environment
-
--   Run `eb use jumppaliput-vantaa-prod` to switch to the production environment
--   Run `eb deploy`
--   Optionally, to see how things are progressing, run `eb events -f`
-
----
-
-## Documentation of used APIs
+## Documentation of APIs
 
 See (API)[documentation/README.md]
-
----
 
 ## Updating prices
 

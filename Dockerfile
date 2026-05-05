@@ -14,5 +14,6 @@ RUN cp -r ./build ../backend/public
 WORKDIR /backend
 RUN npm ci
 
-EXPOSE 5000
+ENV APPLICATION_PORT=80
+EXPOSE 80
 CMD ["npm", "run", "start"]

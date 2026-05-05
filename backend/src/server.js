@@ -9,7 +9,7 @@ const fetchAndSaveCoursesToDb = require('./grynos').fetchAndSaveCoursesToDb;
 const clearDatabase = require('./grynos').clearDatabase;
 const auth = require('./auth');
 
-const port = process.env.PORT || 3000;
+const port = process.env.APPLICATION_PORT || 3000;
 const grynosUpdateInterval = process.env.GRYNOS_UPDATE_INTERVAL || 3600000;
 const grynosNightTimeInterval = 3600000; // 60 minutes during night
 const useMockData = process.env.USE_MOCK_DATA === '1';

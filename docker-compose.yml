@@ -1,29 +1,51 @@
+# Use canonical dockerfiles for Docker Compose V2 to run containers.
+
 services:
-  liikuntaliput:
+  frontend:
+    build: ./frontend
     ports:
-      - 80:3000
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    image: liikuntaliput/latest
+      - 3000:3000
+    volumes:
+      - ./frontend/src:/frontend/src
+
+  backend:
+    depends_on:
+      postgres-dev-db:
+        condition: service_started
+    build: ./backend
+    ports:
+      - 5000:3000
+    volumes:
+      - ./backend/src:/backend/src
+      - ./frontend/build:/backend/public
     environment:
-      APP_BASE_URL:
-      DB_HOST:
-      DB_NAME:
-      DB_PASSWORD:
-      DB_USERNAME:
-      FLOOR_GYM_PRICE_AFTER_4:
-      FLOOR_GYM_PRICE_BEFORE_4:
+      APP_BASE_URL: http://localhost:5000
+      DB_HOST: postgres-dev-db
+      DB_NAME: vantaa_pwa
+      DB_PASSWORD: password
+      DB_USERNAME: postgres
+      FLOOR_GYM_PRICE_AFTER_4: 6
+      FLOOR_GYM_PRICE_BEFORE_4: 4
       GRYNOS_API_KEY:
-      GRYNOS_API_URL:
-      GRYNOS_UPDATE_INTERVAL:
+      GRYNOS_API_URL: https://vlapi.grynos.com/vlilmoapix/v1
+      GRYNOS_UPDATE_INTERVAL: 3600000
       MERCHANT_ID:
       MERCHANT_KEY:
       PAYMENT_CODE:
-      POOL_WATER_PRICE_AFTER_4:
-      POOL_WATER_PRICE_BEFORE_4:
+      POOL_WATER_PRICE_AFTER_4: 4
+      POOL_WATER_PRICE_BEFORE_4: 3
+      USE_MOCK_DATA: 1
       PORT:
       TELIA_PASSWORD:
       TELIA_USERNAME:
       TELIA_USER:
       VAT_PERCENTAGE:
+
+  postgres-dev-db:
+    image: postgres:18
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vantaa_pwa
